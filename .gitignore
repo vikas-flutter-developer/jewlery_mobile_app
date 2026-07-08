@@ -49,6 +49,7 @@ backend/node_modules/
 backend/.env
 backend/.env.local
 backend/uploads/
+backend/key
 backend/*.rar
 backend/*.zip
 
