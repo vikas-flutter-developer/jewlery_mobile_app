@@ -1,0 +1,24 @@
+{
+  "wholesale": [
+    {
+      "orderId": "WHO-MFR-901",
+      "invoiceNumber": "INV-WHO-901",
+      "customerName": "Delhi Retail Association",
+      "customerPhone": "9111111111",
+      "items": [
+        {
+          "productId": "BAR-GOLD-001",
+          "name": "24K Gold Refining Bar",
+          "quantity": 2,
+          "weight": 200,
+          "price": 1440000
+        }
+      ],
+      "subtotal": 1440000,
+      "discount": 40000,
+      "tax": 42000,
+      "total": 1442000,
+      "status": "INVOICE"
+    }
+  ]
+}

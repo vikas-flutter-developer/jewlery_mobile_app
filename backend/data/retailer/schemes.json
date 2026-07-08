@@ -1,0 +1,18 @@
+{
+  "schemes": [
+    {
+      "schemeId": "RETAIL_SCHEME_001",
+      "schemeName": "Suvarna Savings Plan",
+      "description": "Monthly accumulation scheme with 1 month bonus installment",
+      "startDate": "2026-06-01",
+      "endDate": "2027-06-01",
+      "discountType": "fixed",
+      "discountValue": 5000,
+      "minPurchaseAmount": 5000,
+      "maxDiscountAmount": 5000,
+      "applicableOn": [],
+      "status": "active",
+      "createdAt": "2026-06-01"
+    }
+  ]
+}

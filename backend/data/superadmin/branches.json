@@ -1,0 +1,46 @@
+{
+  "branches": [
+    {
+      "name": "Main Branch - Delhi",
+      "code": "BRANCH001",
+      "address": "123 Jewel Street, Delhi, India",
+      "city": "Delhi",
+      "state": "Delhi",
+      "pincode": "110001",
+      "phone": "+91-9876543210",
+      "email": "delhi@aurajewel.com",
+      "managerName": "Rajesh Kumar",
+      "isMainBranch": true,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "name": "Mumbai Branch",
+      "code": "BRANCH002",
+      "address": "456 Gold Plaza, Mumbai, India",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "phone": "+91-9876543211",
+      "email": "mumbai@aurajewel.com",
+      "managerName": "Priya Sharma",
+      "isMainBranch": false,
+      "status": "ACTIVE",
+      "createdAt": "2024-01-15"
+    },
+    {
+      "name": "Bangalore Branch",
+      "code": "BRANCH003",
+      "address": "789 Diamond Court, Bangalore, India",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pincode": "560001",
+      "phone": "+91-9876543212",
+      "email": "bangalore@aurajewel.com",
+      "managerName": "Vikram Singh",
+      "isMainBranch": false,
+      "status": "ACTIVE",
+      "createdAt": "2024-02-01"
+    }
+  ]
+}

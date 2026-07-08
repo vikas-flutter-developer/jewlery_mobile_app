@@ -1,0 +1,26 @@
+{
+  "rateHistory": [
+    {
+      "id": "rate-history-1779529670401-3wve28",
+      "timestamp": "2026-05-23T09:47:50.401Z",
+      "rates": {
+        "gold24K": 6300,
+        "gold22K": 5775,
+        "silver": 75
+      },
+      "branchIds": [
+        "all"
+      ],
+      "source": "sync"
+    }
+  ],
+  "purityConfigs": [
+    {
+      "id": "purity-1779529672442-5yzp8",
+      "karat": "22K",
+      "purityPct": 91.6,
+      "displayName": "22K Gold (916 Hallmarked)",
+      "updatedAt": "2026-05-23T09:47:52.442Z"
+    }
+  ]
+}

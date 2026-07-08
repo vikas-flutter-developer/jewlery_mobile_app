@@ -1,0 +1,32 @@
+{
+  "schemes": [
+    {
+      "schemeId": "SCHEME001",
+      "schemeName": "Festival Gold Offer",
+      "description": "Special discount during festival season",
+      "startDate": "2024-06-01",
+      "endDate": "2024-06-30",
+      "discountType": "percentage",
+      "discountValue": 10,
+      "minPurchaseAmount": 50000,
+      "maxDiscountAmount": 10000,
+      "applicableOn": ["INV001", "INV002"],
+      "status": "active",
+      "createdAt": "2024-06-01"
+    },
+    {
+      "schemeId": "SCHEME002",
+      "schemeName": "Bulk Purchase Discount",
+      "description": "Discount on bulk purchases",
+      "startDate": "2024-06-01",
+      "endDate": "2024-12-31",
+      "discountType": "percentage",
+      "discountValue": 5,
+      "minPurchaseAmount": 100000,
+      "maxDiscountAmount": 15000,
+      "applicableOn": ["INV003"],
+      "status": "active",
+      "createdAt": "2024-06-01"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "barcodes": [
+    {
+      "barcodeId": "BC-RETAIL-001",
+      "itemId": "SKU-RETAIL-RING-001",
+      "itemName": "Diamond Engagement Ring",
+      "barcode": "8901234567890",
+      "qrCode": "https://aurajewel.com/item/SKU-RETAIL-RING-001",
+      "weight": 5.4,
+      "purity": "22K",
+      "certificateNumber": "CERT-R-001",
+      "createdAt": "2026-06-01",
+      "status": "active"
+    },
+    {
+      "barcodeId": "BC-RETAIL-002",
+      "itemId": "SKU-RETAIL-CHAIN-002",
+      "itemName": "18K Classic Italian Chain",
+      "barcode": "8901234567891",
+      "qrCode": "https://aurajewel.com/item/SKU-RETAIL-CHAIN-002",
+      "weight": 12.5,
+      "purity": "18K",
+      "certificateNumber": "CERT-R-002",
+      "createdAt": "2026-06-01",
+      "status": "active"
+    }
+  ]
+}

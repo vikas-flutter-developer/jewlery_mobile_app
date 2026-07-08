@@ -1,0 +1,48 @@
+{
+  "salesReturns": [
+    {
+      "returnId": "RETURN001",
+      "saleId": "SALE001",
+      "billNumber": "BILL-2024-001",
+      "returnDate": "2024-06-05",
+      "customerName": "John Doe",
+      "customerEmail": "john@email.com",
+      "returnReason": "Quality issue",
+      "items": [
+        {
+          "itemId": "INV002",
+          "itemName": "22K Gold Jewelry Set",
+          "quantity": 1,
+          "originalRate": 125000,
+          "refundAmount": 125000
+        }
+      ],
+      "refundMethod": "Card",
+      "totalRefund": 125000,
+      "status": "processed",
+      "createdAt": "2024-06-05"
+    }
+  ],
+  "salesExchange": [
+    {
+      "exchangeId": "EXCH001",
+      "originalSaleId": "SALE001",
+      "exchangeDate": "2024-06-05",
+      "returnedItem": {
+        "itemId": "INV002",
+        "itemName": "22K Gold Jewelry Set",
+        "quantity": 1,
+        "originalRate": 125000
+      },
+      "newItem": {
+        "itemId": "INV003",
+        "itemName": "Silver Coins",
+        "quantity": 35,
+        "newRate": 126000
+      },
+      "additionalPayment": 1000,
+      "status": "completed",
+      "createdAt": "2024-06-05"
+    }
+  ]
+}

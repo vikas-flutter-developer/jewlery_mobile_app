@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "customerId": "CUST001",
+      "customerName": "Rajesh Kumar",
+      "email": "rajesh@email.com",
+      "phone": "+91-9876543250",
+      "address": "123 Main Street, Delhi",
+      "city": "Delhi",
+      "state": "Delhi",
+      "pincode": "110001",
+      "gstNumber": "27AABCT1234H1Z0",
+      "totalPurchases": 500000,
+      "totalPoints": 5000,
+      "status": "active",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "customerId": "CUST002",
+      "customerName": "Priya Singh",
+      "email": "priya@email.com",
+      "phone": "+91-9876543251",
+      "address": "456 Oak Avenue, Mumbai",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "gstNumber": "27AABCT1234H1Z1",
+      "totalPurchases": 350000,
+      "totalPoints": 3500,
+      "status": "active",
+      "createdAt": "2024-01-15"
+    }
+  ]
+}

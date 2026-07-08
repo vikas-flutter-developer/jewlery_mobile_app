@@ -1,0 +1,14 @@
+{
+  "compliance": [
+    {
+      "caseId": "CMP-MFR-101",
+      "category": "GST Filing",
+      "description": "File GSTR-1 for the month of May 2026",
+      "status": "OPEN",
+      "assignedTo": "Admin Staff",
+      "notes": [
+        "Ensure all wholesale invoices are reconciled."
+      ]
+    }
+  ]
+}

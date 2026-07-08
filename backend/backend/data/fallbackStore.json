@@ -1,0 +1,674 @@
+{
+  "users": [
+    {
+      "_id": "user-1781268236742",
+      "name": "bnm",
+      "email": "mahalebhavesh247@gmail.com",
+      "phone": "07558556969",
+      "password": "$2a$10$ci.FZB1.y.KnRbi/MZW8pOQUlJRYgVWbK5hGborOfS.gi/eb08qHO",
+      "role": "ADMIN",
+      "tenantId": "store-mqawzt4h-e9en1f",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-12T12:43:56.742Z",
+      "updatedAt": "2026-06-12T12:43:56.753Z"
+    }
+  ],
+  "customers": [],
+  "vendors": [],
+  "shops": [],
+  "gemstoneParcels": [],
+  "schemeDefinitions": [],
+  "schemeEnrollments": [],
+  "tasks": [],
+  "repairJobs": [],
+  "tickets": [],
+  "denominations": [],
+  "schedules": [],
+  "consignmentStock": [],
+  "cheques": [],
+  "retailerOrders": [],
+  "mockRates": [
+    {
+      "metal": "GOLD_24K",
+      "rate": 6200
+    },
+    {
+      "metal": "GOLD_22K",
+      "rate": 5600
+    },
+    {
+      "metal": "SILVER",
+      "rate": 75
+    }
+  ],
+  "mockInventory": [
+    {
+      "_id": "mock1",
+      "barcode": "MOCK1",
+      "name": "Gold Necklace",
+      "weight": 120,
+      "purity": "22K",
+      "type": "Necklace",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 672000,
+      "designCode": "DSGN-101",
+      "showcase": "Showcase A",
+      "tray": "Tray 1",
+      "inwardDate": "2026-06-28T08:30:42.074Z",
+      "sku": "SKU-N-001"
+    },
+    {
+      "_id": "mock2",
+      "barcode": "MOCK2",
+      "name": "Silver Coin",
+      "weight": 50,
+      "purity": "Fine",
+      "type": "Coin",
+      "stock": 10,
+      "status": "In Stock",
+      "price": 3750,
+      "designCode": "DSGN-102",
+      "showcase": "Showcase B",
+      "tray": "Tray 3",
+      "inwardDate": "2026-03-10T08:30:42.074Z",
+      "sku": "SKU-C-002"
+    },
+    {
+      "_id": "mock_bar_001",
+      "barcode": "BAR001",
+      "name": "Gold Item",
+      "weight": 10,
+      "purity": "80%",
+      "type": "Ring",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 52000,
+      "designCode": "DSGN-103",
+      "showcase": "Showcase A",
+      "tray": "Tray 2",
+      "inwardDate": "2026-05-24T08:30:42.074Z",
+      "sku": "SKU-R-003"
+    },
+    {
+      "_id": "mock_huid_001",
+      "barcode": "HUID1",
+      "sku": "HUID-TEST-001",
+      "huid": "HUID-TEST-001",
+      "branchId": "MAIN",
+      "status": "In Stock",
+      "name": "Gold Pendant",
+      "weight": 5,
+      "purity": "22K",
+      "type": "Necklace",
+      "stock": 1,
+      "price": 40000,
+      "designCode": "DSGN-101",
+      "showcase": "Showcase C",
+      "tray": "Tray 1",
+      "inwardDate": "2026-07-03T08:30:42.074Z"
+    },
+    {
+      "_id": "mock_diamond_001",
+      "barcode": "BAR_DIA_001",
+      "name": "Loose Round Solitaire",
+      "weight": 0.25,
+      "purity": "VVS1",
+      "type": "DIAMOND",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 45000,
+      "designCode": "DSGN-DIA-001",
+      "showcase": "HQ Vault",
+      "tray": "Diamond Tray 1",
+      "inwardDate": "2026-07-05T08:30:42.074Z",
+      "sku": "SKU-DIA-001",
+      "branchId": "MAIN",
+      "grossWeight": 0.25,
+      "netWeight": 0.25,
+      "fineWeight": 0.25,
+      "diamondWeight": 0.25,
+      "huid": "HUID-DIA-001",
+      "diamondCarat": 1.25,
+      "diamondCut": "Excellent",
+      "diamondColor": "F",
+      "diamondClarity": "VVS1",
+      "diamondType": "Natural"
+    },
+    {
+      "_id": "mock_diamond_002",
+      "barcode": "BAR_DIA_002",
+      "name": "Loose Cushion Cut Diamond",
+      "weight": 0.4,
+      "purity": "VS2",
+      "type": "DIAMOND",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 85000,
+      "designCode": "DSGN-DIA-002",
+      "showcase": "HQ Vault",
+      "tray": "Diamond Tray 2",
+      "inwardDate": "2026-07-07T08:30:42.074Z",
+      "sku": "SKU-DIA-002",
+      "branchId": "MAIN",
+      "grossWeight": 0.4,
+      "netWeight": 0.4,
+      "fineWeight": 0.4,
+      "diamondWeight": 0.4,
+      "huid": "HUID-DIA-002",
+      "diamondCarat": 2,
+      "diamondCut": "Very Good",
+      "diamondColor": "G",
+      "diamondClarity": "VS2",
+      "diamondType": "Lab-Grown"
+    }
+  ],
+  "mockKhata": [
+    {
+      "_id": "k1",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "balance": 5000,
+      "transactions": []
+    }
+  ],
+  "mockOrders": [
+    {
+      "_id": "mock_order_1",
+      "customer": "Rajesh Sharma",
+      "customerName": "Rajesh Sharma",
+      "customerPhone": "9876543299",
+      "customerEmail": "rajesh@gmail.com",
+      "metalType": "GOLD",
+      "carat": "22K",
+      "priority": "High",
+      "status": "PROCESSING",
+      "items": [
+        {
+          "category": "Necklace",
+          "weight": 45,
+          "description": "Bridal choker gold necklace"
+        }
+      ],
+      "billingSummary": {
+        "issuedGrams": 45,
+        "sellingPrice": 250000,
+        "totalPrice": 257500,
+        "gstRate": 3,
+        "gstAmount": 7500
+      },
+      "deadline": "2026-07-18T08:30:42.075Z",
+      "createdAt": "2026-07-05T08:30:42.075Z"
+    },
+    {
+      "_id": "mock_order_2",
+      "customer": "Raj Kumar",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "metalType": "GOLD",
+      "carat": "22K",
+      "priority": "Normal",
+      "status": "PENDING",
+      "items": [
+        {
+          "category": "Ring",
+          "weight": 6,
+          "description": "Men's polished gold band"
+        }
+      ],
+      "billingSummary": {
+        "issuedGrams": 6,
+        "sellingPrice": 34000,
+        "totalPrice": 35020,
+        "gstRate": 3,
+        "gstAmount": 1020
+      },
+      "deadline": "2026-07-23T08:30:42.075Z",
+      "createdAt": "2026-07-07T08:30:42.075Z"
+    }
+  ],
+  "mockSales": [
+    {
+      "_id": "sale_1",
+      "orderId": "INV-2026-001",
+      "estimateId": "EST-901",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "customerEmail": "anil@example.com",
+      "items": [
+        {
+          "barcode": "MOCK1",
+          "name": "Gold Temple Necklace",
+          "weight": 50,
+          "purity": "22K",
+          "price": 280000,
+          "total": 280000,
+          "makingCharge": 12000
+        }
+      ],
+      "subtotal": 280000,
+      "discount": 10000,
+      "tax": 8100,
+      "total": 278100,
+      "exchangeDiscount": 0,
+      "payable": 278100,
+      "paymentMethod": "Bank Transfer",
+      "payments": [
+        {
+          "method": "Bank Transfer",
+          "amount": 278100
+        }
+      ],
+      "status": "completed",
+      "branchCode": "MAIN",
+      "createdAt": "2026-06-23T08:30:42.075Z"
+    },
+    {
+      "_id": "sale_2",
+      "orderId": "INV-2026-002",
+      "estimateId": "EST-902",
+      "customerId": "cust_2",
+      "customerName": "Priyanka Sen",
+      "customerPhone": "9811223344",
+      "items": [
+        {
+          "barcode": "MOCK2",
+          "name": "Victorian Silver Coins",
+          "weight": 80,
+          "purity": "Fine",
+          "price": 60000,
+          "total": 60000,
+          "makingCharge": 2000
+        }
+      ],
+      "subtotal": 60000,
+      "discount": 2000,
+      "tax": 1740,
+      "total": 59740,
+      "exchangeDiscount": 0,
+      "payable": 59740,
+      "paymentMethod": "UPI",
+      "payments": [
+        {
+          "method": "UPI",
+          "amount": 59740
+        }
+      ],
+      "status": "completed",
+      "branchCode": "DELHI",
+      "createdAt": "2026-06-28T08:30:42.075Z"
+    },
+    {
+      "_id": "sale_3",
+      "orderId": "INV-2026-003",
+      "estimateId": "EST-903",
+      "customerId": "cust_3",
+      "customerName": "Rahul Hegde",
+      "customerPhone": "9845098450",
+      "items": [
+        {
+          "barcode": "BAR001",
+          "name": "Solitaire Diamond Ring",
+          "weight": 8,
+          "purity": "18K",
+          "price": 150000,
+          "total": 150000,
+          "makingCharge": 8000
+        }
+      ],
+      "subtotal": 150000,
+      "discount": 5000,
+      "tax": 4350,
+      "total": 149350,
+      "exchangeDiscount": 0,
+      "payable": 149350,
+      "paymentMethod": "Credit Card",
+      "payments": [
+        {
+          "method": "Credit Card",
+          "amount": 149350
+        }
+      ],
+      "status": "completed",
+      "branchCode": "BLR",
+      "createdAt": "2026-07-01T08:30:42.075Z"
+    },
+    {
+      "_id": "sale_4",
+      "orderId": "INV-2026-004",
+      "estimateId": "EST-904",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "items": [
+        {
+          "barcode": "HUID1",
+          "name": "Gold Kada Bangles",
+          "weight": 30,
+          "purity": "22K",
+          "price": 168000,
+          "total": 168000,
+          "makingCharge": 6000
+        }
+      ],
+      "subtotal": 168000,
+      "discount": 8000,
+      "tax": 4800,
+      "total": 164800,
+      "exchangeDiscount": 15000,
+      "payable": 149800,
+      "paymentMethod": "Mixed",
+      "payments": [
+        {
+          "method": "Cash",
+          "amount": 49800
+        },
+        {
+          "method": "UPI",
+          "amount": 100000
+        }
+      ],
+      "status": "completed",
+      "branchCode": "MAIN",
+      "createdAt": "2026-07-05T08:30:42.075Z"
+    },
+    {
+      "_id": "sale_5",
+      "orderId": "INV-2026-005",
+      "estimateId": "EST-905",
+      "customerId": "cust_4",
+      "customerName": "Sonia Sharma",
+      "customerPhone": "9988776655",
+      "items": [
+        {
+          "barcode": "BAR002",
+          "name": "Gold Floral Choker",
+          "weight": 15,
+          "purity": "22K",
+          "price": 84000,
+          "total": 84000,
+          "makingCharge": 4000
+        }
+      ],
+      "subtotal": 84000,
+      "discount": 0,
+      "tax": 2520,
+      "total": 86520,
+      "exchangeDiscount": 0,
+      "payable": 86520,
+      "paymentMethod": "UPI",
+      "payments": [
+        {
+          "method": "UPI",
+          "amount": 86520
+        }
+      ],
+      "status": "completed",
+      "branchCode": "DELHI",
+      "createdAt": "2026-07-07T08:30:42.075Z"
+    }
+  ],
+  "mockKarikars": [
+    {
+      "_id": "mock_karikar_1",
+      "name": "Bhavesh Goldsmith",
+      "email": "bhaveshkarikar@gmail.com",
+      "password": "karikar_pass",
+      "aadhar": "1111-2222-3333",
+      "goldStock": 25.5,
+      "ledgerBalance": 4500,
+      "jobCards": [
+        {
+          "_id": "JC-101",
+          "orderId": "mock_order_1",
+          "issuedGrossWeight": 45,
+          "issuedAlloy": 1.5,
+          "issuedGoldWeight": 43.5,
+          "issuedPurity": "22K",
+          "issuedStones": [],
+          "dueDate": "2026-07-13T08:30:42.076Z",
+          "status": "OPEN",
+          "issuedAt": "2026-07-06T08:30:42.076Z"
+        }
+      ],
+      "settlements": [
+        {
+          "_id": "settle_1",
+          "amount": 2000,
+          "type": "DEBIT",
+          "paymentMethod": "CASH",
+          "note": "Weekly wage advance",
+          "createdAt": "2026-07-02T08:30:42.076Z"
+        }
+      ],
+      "metalReturns": [],
+      "assignedWork": "mock_order_1",
+      "workDescription": "Gold bridal necklace polishing",
+      "status": "ACTIVE",
+      "createdAt": "2026-04-09T08:30:42.076Z"
+    }
+  ],
+  "mockOldGoldPurchases": [
+    {
+      "purchaseId": "OGP-9081",
+      "customerName": "Sonia Sharma",
+      "customerPhone": "9988776655",
+      "metalType": "GOLD",
+      "grossWeight": 18.5,
+      "evaluationPurity": "20K",
+      "netFineGoldWeight": 15.4,
+      "purchaseRate": 5400,
+      "totalPaid": 83160,
+      "paymentMethod": "Bank Transfer",
+      "createdAt": "2026-07-03T08:30:42.076Z"
+    }
+  ],
+  "mockOldGoldStock": [
+    {
+      "_id": "ogs_1",
+      "itemType": "Bangles",
+      "grossWeight": 18.5,
+      "purity": "20K",
+      "status": "In Vault",
+      "inwardDate": "2026-07-03T08:30:42.077Z"
+    }
+  ],
+  "mockOldGoldDeductions": [],
+  "mockOldGoldIssuances": [],
+  "mockOldGoldMeltingLogs": [
+    {
+      "meltLogId": "ML-2026-001",
+      "itemsMelted": [
+        {
+          "itemType": "Old Gold Rings",
+          "grossWeight": 35,
+          "purity": "22K"
+        }
+      ],
+      "totalWeightBeforeMelt": 35,
+      "barWeightReceived": 34.6,
+      "meltingLoss": 0.4,
+      "receivedPurity": "995 Fine",
+      "furnaceTemp": 1064,
+      "meltedAt": "2026-06-23T08:30:42.078Z"
+    }
+  ],
+  "mockDesigns": [
+    {
+      "_id": "design_1",
+      "designCode": "DSGN-101",
+      "name": "Bridal Temple Necklace",
+      "category": "Necklace",
+      "metalType": "GOLD",
+      "standardPurity": "22K",
+      "minStockThreshold": 3,
+      "description": "Elegant traditional wedding temple necklace",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-07-08T08:30:42.079Z"
+    },
+    {
+      "_id": "design_2",
+      "designCode": "DSGN-102",
+      "name": "Victoria Silver Coin",
+      "category": "Coin",
+      "metalType": "SILVER",
+      "standardPurity": "Fine",
+      "minStockThreshold": 5,
+      "description": "999 Fine Silver Coin with Victorian engraving",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-07-08T08:30:42.079Z"
+    },
+    {
+      "_id": "design_3",
+      "designCode": "DSGN-103",
+      "name": "Solitaire Diamond Ring",
+      "category": "Ring",
+      "metalType": "GOLD",
+      "standardPurity": "18K",
+      "minStockThreshold": 2,
+      "description": "Classic 1-carat diamond solitaire gold ring",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-07-08T08:30:42.079Z"
+    }
+  ],
+  "mockWishlists": [
+    {
+      "_id": "wish_1",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "designCode": "DSGN-101",
+      "designName": "Bridal Temple Necklace",
+      "addedAt": "2026-07-08T08:30:42.079Z"
+    }
+  ],
+  "mockBranches": [
+    {
+      "_id": "branch_main",
+      "name": "Main HQ - Mumbai",
+      "code": "MAIN",
+      "address": "101 Gold Plaza, Zaveri Bazaar",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400002",
+      "phone": "9876543210",
+      "email": "hq@aurajewel.com",
+      "managerName": "Aditya Mehta",
+      "isMainBranch": true,
+      "status": "ACTIVE"
+    },
+    {
+      "_id": "branch_delhi",
+      "name": "Delhi - Connaught Place",
+      "code": "DELHI",
+      "address": "G-12 Regal Building, CP",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "pincode": "110001",
+      "phone": "9876543211",
+      "email": "delhi@aurajewel.com",
+      "managerName": "Rajesh Sharma",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    },
+    {
+      "_id": "branch_blr",
+      "name": "Bangalore - Indiranagar",
+      "code": "BLR",
+      "address": "404 100ft Road, Indiranagar",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pincode": "560038",
+      "phone": "9876543212",
+      "email": "blr@aurajewel.com",
+      "managerName": "Karan Hegde",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    }
+  ],
+  "mockTransfers": [
+    {
+      "transferId": "TRF-A183K",
+      "fromBranchCode": "MAIN",
+      "toBranchCode": "DELHI",
+      "status": "APPROVED",
+      "items": [
+        {
+          "sku": "SKU-N-001",
+          "name": "Gold Temple Necklace",
+          "quantity": 2,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-07-06T08:30:42.080Z",
+      "notes": "Restocking requested due to upcoming wedding season showcase.",
+      "approvedAt": "2026-07-08T09:48:47.822Z"
+    },
+    {
+      "transferId": "TRF-B928J",
+      "fromBranchCode": "MAIN",
+      "toBranchCode": "BLR",
+      "status": "APPROVED",
+      "items": [
+        {
+          "sku": "SKU-C-002",
+          "name": "Victorian Silver Coins",
+          "quantity": 15,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-07-04T08:30:42.080Z",
+      "notes": "Approved bulk silver inventory dispatch."
+    },
+    {
+      "transferId": "TRF-C837D",
+      "fromBranchCode": "DELHI",
+      "toBranchCode": "MAIN",
+      "status": "RECEIVED",
+      "items": [
+        {
+          "sku": "SKU-R-003",
+          "name": "Solitaire Diamond Ring",
+          "quantity": 1,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-06-30T08:30:42.080Z",
+      "receivedAt": "2026-07-02T08:30:42.080Z",
+      "receivedBy": "Aditya Mehta",
+      "notes": "Surplus stock return transfer."
+    }
+  ],
+  "mockAmlLogs": [
+    {
+      "logId": "AML-2026-001",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "amount": 278100,
+      "paymentMethod": "Bank Transfer",
+      "panNumber": "ABCDE1234F",
+      "flaggedReason": "High-value sale transaction exceeding ₹2 Lakhs limit",
+      "createdAt": "2026-06-23T08:30:42.081Z"
+    }
+  ],
+  "mockGoldLoans": [
+    {
+      "loanId": "L-2026-001",
+      "customerName": "Suresh Kumar",
+      "customerPhone": "9988776655",
+      "weightGrams": 45,
+      "purity": "22K",
+      "evaluatedValue": 240000,
+      "loanAmount": 180000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-06-08T08:30:42.081Z",
+      "dueDate": "2026-12-05T08:30:42.081Z"
+    }
+  ],
+  "mockManufacturerBarcodes": [],
+  "mockRetailerBarcodes": []
+}

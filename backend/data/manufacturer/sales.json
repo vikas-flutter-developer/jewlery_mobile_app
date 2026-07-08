@@ -1,0 +1,24 @@
+{
+  "sales": [
+    {
+      "orderId": "SALES-MFR-701",
+      "customerName": "Vijay Malhotra",
+      "customerPhone": "9898989898",
+      "items": [
+        {
+          "name": "Kundan Necklace Royal Edition",
+          "weight": 45.2,
+          "purity": "22K",
+          "price": 280000,
+          "total": 280000
+        }
+      ],
+      "subtotal": 280000,
+      "discount": 10000,
+      "tax": 8100,
+      "total": 278100,
+      "paymentMethod": "UPI",
+      "status": "completed"
+    }
+  ]
+}

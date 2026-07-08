@@ -1,0 +1,13 @@
+{
+  "hallmarking": [
+    {
+      "batchId": "HB-MFR-401",
+      "name": "Necklace Hallmark Batch A",
+      "items": [
+        "BAR-GOLD-001"
+      ],
+      "hallmarkDate": "2024-06-05",
+      "status": "APPROVED"
+    }
+  ]
+}

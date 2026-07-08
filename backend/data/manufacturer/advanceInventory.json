@@ -1,0 +1,28 @@
+{
+  "advanceInventory": [
+    {
+      "advanceId": "ADV001",
+      "itemId": "INV001",
+      "itemName": "24K Gold Bar",
+      "quantityReserved": 100,
+      "quantityAvailable": 400,
+      "reservedFor": "CUST001",
+      "reservationDate": "2024-06-01",
+      "expiryDate": "2024-07-01",
+      "status": "reserved",
+      "notes": "Reserved for custom order"
+    },
+    {
+      "advanceId": "ADV002",
+      "itemId": "INV002",
+      "itemName": "22K Gold Jewelry Set",
+      "quantityReserved": 25,
+      "quantityAvailable": 125,
+      "reservedFor": "RETAILER001",
+      "reservationDate": "2024-06-02",
+      "expiryDate": "2024-06-30",
+      "status": "reserved",
+      "notes": "Reserved for retail order"
+    }
+  ]
+}

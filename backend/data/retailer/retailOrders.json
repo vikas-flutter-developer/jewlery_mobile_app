@@ -1,0 +1,42 @@
+{
+  "retailOrders": [
+    {
+      "orderId": "RET-ORD-001",
+      "customerName": "Ramesh Kumar",
+      "customerPhone": "9876543231",
+      "jewelryType": "Necklace",
+      "weight": 45.0,
+      "purity": "22K",
+      "status": "Pending Assignment",
+      "manufacturerId": "shop-1779518126045-txlhr",
+      "createdAt": "2026-07-08T10:00:00.000Z"
+    },
+    {
+      "orderId": "RET-ORD-002",
+      "customerName": "Suresh Sharma",
+      "customerPhone": "9876543232",
+      "jewelryType": "Ring",
+      "weight": 8.5,
+      "purity": "18K",
+      "status": "Pending Assignment",
+      "manufacturerId": "shop-1779518126045-txlhr",
+      "createdAt": "2026-07-08T10:05:00.000Z"
+    },
+    {
+      "orderId": "RET-ORD-003",
+      "customerName": "Anjali Mehta",
+      "customerPhone": "9876543233",
+      "jewelryType": "Bangles",
+      "weight": 35.0,
+      "purity": "22K",
+      "status": "In Production",
+      "karikarId": "KAR003",
+      "karikarName": "Bhavesh Goldsmith",
+      "issuedGrossWeight": 35.0,
+      "issuedAlloy": 0.5,
+      "dueDate": "2026-07-15",
+      "manufacturerId": "shop-1779518126045-txlhr",
+      "createdAt": "2026-07-08T09:30:00.000Z"
+    }
+  ]
+}

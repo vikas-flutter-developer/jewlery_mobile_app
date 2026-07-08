@@ -1,0 +1,50 @@
+{
+  "customerOrders": [
+    {
+      "orderId": "CO001",
+      "customerId": "CUST001",
+      "customerName": "Rajesh Kumar",
+      "orderDate": "2024-06-01",
+      "dueDate": "2024-06-10",
+      "items": [
+        {
+          "itemId": "INV002",
+          "itemName": "22K Gold Jewelry Set",
+          "quantity": 2,
+          "rate": 125000,
+          "total": 250000
+        }
+      ],
+      "totalAmount": 250000,
+      "discount": 25000,
+      "finalAmount": 225000,
+      "paymentMethod": "Online",
+      "paymentStatus": "completed",
+      "status": "shipped",
+      "deliveryDate": "2024-06-08"
+    },
+    {
+      "orderId": "CO002",
+      "customerId": "CUST002",
+      "customerName": "Priya Singh",
+      "orderDate": "2024-06-03",
+      "dueDate": "2024-06-12",
+      "items": [
+        {
+          "itemId": "INV001",
+          "itemName": "24K Gold Bar",
+          "quantity": 1,
+          "rate": 325000,
+          "total": 325000
+        }
+      ],
+      "totalAmount": 325000,
+      "discount": 0,
+      "finalAmount": 325000,
+      "paymentMethod": "UPI",
+      "paymentStatus": "pending",
+      "status": "processing",
+      "deliveryDate": null
+    }
+  ]
+}

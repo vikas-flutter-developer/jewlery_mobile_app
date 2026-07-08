@@ -1,0 +1,60 @@
+{
+  "karikar": [
+    {
+      "karikariId": "KAR001",
+      "name": "Raj Kumar Karikar",
+      "location": "Delhi Market",
+      "phoneNumber": "+91-9000100022",
+      "email": "raj_karigar@gmail.com",
+      "commissionRate": 5,
+      "status": "active",
+      "totalSales": 5000000,
+      "createdAt": "2024-01-01"
+    },
+    {
+      "karikariId": "KAR002",
+      "name": "Priya Karikari",
+      "location": "Mumbai Market",
+      "phoneNumber": "+91-9000100023",
+      "email": "priya_karigar@gmail.com",
+      "commissionRate": 5,
+      "status": "active",
+      "totalSales": 4200000,
+      "createdAt": "2024-01-05"
+    },
+    {
+      "karikariId": "KAR003",
+      "name": "Bhavesh Goldsmith",
+      "location": "Main HQ Factory",
+      "phoneNumber": "+91-9000100021",
+      "email": "bhavesh_karigar@gmail.com",
+      "commissionRate": 5,
+      "status": "active",
+      "totalSales": 6500000,
+      "createdAt": "2024-01-10"
+    },
+    {
+      "karikariId": "KAR004",
+      "name": "Ramesh Kumar",
+      "location": "Main HQ Factory",
+      "phoneNumber": "+91-9000100024",
+      "email": "ramesh_karigar@gmail.com",
+      "commissionRate": 5,
+      "status": "active",
+      "totalSales": 4800000,
+      "createdAt": "2024-01-12"
+    },
+    {
+      "karikariId": "KAR005",
+      "name": "Suresh Verma",
+      "location": "Main HQ Factory",
+      "phoneNumber": "+91-9000100025",
+      "email": "suresh_karigar@gmail.com",
+      "commissionRate": 5,
+      "status": "active",
+      "totalSales": 5900000,
+      "createdAt": "2024-01-15"
+    }
+  ],
+  "karikariOrders": []
+}

@@ -1,0 +1,21 @@
+{
+  "returns": [
+    {
+      "returnId": "RET-MFR-001",
+      "orderId": "SALES-MFR-701",
+      "customerName": "Vijay Malhotra",
+      "customerPhone": "9898989898",
+      "items": [
+        {
+          "name": "Kundan Necklace Royal Edition",
+          "weight": 45.2,
+          "purity": "22K",
+          "price": 280000
+        }
+      ],
+      "status": "COMPLETED",
+      "refundStatus": "COMPLETED",
+      "returnAmount": 278100
+    }
+  ]
+}

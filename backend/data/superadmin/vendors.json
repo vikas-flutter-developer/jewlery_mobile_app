@@ -1,0 +1,18 @@
+{
+  "vendors": [
+    {
+      "vendorId": "VENDOR001",
+      "vendorName": "Global Diamonds Ltd",
+      "contactPerson": "Ahmed Hassan",
+      "email": "ahmed@globaldiamonds.com",
+      "phone": "+971-4-123456",
+      "address": "Dubai, UAE",
+      "products": ["GEM001"],
+      "creditLimit": 50000000,
+      "paymentTerms": "Net 30",
+      "rating": 4.8,
+      "status": "active",
+      "createdAt": "2024-01-01"
+    }
+  ]
+}

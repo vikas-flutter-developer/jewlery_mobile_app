@@ -1,0 +1,16 @@
+{
+  "advanceInventory": [
+    {
+      "advanceId": "ADV-RETAIL-001",
+      "itemId": "INV-RETAIL-001",
+      "itemName": "Diamond Engagement Ring",
+      "quantityReserved": 1,
+      "quantityAvailable": 14,
+      "reservedFor": "RETAIL_CUST_001",
+      "reservationDate": "2026-06-01",
+      "expiryDate": "2026-07-01",
+      "status": "reserved",
+      "notes": "Reserved for wedding anniversary order"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "inventory": [
+    {
+      "sku": "SKU-RETAIL-RING-001",
+      "grossWeight": 5.4,
+      "netWeight": 5.1,
+      "purity": "22K",
+      "fineWeight": 4.675,
+      "diamondWeight": 0,
+      "huid": "HUID-RR-224455",
+      "branchId": "RETAIL_MAIN",
+      "barcode": "8901234567890",
+      "tag": "TAG-RING-001",
+      "name": "Diamond Engagement Ring",
+      "type": "DIAMOND",
+      "status": "In Stock",
+      "stock": 15,
+      "price": 45000,
+      "designCode": "DC-RING-01",
+      "showcase": "Showroom Ring Case",
+      "tray": "Tray R1"
+    },
+    {
+      "sku": "SKU-RETAIL-CHAIN-002",
+      "grossWeight": 12.5,
+      "netWeight": 12.5,
+      "purity": "18K",
+      "fineWeight": 9.375,
+      "diamondWeight": 0,
+      "huid": "HUID-RC-184466",
+      "branchId": "RETAIL_MAIN",
+      "barcode": "8901234567891",
+      "tag": "TAG-CHAIN-002",
+      "name": "18K Classic Italian Chain",
+      "type": "GOLD",
+      "status": "In Stock",
+      "stock": 8,
+      "price": 62500,
+      "designCode": "DC-CHAIN-02",
+      "showcase": "Showroom Chain Case",
+      "tray": "Tray C2"
+    }
+  ]
+}

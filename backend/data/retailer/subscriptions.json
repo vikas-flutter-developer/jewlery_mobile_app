@@ -1,0 +1,25 @@
+{
+  "subscriptions": [
+    {
+      "id": "shop-retailer-default-tenant",
+      "shopName": "System Retailer Shop",
+      "ownerName": "System Retailer",
+      "email": "retailer@aurajewel.com",
+      "phone": "7558556969",
+      "gstNumber": "27AABCT9999H1Z0",
+      "panNumber": "ABCDE1234F",
+      "aadharNumber": "123456789012",
+      "address": "456 Diamond Avenue, High Street, Mumbai",
+      "planName": "1YEAR",
+      "status": "ACTIVE",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "subscriptionExpiry": "2027-06-01T00:00:00.000Z",
+      "joinDate": "2026-06-01T00:00:00.000Z",
+      "reminderCount": 0,
+      "note": "Default Retailer Shop",
+      "storeType": "RETAILER",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ]
+}

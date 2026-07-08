@@ -1,0 +1,30 @@
+{
+  "userRoles": [
+    {
+      "roleId": "ROLE-RETAIL-001",
+      "roleName": "Retailer Admin",
+      "description": "Full retail system access",
+      "permissions": [
+        "manage_billing",
+        "view_reports",
+        "manage_inventory",
+        "manage_customers",
+        "manage_schemes",
+        "manage_barcodes"
+      ],
+      "status": "active",
+      "createdAt": "2026-06-01"
+    },
+    {
+      "roleId": "ROLE-RETAIL-002",
+      "roleName": "Sales Executive",
+      "description": "Access to POS billing and inventory lookup",
+      "permissions": [
+        "manage_billing",
+        "view_inventory"
+      ],
+      "status": "active",
+      "createdAt": "2026-06-01"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schemes": [
+    {
+      "name": "Aura Suvarna Vriddhi Savings Scheme",
+      "type": "GOLD_SAVING",
+      "monthlyAmount": 5000,
+      "totalInstallments": 11,
+      "bonusAmount": 5000,
+      "goldWeightBased": true,
+      "description": "Pay 11 installments, get 1 installment as bonus. Accumulate gold weight monthly at live rates.",
+      "status": "ACTIVE"
+    },
+    {
+      "name": "Aura Dhanavarsha Gold Chit",
+      "type": "CHIT_FUND",
+      "monthlyAmount": 10000,
+      "totalInstallments": 10,
+      "bonusAmount": 10000,
+      "goldWeightBased": false,
+      "description": "Flat cash discount benefit scheme. Pay 10 installments, get 1 installment free on maturity purchase.",
+      "status": "ACTIVE"
+    }
+  ]
+}

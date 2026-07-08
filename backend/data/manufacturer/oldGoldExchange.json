@@ -1,0 +1,28 @@
+{
+  "oldGoldExchange": [
+    {
+      "exchangeId": "OG001",
+      "customerName": "Priya Sharma",
+      "customerEmail": "priya@email.com",
+      "customerPhone": "+91-9876543240",
+      "exchangeDate": "2024-06-01",
+      "oldGoldSubmitted": {
+        "weight": 25,
+        "purity": "22K",
+        "condition": "Worn",
+        "description": "Old necklace"
+      },
+      "evaluatedValue": 125000,
+      "newGoldPurchased": {
+        "itemId": "INV001",
+        "itemName": "24K Gold Bar",
+        "weight": 15,
+        "cost": 97500
+      },
+      "amountPaid": 27500,
+      "paymentMethod": "Cash",
+      "status": "completed",
+      "createdAt": "2024-06-01"
+    }
+  ]
+}

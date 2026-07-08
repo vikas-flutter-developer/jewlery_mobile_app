@@ -1,0 +1,125 @@
+{
+  "users": [
+    {
+      "name": "System Manufacturer",
+      "email": "branding@gmail.com",
+      "password": "branding",
+      "role": "STORE_MANAGER",
+      "phone": "7558556969",
+      "branchId": "MAIN",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": ["manage_inventory", "manage_gemstones", "manage_orders", "manage_vendors", "manage_barcodes", "view_reports"]
+    },
+    {
+      "name": "Delhi Store Manager",
+      "email": "delhi_manager@gmail.com",
+      "password": "manager",
+      "role": "STORE_MANAGER",
+      "phone": "9876543211",
+      "branchId": "DELHI",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": ["manage_inventory", "manage_orders", "view_reports"]
+    },
+    {
+      "name": "Bangalore Store Manager",
+      "email": "blr_manager@gmail.com",
+      "password": "manager",
+      "role": "STORE_MANAGER",
+      "phone": "9876543212",
+      "branchId": "BLR",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": ["manage_inventory", "manage_orders", "view_reports"]
+    },
+    {
+      "name": "Bhavesh Goldsmith",
+      "email": "bhavesh_karigar@gmail.com",
+      "password": "karigar",
+      "role": "KARIKAR",
+      "phone": "9000100021",
+      "branchId": "MAIN",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Ramesh Kumar",
+      "email": "ramesh_karigar@gmail.com",
+      "password": "karigar",
+      "role": "KARIKAR",
+      "phone": "9000100024",
+      "branchId": "MAIN",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Suresh Verma",
+      "email": "suresh_karigar@gmail.com",
+      "password": "karigar",
+      "role": "KARIKAR",
+      "phone": "9000100025",
+      "branchId": "MAIN",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Raj Kumar Karikar",
+      "email": "raj_karigar@gmail.com",
+      "password": "karigar",
+      "role": "KARIKAR",
+      "phone": "9000100022",
+      "branchId": "DELHI",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Priya Karikari",
+      "email": "priya_karigar@gmail.com",
+      "password": "karigar",
+      "role": "KARIKAR",
+      "phone": "9000100023",
+      "branchId": "BLR",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Aditya Sales Rep",
+      "email": "sales_main@gmail.com",
+      "password": "sales",
+      "role": "SALES",
+      "phone": "8000100031",
+      "branchId": "MAIN",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Vikram Sales Rep",
+      "email": "sales_delhi@gmail.com",
+      "password": "sales",
+      "role": "SALES",
+      "phone": "8000100032",
+      "branchId": "DELHI",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    },
+    {
+      "name": "Karthik Sales Rep",
+      "email": "sales_blr@gmail.com",
+      "password": "sales",
+      "role": "SALES",
+      "phone": "8000100033",
+      "branchId": "BLR",
+      "tenantId": "shop-1779518126045-txlhr",
+      "status": "ACTIVE",
+      "permissions": []
+    }
+  ]
+}

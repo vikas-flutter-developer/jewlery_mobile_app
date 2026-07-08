@@ -1,0 +1,28 @@
+{
+  "barcodes": [
+    {
+      "barcodeId": "BC001",
+      "itemId": "INV001",
+      "itemName": "24K Gold Bar",
+      "barcode": "8901234567890",
+      "qrCode": "https://aurajewel.com/item/INV001",
+      "weight": 50,
+      "purity": "99.9%",
+      "certificateNumber": "CERT001",
+      "createdAt": "2024-06-01",
+      "status": "active"
+    },
+    {
+      "barcodeId": "BC002",
+      "itemId": "INV002",
+      "itemName": "22K Gold Jewelry Set",
+      "barcode": "8901234567891",
+      "qrCode": "https://aurajewel.com/item/INV002",
+      "weight": 50,
+      "purity": "91.67%",
+      "certificateNumber": "CERT002",
+      "createdAt": "2024-06-01",
+      "status": "active"
+    }
+  ]
+}

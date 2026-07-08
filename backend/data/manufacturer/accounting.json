@@ -1,0 +1,20 @@
+{
+  "accounting": [
+    {
+      "journalId": "JRN-MFR-001",
+      "account": "Cash Account",
+      "debit": 280000,
+      "credit": 0,
+      "description": "Received cash for Kundan Necklace sale",
+      "reference": "SALES-MFR-701"
+    },
+    {
+      "journalId": "JRN-MFR-001",
+      "account": "Sales Revenue",
+      "debit": 0,
+      "credit": 280000,
+      "description": "Recorded sales revenue for Kundan Necklace",
+      "reference": "SALES-MFR-701"
+    }
+  ]
+}

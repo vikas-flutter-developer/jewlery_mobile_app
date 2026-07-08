@@ -1,0 +1,32 @@
+{
+  "userRoles": [
+    {
+      "roleId": "ROLE001",
+      "roleName": "Manufacturer Admin",
+      "description": "Full manufacturing system access",
+      "permissions": [
+        "manage_inventory",
+        "manage_gemstones",
+        "manage_orders",
+        "manage_vendors",
+        "manage_barcodes",
+        "view_reports"
+      ],
+      "status": "active",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "roleId": "ROLE002",
+      "roleName": "Manufacturer Manager",
+      "description": "Manage manufacturing operations",
+      "permissions": [
+        "manage_inventory",
+        "manage_orders",
+        "view_gemstones",
+        "view_reports"
+      ],
+      "status": "active",
+      "createdAt": "2024-01-01"
+    }
+  ]
+}

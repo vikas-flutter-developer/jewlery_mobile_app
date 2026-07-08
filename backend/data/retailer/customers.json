@@ -1,0 +1,34 @@
+{
+  "customers": [
+    {
+      "customerId": "RETAIL_CUST_001",
+      "customerName": "Amit Sharma",
+      "email": "amit@email.com",
+      "phone": "+91-9999911111",
+      "address": "101 Lotus Residency, Bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "gstNumber": "27AABCT9999H1Z0",
+      "totalPurchases": 120000,
+      "totalPoints": 1200,
+      "status": "active",
+      "createdAt": "2026-06-01"
+    },
+    {
+      "customerId": "RETAIL_CUST_002",
+      "customerName": "Neha Gupta",
+      "email": "neha@email.com",
+      "phone": "+91-9999922222",
+      "address": "202 Palm Grove, Andheri",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400053",
+      "gstNumber": "27AABCT8888H1Z1",
+      "totalPurchases": 75000,
+      "totalPoints": 750,
+      "status": "active",
+      "createdAt": "2026-06-02"
+    }
+  ]
+}

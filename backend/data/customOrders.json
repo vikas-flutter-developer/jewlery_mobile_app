@@ -1,0 +1,73 @@
+[
+  {
+    "orderId": "Bespoke-101",
+    "customerName": "Raj Kumar",
+    "customerContact": "9999999999",
+    "metalType": "GOLD",
+    "carat": "22K",
+    "customDescription": "Traditional Kerala Style Jhumka Earrings with ruby details.",
+    "status": "In Production",
+    "designApproval": "APPROVED",
+    "createdAt": "2026-05-15T08:47:10.816Z"
+  },
+  {
+    "_id": "bespoke_1780130843823",
+    "orderId": "Bespoke-969",
+    "customerName": "Alice Smith",
+    "customerPhone": "8888888888",
+    "customerContact": "8888888888",
+    "isCustom": true,
+    "status": "Received",
+    "metalType": "GOLD",
+    "carat": "22K",
+    "customDescription": "Elegant Gold Necklace with Diamond Pendant",
+    "designMoodboard": [],
+    "designApproval": "PENDING",
+    "createdAt": "2026-05-30T08:47:23.823Z"
+  },
+  {
+    "_id": "bespoke_1780130922090",
+    "orderId": "Bespoke-127",
+    "customerName": "Raj Kumar",
+    "customerPhone": "9999999999",
+    "customerContact": "9999999999",
+    "isCustom": true,
+    "status": "Received",
+    "metalType": "GOLD",
+    "carat": "22K",
+    "customDescription": "bbb",
+    "designMoodboard": [],
+    "designApproval": "PENDING",
+    "createdAt": "2026-05-30T08:48:42.090Z"
+  },
+  {
+    "_id": "bespoke_1780413103114",
+    "orderId": "Bespoke-530",
+    "customerName": "Raj Kumar",
+    "customerPhone": "9999999999",
+    "customerContact": "9999999999",
+    "isCustom": true,
+    "status": "Received",
+    "metalType": "GOLD",
+    "carat": "22K",
+    "customDescription": "xyz",
+    "designMoodboard": [],
+    "designApproval": "PENDING",
+    "createdAt": "2026-06-02T15:11:43.114Z"
+  },
+  {
+    "_id": "bespoke_1780467034459",
+    "orderId": "Bespoke-192",
+    "customerName": "Raj Kumar",
+    "customerPhone": "9999999999",
+    "customerContact": "9999999999",
+    "isCustom": true,
+    "status": "Received",
+    "metalType": "GOLD",
+    "carat": "24K",
+    "customDescription": "ring",
+    "designMoodboard": [],
+    "designApproval": "PENDING",
+    "createdAt": "2026-06-03T06:10:34.458Z"
+  }
+]

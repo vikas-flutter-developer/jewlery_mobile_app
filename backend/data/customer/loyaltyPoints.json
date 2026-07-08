@@ -1,0 +1,13 @@
+{
+  "loyaltyPoints": [
+    {
+      "customerId": "cust_portal_1",
+      "customerPhone": "9999999999",
+      "points": 1250,
+      "history": [
+        { "pointsAdded": 500, "reason": "First purchase bonus", "date": "2026-04-06T10:00:00.000Z" },
+        { "pointsAdded": 750, "reason": "Scheme installment reward", "date": "2026-05-16T10:00:00.000Z" }
+      ]
+    }
+  ]
+}

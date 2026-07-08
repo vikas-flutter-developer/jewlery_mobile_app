@@ -1,0 +1,25 @@
+{
+  "customOrders": [
+    {
+      "customOrderId": "CUST001",
+      "customerName": "Amit Patel",
+      "customerEmail": "amit@email.com",
+      "customerPhone": "+91-9876543230",
+      "orderDate": "2024-05-20",
+      "dueDate": "2024-06-20",
+      "design": {
+        "type": "Engagement Ring",
+        "metal": "22K Gold",
+        "primaryStone": "GEM001",
+        "stoneCarat": 1.5,
+        "sideStoneCarat": 0.5,
+        "description": "Classic solitaire with diamond"
+      },
+      "estimatedCost": 350000,
+      "advancePayment": 175000,
+      "remainingPayment": 175000,
+      "status": "in_production",
+      "createdAt": "2024-05-20"
+    }
+  ]
+}

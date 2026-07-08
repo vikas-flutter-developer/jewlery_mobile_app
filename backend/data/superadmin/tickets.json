@@ -1,0 +1,14 @@
+{
+  "tickets": [
+    {
+      "shopName": "Retailer Shop",
+      "title": "GSTR-1 report sync slow",
+      "description": "Taking more than 30 seconds to download compliance GSTR-1 sheet",
+      "status": "OPEN",
+      "category": "TECHNICAL",
+      "replies": [],
+      "createdAt": "2026-06-04T15:30:00.000Z",
+      "updatedAt": "2026-06-04T15:30:00.000Z"
+    }
+  ]
+}

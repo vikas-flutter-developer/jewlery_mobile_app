@@ -1,0 +1,15 @@
+{
+  "tasks": [
+    {
+      "title": "Monthly Diamond Ring Audit",
+      "description": "Verify physical stock matching with current database inventory for Engagement Rings.",
+      "status": "pending",
+      "assignedTo": "retailer@aurajewel.com",
+      "createdBy": "retailer@aurajewel.com",
+      "tenantId": "default-shop",
+      "dueDate": "2026-06-15T18:30:00.000Z",
+      "deadline": "2026-06-20T18:30:00.000Z",
+      "comments": []
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "sales": [
+    {
+      "orderId": "SALES-RET-701",
+      "customerName": "John Doe",
+      "customerEmail": "john@email.com",
+      "items": [
+        {
+          "barcode": "8901234567890",
+          "name": "Diamond Engagement Ring",
+          "weight": 5.4,
+          "purity": "22K",
+          "price": 45000,
+          "total": 45000
+        }
+      ],
+      "subtotal": 45000,
+      "tax": 1350,
+      "total": 46350,
+      "paymentMethod": "Card",
+      "status": "completed",
+      "createdAt": "2026-06-01"
+    },
+    {
+      "orderId": "SALES-RET-702",
+      "customerName": "Jane Smith",
+      "customerEmail": "jane@email.com",
+      "items": [
+        {
+          "barcode": "8901234567891",
+          "name": "18K Classic Italian Chain",
+          "weight": 12.5,
+          "purity": "18K",
+          "price": 62500,
+          "total": 62500
+        }
+      ],
+      "subtotal": 62500,
+      "tax": 1875,
+      "total": 64375,
+      "paymentMethod": "UPI",
+      "status": "completed",
+      "createdAt": "2026-06-02"
+    }
+  ]
+}

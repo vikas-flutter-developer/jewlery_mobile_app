@@ -1,0 +1,44 @@
+{
+  "inventory": [
+    {
+      "sku": "SKU-GOLD-BAR-24K",
+      "grossWeight": 100,
+      "netWeight": 100,
+      "purity": "24K",
+      "fineWeight": 100,
+      "diamondWeight": 0,
+      "huid": "HUID-GB-999231",
+      "branchId": "MAIN",
+      "barcode": "BAR-GOLD-001",
+      "tag": "TAG-GOLD-001",
+      "name": "24K Gold Refining Bar",
+      "type": "GOLD",
+      "status": "In Stock",
+      "stock": 10,
+      "price": 720000,
+      "designCode": "DC-RAW-GOLD",
+      "showcase": "HQ Vault",
+      "tray": "Main Tray"
+    },
+    {
+      "sku": "SKU-KUNDAN-NECK-001",
+      "grossWeight": 45.2,
+      "netWeight": 42.5,
+      "purity": "22K",
+      "fineWeight": 38.9,
+      "diamondWeight": 0,
+      "huid": "HUID-KN-223455",
+      "branchId": "MAIN",
+      "barcode": "BAR-KUND-002",
+      "tag": "TAG-KUND-002",
+      "name": "Kundan Necklace Royal Edition",
+      "type": "GOLD",
+      "status": "In Stock",
+      "stock": 3,
+      "price": 280000,
+      "designCode": "DC-KUNDAN-01",
+      "showcase": "Showroom A",
+      "tray": "Necklace Tray 1"
+    }
+  ]
+}

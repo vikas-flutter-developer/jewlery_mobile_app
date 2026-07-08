@@ -1,0 +1,24 @@
+{
+  "catalog": [
+    {
+      "designCode": "DC-KUNDAN-01",
+      "name": "Royal Kundan Design",
+      "category": "Necklace",
+      "metalType": "GOLD",
+      "standardPurity": "22K",
+      "image": "",
+      "description": "Traditional royal Kundan necklace design.",
+      "minStockThreshold": 2
+    },
+    {
+      "designCode": "DC-DIA-RING-02",
+      "name": "Classic Solitaire Ring Design",
+      "category": "Ring",
+      "metalType": "PLATINUM",
+      "standardPurity": "18K",
+      "image": "",
+      "description": "Premium solitaire diamond setting design.",
+      "minStockThreshold": 5
+    }
+  ]
+}

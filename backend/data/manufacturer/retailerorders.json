@@ -1,0 +1,19 @@
+{
+  "retailerorders": [
+    {
+      "orderId": "RET-ORD-501",
+      "retailerId": "default-shop",
+      "items": [
+        {
+          "productId": "BAR-GOLD-001",
+          "name": "24K Gold Refining Bar",
+          "quantity": 1,
+          "weight": 100,
+          "price": 720000
+        }
+      ],
+      "total": 720000,
+      "status": "APPROVED"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "enrollments": [
+    {
+      "enrollmentId": "SCH-ENR-709A",
+      "customerId": "cust_portal_1",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "schemeName": "Aura Suvarna Vriddhi Savings Scheme",
+      "schemeType": "GOLD_SAVING",
+      "monthlyAmount": 5000,
+      "totalInstallments": 11,
+      "completedInstallments": 5,
+      "paidAmount": 25000,
+      "goldAccumulated": 4.12,
+      "status": "ACTIVE",
+      "nextDueDate": "2026-06-16T00:00:00.000Z",
+      "installments": [
+        { "installmentId": "INST-1", "amount": 5000, "dueDate": "2026-02-16T00:00:00.000Z", "paidAt": "2026-02-16T00:00:00.000Z", "status": "PAID", "paymentMethod": "UPI", "transactionId": "TXN-90281", "goldGramsAccumulated": 0.81 },
+        { "installmentId": "INST-2", "amount": 5000, "dueDate": "2026-03-16T00:00:00.000Z", "paidAt": "2026-03-16T00:00:00.000Z", "status": "PAID", "paymentMethod": "NetBanking", "transactionId": "TXN-90282", "goldGramsAccumulated": 0.82 },
+        { "installmentId": "INST-3", "amount": 5000, "dueDate": "2026-04-16T00:00:00.000Z", "paidAt": "2026-04-16T00:00:00.000Z", "status": "PAID", "paymentMethod": "UPI", "transactionId": "TXN-90283", "goldGramsAccumulated": 0.83 },
+        { "installmentId": "INST-4", "amount": 5000, "dueDate": "2026-05-16T00:00:00.000Z", "paidAt": "2026-05-16T00:00:00.000Z", "status": "PAID", "paymentMethod": "Card", "transactionId": "TXN-90284", "goldGramsAccumulated": 0.84 },
+        { "installmentId": "INST-5", "amount": 5000, "dueDate": "2026-06-16T00:00:00.000Z", "paidAt": "2026-06-01T00:00:00.000Z", "status": "PAID", "paymentMethod": "UPI", "transactionId": "TXN-90285", "goldGramsAccumulated": 0.82 }
+      ]
+    }
+  ]
+}

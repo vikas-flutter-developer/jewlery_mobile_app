@@ -1,0 +1,35 @@
+{
+  "offers": [
+    {
+      "offerId": "OFFER001",
+      "offerName": "Summer Gold Sale",
+      "description": "Biggest sale on gold jewelry",
+      "offerType": "discount",
+      "discountPercentage": 15,
+      "applicableOn": ["INV001", "INV002"],
+      "status": "active",
+      "createdAt": "2024-06-01"
+    },
+    {
+      "offerId": "OFFER002",
+      "offerName": "Festive Bundle",
+      "description": "Complete jewelry set with gemstones",
+      "offerType": "bundle",
+      "bundleItems": [
+        {
+          "itemId": "INV002",
+          "itemName": "22K Gold Jewelry Set",
+          "quantity": 1
+        },
+        {
+          "gemstoneId": "GEM001",
+          "gemName": "Diamond",
+          "quantity": 1
+        }
+      ],
+      "bundlePrice": 150000,
+      "status": "active",
+      "createdAt": "2024-06-01"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "vendors": [
+    {
+      "vendorId": "VENDOR001",
+      "vendorName": "Global Diamonds Ltd",
+      "contactPerson": "Ahmed Hassan",
+      "email": "ahmed@globaldiamonds.com",
+      "phone": "+971-4-123456",
+      "address": "Dubai, UAE",
+      "products": ["GEM001"],
+      "creditLimit": 50000000,
+      "paymentTerms": "Net 30",
+      "rating": 4.8,
+      "status": "active",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "vendorId": "VENDOR002",
+      "vendorName": "Ceylon Sapphire Trading",
+      "contactPerson": "Ravi Perera",
+      "email": "ravi@ceylonsapphire.lk",
+      "phone": "+94-11-123456",
+      "address": "Colombo, Sri Lanka",
+      "products": ["GEM002"],
+      "creditLimit": 35000000,
+      "paymentTerms": "Net 45",
+      "rating": 4.6,
+      "status": "active",
+      "createdAt": "2024-01-05"
+    }
+  ],
+  "vendorOrders": [
+    {
+      "orderId": "VO001",
+      "vendorId": "VENDOR001",
+      "orderDate": "2024-06-01",
+      "dueDate": "2024-07-01",
+      "items": [
+        {
+          "gemstoneId": "GEM001",
+          "gemName": "Diamond",
+          "quantity": 50,
+          "unitPrice": 55000,
+          "totalPrice": 2750000
+        }
+      ],
+      "totalAmount": 2750000,
+      "status": "pending",
+      "notes": "Urgent delivery required"
+    }
+  ]
+}

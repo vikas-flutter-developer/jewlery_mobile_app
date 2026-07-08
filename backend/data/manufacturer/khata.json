@@ -1,0 +1,18 @@
+{
+  "khata": [
+    {
+      "customerName": "Vijay Malhotra",
+      "customerPhone": "9898989898",
+      "customerAadhar": "123456789012",
+      "balance": 50000,
+      "transactions": [
+        {
+          "type": "DEBIT",
+          "amount": 50000,
+          "note": "Initial credit balance setup",
+          "date": "2024-06-01"
+        }
+      ]
+    }
+  ]
+}

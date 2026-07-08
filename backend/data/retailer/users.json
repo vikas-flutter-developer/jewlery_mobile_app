@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "name": "System Retailer",
+      "email": "retailer@aurajewel.com",
+      "password": "retailer",
+      "role": "RETAILER",
+      "phone": "7558556969",
+      "branchId": "RETAIL_MAIN",
+      "tenantId": "default-shop",
+      "status": "ACTIVE",
+      "permissions": [
+        "manage_billing",
+        "view_reports",
+        "manage_inventory",
+        "manage_customers",
+        "manage_schemes",
+        "manage_barcodes"
+      ]
+    }
+  ]
+}

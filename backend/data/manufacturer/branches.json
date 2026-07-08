@@ -1,0 +1,30 @@
+{
+  "branches": [
+    {
+      "name": "Main HQ Factory",
+      "code": "MAIN",
+      "address": "123 Jewellers Street, Zaveri Bazaar",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400002",
+      "phone": "9999988888",
+      "email": "hq@aurajewel.com",
+      "managerName": "Rajesh Shah",
+      "isMainBranch": true,
+      "status": "ACTIVE"
+    },
+    {
+      "name": "Delhi Branch Office",
+      "code": "DELHI",
+      "address": "456 Karol Bagh Market",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "pincode": "110005",
+      "phone": "9999977777",
+      "email": "delhi@aurajewel.com",
+      "managerName": "Vikram Singh",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "rates": [
+    {
+      "metal": "GOLD_24K",
+      "purity": "24K",
+      "rate": 7450,
+      "makingPercent": 0,
+      "gstPercent": 3,
+      "effectivePrice": 7674
+    },
+    {
+      "metal": "GOLD_22K",
+      "purity": "22K",
+      "rate": 6920,
+      "makingPercent": 0,
+      "gstPercent": 3,
+      "effectivePrice": 7128
+    },
+    {
+      "metal": "GOLD_18K",
+      "purity": "18K",
+      "rate": 5850,
+      "makingPercent": 0,
+      "gstPercent": 3,
+      "effectivePrice": 6026
+    },
+    {
+      "metal": "SILVER",
+      "purity": "Fine",
+      "rate": 92,
+      "makingPercent": 0,
+      "gstPercent": 3,
+      "effectivePrice": 95
+    }
+  ]
+}

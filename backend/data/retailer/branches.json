@@ -1,0 +1,30 @@
+{
+  "branches": [
+    {
+      "name": "Main Retail Showroom",
+      "code": "RETAIL_MAIN",
+      "address": "456 Diamond Avenue, High Street",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "phone": "9876543210",
+      "email": "retail_main@aurajewel.com",
+      "managerName": "Anil Mehta",
+      "isMainBranch": true,
+      "status": "ACTIVE"
+    },
+    {
+      "name": "Suburban Retail Outlet",
+      "code": "RETAIL_SUB",
+      "address": "789 Mall Road, Bandra",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400050",
+      "phone": "9876543211",
+      "email": "retail_sub@aurajewel.com",
+      "managerName": "Suresh Patel",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    }
+  ]
+}

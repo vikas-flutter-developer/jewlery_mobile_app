@@ -1,0 +1,43 @@
+{
+  "gemstones": [
+    {
+      "gemstoneId": "GEM001",
+      "gemName": "Diamond",
+      "color": "Clear",
+      "carat": 5.5,
+      "quality": "VVS1",
+      "certificateNumber": "GIA123456",
+      "origin": "Certified",
+      "price": 55000,
+      "quantity": 150,
+      "status": "in_stock",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "gemstoneId": "GEM002",
+      "gemName": "Sapphire",
+      "color": "Blue",
+      "carat": 3.2,
+      "quality": "AAA",
+      "certificateNumber": "GIA123457",
+      "origin": "Sri Lanka",
+      "price": 32000,
+      "quantity": 280,
+      "status": "in_stock",
+      "createdAt": "2024-01-05"
+    },
+    {
+      "gemstoneId": "GEM003",
+      "gemName": "Ruby",
+      "color": "Red",
+      "carat": 4.8,
+      "quality": "AAA",
+      "certificateNumber": "GIA123458",
+      "origin": "Burma",
+      "price": 48000,
+      "quantity": 120,
+      "status": "in_stock",
+      "createdAt": "2024-01-10"
+    }
+  ]
+}

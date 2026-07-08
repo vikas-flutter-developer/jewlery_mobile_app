@@ -1,0 +1,20 @@
+{
+  "orders": [
+    {
+      "orderId": "MFR-ORD-101",
+      "customerName": "Ramesh Verma",
+      "customerPhone": "9876543210",
+      "items": [
+        {
+          "name": "Kundan Necklace Royal Edition",
+          "weight": 45.2,
+          "purity": "22K",
+          "price": 280000,
+          "total": 280000
+        }
+      ],
+      "totalAmount": 280000,
+      "status": "pending"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "adminRoles": [
+    {
+      "roleId": "ROLE001",
+      "roleName": "Super Admin",
+      "description": "Full system access",
+      "permissions": [
+        "create_users",
+        "edit_users",
+        "delete_users",
+        "manage_roles",
+        "view_reports",
+        "manage_branches",
+        "system_settings",
+        "audit_logs"
+      ],
+      "status": "active",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "roleId": "ROLE002",
+      "roleName": "Admin",
+      "description": "Administrative access",
+      "permissions": [
+        "create_users",
+        "edit_users",
+        "view_reports",
+        "manage_branches",
+        "audit_logs"
+      ],
+      "status": "active",
+      "createdAt": "2024-01-01"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "ledgerHistory": [
+    {
+      "transactionId": "TXN-LEDG-0001",
+      "customerId": "cust_portal_1",
+      "customerPhone": "9999999999",
+      "category": "SCHEME_EMI",
+      "title": "Scheme Installment #5",
+      "description": "Monthly installment for Aura Suvarna Vriddhi Savings Scheme",
+      "amount": 5000,
+      "goldGrams": 0.82,
+      "paymentMethod": "UPI",
+      "status": "CLEARED",
+      "date": "2026-06-01T10:00:00.000Z"
+    },
+    {
+      "transactionId": "TXN-LEDG-0002",
+      "customerId": "cust_portal_1",
+      "customerPhone": "9999999999",
+      "category": "STORE_PURCHASE",
+      "title": "Store Purchase - Gold Bangles",
+      "description": "22K gold bangle pair purchased at Aura Jewel Mumbai",
+      "amount": 45000,
+      "goldGrams": 7.2,
+      "paymentMethod": "Card",
+      "status": "CLEARED",
+      "date": "2026-05-06T10:00:00.000Z"
+    },
+    {
+      "transactionId": "TXN-LEDG-0003",
+      "customerId": "cust_portal_1",
+      "customerPhone": "9999999999",
+      "category": "BESPOKE_BOOKING",
+      "title": "Bespoke Order Booking - Kerala Jhumka",
+      "description": "Advanced booking for custom Kerala-style Jhumka Earrings with ruby details",
+      "amount": 10000,
+      "goldGrams": 0,
+      "paymentMethod": "NetBanking",
+      "status": "CLEARED",
+      "date": "2026-05-22T10:00:00.000Z"
+    }
+  ]
+}

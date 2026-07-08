@@ -1,0 +1,48 @@
+{
+  "subscriptions": [
+    {
+      "id": "shop-1779518126045-txlhr",
+      "shopName": "System Manufacturer Shop",
+      "ownerName": "System Manufacturer",
+      "email": "manufacturer@aurajewel.com",
+      "phone": "7558556969",
+      "password": "password123",
+      "gstNumber": "555555555555",
+      "panNumber": "77546565656",
+      "aadharNumber": "123456789012",
+      "address": "xyz",
+      "planName": "1YEAR",
+      "status": "ACTIVE",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "subscriptionExpiry": "2027-05-23T06:35:26.045Z",
+      "joinDate": "2026-05-23T06:35:26.045Z",
+      "reminderCount": 0,
+      "note": "Default Manufacturer Shop",
+      "storeType": "MANUFACTURER",
+      "updatedAt": "2026-05-23T06:35:26.045Z"
+    },
+    {
+      "id": "default-shop",
+      "shopName": "Retailer Shop",
+      "ownerName": "System Retailer",
+      "email": "retailer@aurajewel.com",
+      "phone": "7558556969",
+      "password": "password123",
+      "gstNumber": "27RETAIL1234Z1",
+      "panNumber": "RETAIL1234P",
+      "aadharNumber": "987654321098",
+      "address": "Retailer Address",
+      "planName": "1YEAR",
+      "status": "ACTIVE",
+      "paymentMethod": "UPI",
+      "paymentStatus": "PAID",
+      "subscriptionExpiry": "2027-05-19T15:36:48.775Z",
+      "joinDate": "2026-05-19T15:36:48.775Z",
+      "reminderCount": 0,
+      "note": "Default Retailer Shop",
+      "storeType": "RETAILER",
+      "updatedAt": "2026-05-19T15:36:48.775Z"
+    }
+  ]
+}

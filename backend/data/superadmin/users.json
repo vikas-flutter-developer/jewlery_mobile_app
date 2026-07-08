@@ -1,0 +1,26 @@
+{
+  "adminUsers": [
+    {
+      "userId": "ADMIN001",
+      "userName": "Super Admin",
+      "email": "admin@aurajewel.com",
+      "roleId": "ROLE001",
+      "roleName": "Super Admin",
+      "branch": "All",
+      "status": "active",
+      "lastLogin": "2024-06-05",
+      "createdAt": "2024-01-01"
+    },
+    {
+      "userId": "ADMIN002",
+      "userName": "Branch Manager",
+      "email": "manager@aurajewel.com",
+      "roleId": "ROLE002",
+      "roleName": "Admin",
+      "branch": "Delhi Branch",
+      "status": "active",
+      "lastLogin": "2024-06-05",
+      "createdAt": "2024-02-01"
+    }
+  ]
+}

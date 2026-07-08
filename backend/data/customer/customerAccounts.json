@@ -1,0 +1,11 @@
+{
+  "customerAccounts": [
+    {
+      "customerId": "cust_portal_1",
+      "phone": "9999999999",
+      "name": "Raj Kumar",
+      "status": "ACTIVE",
+      "lastLogin": "2026-06-06T10:00:00.000Z"
+    }
+  ]
+}

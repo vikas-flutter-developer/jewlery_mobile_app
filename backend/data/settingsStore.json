@@ -1,0 +1,26 @@
+{
+  "settings": {
+    "theme": "dark",
+    "currency": "INR",
+    "chargeRules": [
+      { "id": "shipping_flat", "label": "Shipping (flat)", "type": "fixed", "value": 50, "priority": 10 },
+      { "id": "large_order_discount", "label": "Large order discount", "type": "percent", "value": -5, "minAmount": 5000, "priority": 20 }
+    ],
+    "financialYear": { "startMonth": 4, "startDay": 1 },
+    "taxProfiles": {
+      "default": { "rate": 18 },
+      "MH": { "rate": 18 },
+      "KA": { "rate": 18 }
+    },
+    "communicationApis": {
+      "whatsapp": { "provider": "twilio", "key": "" },
+      "sms": { "provider": "twilio", "key": "" }
+    },
+    "paymentGateways": {
+      "razorpay": { "keyId": "", "keySecret": "" },
+      "stripe": { "secretKey": "" }
+    },
+    "printerConfig": { "type": "auto", "defaultPrinter": "thermal" }
+  },
+  "updatedAt": "2026-05-24T10:10:29.826Z"
+}

@@ -1,0 +1,13 @@
+{
+  "coupons": [
+    {
+      "id": "festive-1",
+      "code": "DIWALI2026",
+      "name": "Diwali Special",
+      "description": "Diwali festival discount",
+      "schedule": { "type": "festival", "name": "Diwali", "fromOffsetDays": -2, "toOffsetDays": 2 },
+      "discountPercent": 10,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}

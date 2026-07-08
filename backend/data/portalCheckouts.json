@@ -1,0 +1,87 @@
+[
+  {
+    "_id": "chkt_1780130858820",
+    "checkoutId": "CHKT-1780130858820-5153",
+    "customerName": "Alice Smith",
+    "customerPhone": "8888888888",
+    "items": [
+      {
+        "price": 280000,
+        "weight": 45.2,
+        "name": "Antique Gold Choker",
+        "total": 280000,
+        "purity": "22K"
+      }
+    ],
+    "subtotal": 280000,
+    "discount": 14000,
+    "giftWrap": false,
+    "insurance": false,
+    "tax": 0,
+    "payable": 266000,
+    "status": "PENDING_PAYMENT",
+    "paymentMethod": "Counter Cash/UPI",
+    "transactionId": "",
+    "createdAt": "2026-05-30T08:47:38.820Z"
+  },
+  {
+    "_id": "chkt_1780130958126",
+    "checkoutId": "CHKT-1780130958126-6162",
+    "customerName": "Raj Kumar",
+    "customerPhone": "9999999999",
+    "items": [
+      {
+        "productId": "mock2",
+        "name": "Silver Coin",
+        "weight": 50,
+        "purity": "Fine",
+        "price": 3750,
+        "total": 3750
+      },
+      {
+        "productId": "mock1",
+        "name": "Gold Necklace",
+        "weight": 120,
+        "purity": "22K",
+        "price": 672000,
+        "total": 672000
+      }
+    ],
+    "subtotal": 675750,
+    "discount": 33788,
+    "giftWrap": false,
+    "insurance": false,
+    "tax": 19259,
+    "payable": 661221,
+    "status": "PAID_ONLINE",
+    "paymentMethod": "Google Pay UPI",
+    "transactionId": "TXN-SELF-ONLINE-4004934",
+    "createdAt": "2026-05-30T08:49:18.126Z"
+  },
+  {
+    "_id": "chkt_1780413056314",
+    "checkoutId": "CHKT-1780413056310-2552",
+    "customerName": "Raj Kumar",
+    "customerPhone": "9999999999",
+    "items": [
+      {
+        "productId": "mock2",
+        "name": "Silver Coin",
+        "weight": 50,
+        "purity": "Fine",
+        "price": 3750,
+        "total": 3750
+      }
+    ],
+    "subtotal": 3750,
+    "discount": 188,
+    "giftWrap": false,
+    "insurance": false,
+    "tax": 107,
+    "payable": 3669,
+    "status": "PAID_COUNTER",
+    "paymentMethod": "Counter Cash/POS Verified",
+    "transactionId": "",
+    "createdAt": "2026-06-02T15:10:56.313Z"
+  }
+]
