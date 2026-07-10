@@ -186,12 +186,13 @@ export const requestOtp = async (req: Request, res: Response) => {
 
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
-    const { phone, code } = req.body;
-    if (!phone || !code) {
+    const { phone, code, otp } = req.body;
+    const verificationCode = code || otp;
+    if (!phone || !verificationCode) {
       return res.status(400).json({ success: false, error: "Phone and verification OTP code are required." });
     }
 
-    if (code !== "123456") {
+    if (verificationCode !== "123456") {
       return res.status(400).json({ success: false, error: "Invalid verification code entered." });
     }
 

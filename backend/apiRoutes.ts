@@ -28,6 +28,7 @@ import manufacturerRoutes from "./manufacturer/routes/index.js";
 import retailerRoutes from "./retailer/routes/index.js";
 // Explicitly import retailer barcode routes for the /retailer/* alias mount
 import retailerBarcodesRoutes from "./retailer/routes/barcodesRoutes.js";
+import ownerConsoleRoutes from "./routes/ownerConsoleRoutes.js";
 
 // ── Customer role routes ────────────────────────────────────────────────────
 import customerRoutes from "./customer/routes/index.js";
@@ -142,5 +143,8 @@ router.delete("/rates/:metal", deleteRate);
 router.use(customerRoutes);
 // Job Card APIs
 router.use('/jobs', jobsRoutes);
+
+// Owner Console Utilities API
+router.use('/owner-console', ownerConsoleRoutes);
 
 export default router;

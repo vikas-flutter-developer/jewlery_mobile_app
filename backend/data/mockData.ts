@@ -485,6 +485,71 @@ export const mockGoldLoans: any[] = createPersistentArrayProxy("mockGoldLoans", 
     status: "ACTIVE",
     createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     dueDate: new Date(Date.now() + 150 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    loanId: "L-2026-002",
+    customerName: "Ramesh Patel",
+    customerPhone: "9822334455",
+    weightGrams: 30,
+    purity: "22K",
+    evaluatedValue: 180000,
+    loanAmount: 135000,
+    interestRate: 9.5,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(Date.now() + 155 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    loanId: "L-2026-003",
+    customerName: "Priya Nair",
+    customerPhone: "9744556677",
+    weightGrams: 60,
+    purity: "22K",
+    evaluatedValue: 360000,
+    loanAmount: 250000,
+    interestRate: 9.5,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(Date.now() + 160 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    loanId: "L-2026-004",
+    customerName: "Amit Shah",
+    customerPhone: "9122334455",
+    weightGrams: 100,
+    purity: "24K",
+    evaluatedValue: 650000,
+    loanAmount: 480000,
+    interestRate: 9.5,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(Date.now() + 165 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    loanId: "L-2026-005",
+    customerName: "Vikram Malhotra",
+    customerPhone: "9899112233",
+    weightGrams: 15,
+    purity: "22K",
+    evaluatedValue: 90000,
+    loanAmount: 65000,
+    interestRate: 9.5,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(Date.now() + 170 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    loanId: "L-2026-006",
+    customerName: "Deepa Rao",
+    customerPhone: "9344551122",
+    weightGrams: 40,
+    purity: "18K",
+    evaluatedValue: 200000,
+    loanAmount: 140000,
+    interestRate: 9.5,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    dueDate: new Date(Date.now() + 175 * 24 * 60 * 60 * 1000).toISOString()
   }
 ]);
 

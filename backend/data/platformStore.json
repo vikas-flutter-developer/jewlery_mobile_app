@@ -331,6 +331,141 @@
   "announcements": [],
   "auditLogs": [
     {
+      "id": "SEC-MREVA11K-6VFR",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T11:43:15.656Z"
+    },
+    {
+      "id": "SEC-MREV8Z3Z-64FQ",
+      "actor": "bhavesh_karigar@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e30be7b9841beb6355b97",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T11:42:26.495Z"
+    },
+    {
+      "id": "SEC-MREUMDQK-FGV1",
+      "actor": "bhavesh_karigar@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e30be7b9841beb6355b97",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T11:24:52.364Z"
+    },
+    {
+      "id": "SEC-MREU6RB3-BXFC",
+      "actor": "bhavesh_karigar@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e30be7b9841beb6355b97",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T11:12:43.455Z"
+    },
+    {
+      "id": "SEC-MREU6JJ9-WRTD",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T11:12:33.381Z"
+    },
+    {
+      "id": "SEC-MRETLGRS-FSZ0",
+      "actor": "bhavesh_karigar@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e30be7b9841beb6355b97",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:56:10.024Z"
+    },
+    {
+      "id": "SEC-MRETHK33-W27A",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:53:07.695Z"
+    },
+    {
+      "id": "SEC-MRESL0JV-0QOC",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:27:49.387Z"
+    },
+    {
+      "id": "SEC-MRESHOVR-S92W",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:25:14.295Z"
+    },
+    {
+      "id": "SEC-MRES9Z4Q-7XJO",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:19:14.330Z"
+    },
+    {
+      "id": "SEC-MRERMLJ5-139I",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T10:01:03.617Z"
+    },
+    {
+      "id": "SEC-MREQVWZ5-LJR7",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T09:40:18.737Z"
+    },
+    {
+      "id": "SEC-MREP91OW-LXBG",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T08:54:32.144Z"
+    },
+    {
+      "id": "SEC-MREP5QFD-MN9M",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T08:51:57.578Z"
+    },
+    {
+      "id": "SEC-MRENEFWD-1E58",
+      "actor": "branding@gmail.com",
+      "action": "login-success",
+      "entityType": "security",
+      "entityId": "6a4e3a8e14275e172a363a2f",
+      "details": "Successful login from IP 127.0.0.1 device Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-10T08:02:44.605Z"
+    },
+    {
       "id": "SEC-MRC0P1GW-POMV",
       "actor": "branding@gmail.com",
       "action": "login-success",
@@ -1994,141 +2129,6 @@
       "entityId": "default-shop",
       "details": "Updated store Retailer Shop",
       "createdAt": "2026-06-07T12:30:10.090Z"
-    },
-    {
-      "id": "AUDIT-MQ3RD69S-R0A2",
-      "actor": "super-admin",
-      "action": "update-demo-access",
-      "entityType": "platform",
-      "entityId": "platform",
-      "details": "Updated super admin demo access credentials",
-      "createdAt": "2026-06-07T12:28:33.664Z"
-    },
-    {
-      "id": "AUDIT-MQ3RD5TO-G0LO",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq3rd5o1-fufalw",
-      "details": "Created store bnm",
-      "createdAt": "2026-06-07T12:28:33.084Z"
-    },
-    {
-      "id": "AUDIT-MQ2PH0ZD-XKCK",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq2ph0vb-2k45fo",
-      "details": "Created store bnm",
-      "createdAt": "2026-06-06T18:47:48.025Z"
-    },
-    {
-      "id": "AUDIT-MQ2PG6RL-36DY",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq2p86mm-m0af9b",
-      "details": "Deleted store bnm",
-      "createdAt": "2026-06-06T18:47:08.865Z"
-    },
-    {
-      "id": "AUDIT-MQ2P86QR-WMJG",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq2p86mm-m0af9b",
-      "details": "Created store bnm",
-      "createdAt": "2026-06-06T18:40:55.587Z"
-    },
-    {
-      "id": "AUDIT-MQ2P7OSF-WGTS",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq2olybh-cq93uw",
-      "details": "Deleted store bnm",
-      "createdAt": "2026-06-06T18:40:32.319Z"
-    },
-    {
-      "id": "AUDIT-MQ2OLYGV-5U4L",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq2olybh-cq93uw",
-      "details": "Created store bnm",
-      "createdAt": "2026-06-06T18:23:38.431Z"
-    },
-    {
-      "id": "AUDIT-MQ1CJ6F5-562S",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq1ciowu-pcsynh",
-      "details": "Deleted store bnm",
-      "createdAt": "2026-06-05T19:57:47.201Z"
-    },
-    {
-      "id": "AUDIT-MQ1CIOWV-KWX4",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq1ciowu-pcsynh",
-      "details": "Created store bnm",
-      "createdAt": "2026-06-05T19:57:24.511Z"
-    },
-    {
-      "id": "AUDIT-MQ1CFCC4-CPDN",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq1c9uzs-cv4y1b",
-      "details": "Deleted store bnn",
-      "createdAt": "2026-06-05T19:54:48.244Z"
-    },
-    {
-      "id": "AUDIT-MQ1CF4SS-18V3",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "default-shop",
-      "details": "Deleted store Retailer Shop",
-      "createdAt": "2026-06-05T19:54:38.476Z"
-    },
-    {
-      "id": "AUDIT-MQ1C9V8P-7DX2",
-      "actor": "super-admin",
-      "action": "update-demo-access",
-      "entityType": "platform",
-      "entityId": "platform",
-      "details": "Updated super admin demo access credentials",
-      "createdAt": "2026-06-05T19:50:32.809Z"
-    },
-    {
-      "id": "AUDIT-MQ1C9UZS-FSUA",
-      "actor": "super-admin",
-      "action": "create-store",
-      "entityType": "store",
-      "entityId": "store-mq1c9uzs-cv4y1b",
-      "details": "Created store bnn",
-      "createdAt": "2026-06-05T19:50:32.488Z"
-    },
-    {
-      "id": "AUDIT-MQ1C9HNW-BW1N",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq1avfzr-79fgzn",
-      "details": "Deleted store Test Shop",
-      "createdAt": "2026-06-05T19:50:15.213Z"
-    },
-    {
-      "id": "AUDIT-MQ1C5MO7-A7TN",
-      "actor": "super-admin",
-      "action": "delete-store",
-      "entityType": "store",
-      "entityId": "store-mq1c4ttg-8cqvpm",
-      "details": "Deleted store bn",
-      "createdAt": "2026-06-05T19:47:15.079Z"
     }
   ],
   "invoices": [
@@ -2163,5 +2163,5 @@
     "otp": "123456",
     "updatedAt": "2026-06-06T00:00:00.000Z"
   },
-  "updatedAt": "2026-07-08T11:51:35.616Z"
+  "updatedAt": "2026-07-10T11:43:15.679Z"
 }

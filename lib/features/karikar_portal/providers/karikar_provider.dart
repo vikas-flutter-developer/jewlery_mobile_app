@@ -202,13 +202,15 @@ class KarikarNotifier extends StateNotifier<KarikarState> {
   }
 
   // Change password
-  Future<bool> changePassword(String oldPassword, String newPassword) async {
+  // Backend contract: { currentPassword, newPassword, confirmPassword }
+  Future<bool> changePassword(String oldPassword, String newPassword, {String? confirmPassword}) async {
     try {
       final res = await api.put(
         '/karikar/change-password',
         data: {
-          'oldPassword': oldPassword,
+          'currentPassword': oldPassword,
           'newPassword': newPassword,
+          'confirmPassword': confirmPassword ?? newPassword,
         },
       );
       return res.statusCode == 200;

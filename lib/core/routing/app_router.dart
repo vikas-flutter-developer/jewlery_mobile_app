@@ -1,18 +1,28 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/loading_screen.dart';
 import '../../features/customer_portal/presentation/customer_dashboard.dart';
+import '../../features/customer_portal/presentation/catalog_screen.dart';
+import '../../features/customer_portal/presentation/product_detail_screen.dart';
+import '../../features/customer_portal/presentation/cart_screen.dart';
+import '../../features/customer_portal/presentation/wishlist_screen.dart';
+import '../../features/customer_portal/presentation/order_tracking_screen.dart';
+import '../../features/customer_portal/presentation/search_page.dart';
+import '../../features/customer_portal/presentation/care_guide_page.dart';
+import '../../features/customer_portal/presentation/saved_addresses_page.dart';
+import '../../features/customer_portal/presentation/checkout_page.dart';
 import '../../features/staff_pos/presentation/staff_dashboard.dart';
 import '../../features/karikar_portal/presentation/karikar_dashboard.dart';
 import '../../features/owner_console/presentation/owner_dashboard.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
-
   return GoRouter(
     initialLocation: '/loading',
+    refreshListenable: GoRouterRefreshStream(ref.read(authProvider.notifier).stream),
     routes: [
       GoRoute(
         path: '/loading',
@@ -38,8 +48,47 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/owner/dashboard',
         builder: (context, state) => const OwnerDashboard(),
       ),
+      GoRoute(
+        path: '/catalog',
+        builder: (context, state) => const CatalogScreen(),
+      ),
+      GoRoute(
+        path: '/catalog/product/:productId',
+        builder: (context, state) => ProductDetailScreen(
+          productId: state.pathParameters['productId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/cart',
+        builder: (context, state) => const CartScreen(),
+      ),
+      GoRoute(
+        path: '/wishlist',
+        builder: (context, state) => const WishlistScreen(),
+      ),
+      GoRoute(
+        path: '/orders',
+        builder: (context, state) => const OrderTrackingScreen(orderId: 'ORD001'),
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) => const SearchPage(),
+      ),
+      GoRoute(
+        path: '/care-guide',
+        builder: (context, state) => const CareGuidePage(),
+      ),
+      GoRoute(
+        path: '/saved-addresses',
+        builder: (context, state) => const SavedAddressesPage(),
+      ),
+      GoRoute(
+        path: '/checkout',
+        builder: (context, state) => const CheckoutPage(),
+      ),
     ],
     redirect: (context, state) {
+      final authState = ref.read(authProvider);
       final isInitializing = authState.isInitializing;
       final isAuthenticated = authState.isAuthenticated;
       final user = authState.user;
@@ -87,3 +136,20 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
   );
 });
+
+class GoRouterRefreshStream extends ChangeNotifier {
+  late final StreamSubscription<dynamic> _subscription;
+
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+          (dynamic _) => notifyListeners(),
+        );
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}

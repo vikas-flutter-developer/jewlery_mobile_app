@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/customer_provider.dart';
@@ -7,6 +8,15 @@ import 'scheme_list_screen.dart';
 import 'scheme_passbook_screen.dart';
 import 'custom_order_form_screen.dart';
 import 'self_checkout_screen.dart';
+import 'catalog_screen.dart';
+import 'ar_try_on_screen.dart';
+import 'cart_screen.dart';
+import 'wishlist_screen.dart';
+import 'order_tracking_screen.dart';
+import 'support_screen.dart';
+import 'search_page.dart';
+import 'care_guide_page.dart';
+import 'saved_addresses_page.dart';
 
 class CustomerDashboard extends ConsumerStatefulWidget {
   const CustomerDashboard({super.key});
@@ -161,6 +171,128 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> {
                     );
                   },
                 ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Storefront & Design Center',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF4A3E1B),
+                  fontFamily: 'serif',
+                ),
+              ),
+              const SizedBox(height: 14),
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.95,
+                children: [
+                  _buildQuickAction(
+                    icon: Icons.grid_view_rounded,
+                    label: 'Browse Catalog',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CatalogScreen()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.camera_alt_outlined,
+                    label: 'AR Try-On',
+                    onTap: () async {
+                      final picker = ImagePicker();
+                      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                      if (pickedFile != null && context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArTryOnScreen(
+                              imagePath: pickedFile.path,
+                              jewelryUrl: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400',
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.shopping_bag_outlined,
+                    label: 'My Cart',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CartScreen()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.favorite_border_rounded,
+                    label: 'My Wishlist',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.local_shipping_outlined,
+                    label: 'Track Orders',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderTrackingScreen(orderId: 'ORD001'),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.build_circle_outlined,
+                    label: 'Repairs & Help',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SupportScreen()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.search_rounded,
+                    label: 'Search Designs',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SearchPage()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.map_outlined,
+                    label: 'Saved Addresses',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SavedAddressesPage()),
+                      );
+                    },
+                  ),
+                  _buildQuickAction(
+                    icon: Icons.book_outlined,
+                    label: 'Care Guide',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CareGuidePage()),
+                      );
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 32),
               
@@ -406,6 +538,55 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> {
                 }),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickAction({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFECE6DF), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.015),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppTheme.goldMetallic.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppTheme.goldDark, size: 20),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2E2A25),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -159,7 +159,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final res = await api.post(
         ApiEndpoints.customerOtpVerify,
-        data: {'phone': phone, 'otp': otp},
+        data: {'phone': phone, 'code': otp},
       );
 
       if (res.statusCode == 200 && res.data != null) {
