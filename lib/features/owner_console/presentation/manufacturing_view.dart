@@ -8,6 +8,7 @@ import 'alloy_calculator_screen.dart';
 import 'bom_manager_screen.dart';
 import 'ledger_screen.dart';
 import 'karigar_payroll_screen.dart';
+import 'moodboard_view_screen.dart';
 
 class ManufacturingView extends ConsumerStatefulWidget {
   const ManufacturingView({super.key});
@@ -534,16 +535,41 @@ class _ManufacturingViewState extends ConsumerState<ManufacturingView> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: () => _showAssignJobDialog(order, karikars),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.goldDark,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            elevation: 0,
-                          ),
-                          child: const Text('ASSIGN', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                        Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => _showAssignJobDialog(order, karikars),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.goldDark,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                elevation: 0,
+                              ),
+                              child: const Text('ASSIGN', style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold, letterSpacing: 0.5)),
+                            ),
+                            const SizedBox(height: 4),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                minimumSize: Size.zero,
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MoodboardViewScreen(
+                                      orderId: (order['_id'] ?? order['id'] ?? 'ORD-1').toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'MOODBOARD',
+                                style: TextStyle(fontSize: 9.5, color: AppTheme.goldDark, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

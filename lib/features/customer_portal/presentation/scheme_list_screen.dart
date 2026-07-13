@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../providers/customer_provider.dart';
+import '../../auth/providers/auth_provider.dart';
 
 class SchemeListScreen extends ConsumerStatefulWidget {
   const SchemeListScreen({super.key});
@@ -160,24 +161,49 @@ class _SchemeListScreenState extends ConsumerState<SchemeListScreen> {
                               ),
                               const SizedBox(height: 24),
                               ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  final user = ref.read(authProvider).user;
+                                  final phone = user?['phone'] ?? '';
+                                  if (phone.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Please log in to enroll in a scheme.')),
+                                    );
+                                    return;
+                                  }
+
+                                  // Show progress indicator
                                   showDialog(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: const Color(0xFFF9F6F0),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                      title: const Text('Enrollment Request', style: TextStyle(fontFamily: 'serif', color: AppTheme.goldDark)),
-                                      content: const Text(
-                                        'To complete your Swarna Nidhi Savings Scheme enrollment, please sign the digital mandate at your nearest AuraJewel showroom. Our manager will finalize the active enrollment.',
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: const Text('OK', style: TextStyle(color: AppTheme.goldDark, fontWeight: FontWeight.bold)),
-                                        ),
-                                      ],
+                                    barrierDismissible: false,
+                                    builder: (context) => const Center(
+                                      child: CircularProgressIndicator(color: AppTheme.goldDark),
                                     ),
                                   );
+
+                                  final success = await ref.read(customerProvider.notifier).enrollInScheme(
+                                    scheme['_id'] ?? scheme['id'] ?? '',
+                                    phone,
+                                  );
+
+                                  if (context.mounted) {
+                                    Navigator.pop(context); // Close loading dialog
+                                    if (success) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('✓ Successfully enrolled in ${name}!'),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+                                      Navigator.pop(context); // Go back to dashboard
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Failed to enroll. Please try again.'),
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                      );
+                                    }
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppTheme.goldDark,

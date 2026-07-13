@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../providers/admin_provider.dart';
+import 'purchase_order_screen.dart';
+import 'schemes_admin_screen.dart';
+import 'old_gold_melting_screen.dart';
+import 'compliance_reports_screen.dart';
+import 'offers_manager_screen.dart';
+import 'security_logs_screen.dart';
 
 class StoreSettingsScreen extends ConsumerStatefulWidget {
   const StoreSettingsScreen({super.key});
@@ -212,7 +218,100 @@ class _StoreSettingsScreenState extends ConsumerState<StoreSettingsScreen> {
                 label: const Text('SUBMIT CASH CLOSING SHEET', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5)),
               ),
             ),
+            const SizedBox(height: 28),
+            const Text(
+              'Advanced Store Management',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif'),
+            ),
+            const SizedBox(height: 14),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 2.2,
+              children: [
+                _buildManagementTile(
+                  icon: Icons.local_shipping_outlined,
+                  label: 'Purchase Orders',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PurchaseOrderScreen()));
+                  },
+                ),
+                _buildManagementTile(
+                  icon: Icons.savings_outlined,
+                  label: 'Savings Schemes',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SchemesAdminScreen()));
+                  },
+                ),
+                _buildManagementTile(
+                  icon: Icons.local_fire_department_outlined,
+                  label: 'Old Gold Buyback',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const OldGoldMeltingScreen()));
+                  },
+                ),
+                _buildManagementTile(
+                  icon: Icons.gavel_rounded,
+                  label: 'Compliance Reports',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ComplianceReportsScreen()));
+                  },
+                ),
+                _buildManagementTile(
+                  icon: Icons.local_offer_outlined,
+                  label: 'Offers & Coupons',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const OffersManagerScreen()));
+                  },
+                ),
+                _buildManagementTile(
+                  icon: Icons.security_outlined,
+                  label: 'Security Logs',
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SecurityLogsScreen()));
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 48),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildManagementTile({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFECE6DF)),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Icon(icon, color: AppTheme.goldDark, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Color(0xFF2E2A25)),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

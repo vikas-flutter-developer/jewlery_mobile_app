@@ -75,6 +75,30 @@ class CustomerNotifier extends StateNotifier<CustomerState> {
     }
   }
 
+  // Enroll in a new savings scheme
+  Future<bool> enrollInScheme(String schemeId, String phone) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final res = await api.post(
+        '${ApiEndpoints.customerSchemes}/enroll',
+        data: {
+          'schemeId': schemeId,
+          'phone': phone,
+        },
+      );
+      if (res.statusCode == 201 || res.statusCode == 200) {
+        await fetchCustomerEnrollments(phone);
+        return true;
+      } else {
+        state = state.copyWith(isLoading: false, error: 'Failed to enroll in scheme');
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return false;
+    }
+  }
+
   // Pay monthly due installment
   Future<bool> payInstallment(String enrollmentId, double amount, String phone) async {
     state = state.copyWith(isLoading: true, error: null);

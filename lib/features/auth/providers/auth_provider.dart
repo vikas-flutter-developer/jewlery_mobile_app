@@ -166,13 +166,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final responseData = res.data as Map<String, dynamic>;
         final data = responseData['data'] as Map<String, dynamic>;
         final token = data['token'] as String;
+        final customer = data['customer'] as Map<String, dynamic>? ?? {};
 
         final userProfile = {
-          'id': data['userId'] ?? data['_id'],
-          'email': data['email'],
-          'name': data['name'],
-          'role': data['role'],
-          'tenantId': data['tenantId'],
+          'id': customer['id'] ?? customer['_id'] ?? data['userId'] ?? data['_id'],
+          'email': customer['email'] ?? data['email'],
+          'name': customer['name'] ?? data['name'],
+          'phone': customer['phone'] ?? data['phone'] ?? phone,
+          'role': customer['role'] ?? data['role'] ?? 'customer',
+          'tenantId': customer['tenantId'] ?? data['tenantId'],
         };
 
         await LocalDb.saveToken(token);

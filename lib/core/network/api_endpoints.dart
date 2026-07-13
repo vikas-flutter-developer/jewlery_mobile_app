@@ -41,4 +41,17 @@ class ApiEndpoints {
   static const String karikarMetalReturns = '/karikar/metal-returns';
   static const String karikarWastage = '/karikar/wastage-reconciliations';
   static const String karikarWageLedger = '/karikar/wage-ledgers';
+
+  // POS & Billing endpoints
+  static const String posEstimate = '/pos/estimate';
+  static const String posInvoices = '/pos/invoices';
+  static const String posEmiPlans = '/pos/emi-plans';
+
+  // Admin & Back-office endpoints
+  static const String purchaseOrders = '/purchase-orders';
+  static const String oldGoldMelting = '/oldgold/melting';
+  static const String complianceGoldLoans = '/compliance/gold-loans';
+  static const String complianceForm60 = '/compliance/form60';
+  static const String offers = '/offers';
+  static const String auditLogs = '/audit-logs';
 }

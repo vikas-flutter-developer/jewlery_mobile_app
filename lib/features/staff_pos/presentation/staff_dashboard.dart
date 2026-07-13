@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../auth/providers/auth_provider.dart';
+import 'new_estimate_screen.dart';
+import 'scan_barcode_screen.dart';
+import 'emi_repayments_screen.dart';
+import 'kyc_scanner_screen.dart';
 
 class StaffDashboard extends ConsumerWidget {
   const StaffDashboard({super.key});
@@ -51,7 +55,7 @@ class StaffDashboard extends ConsumerWidget {
                 border: Border.all(color: const Color(0xFFECE6DF), width: 1),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.02),
+                    color: Colors.black.withOpacity(0.02),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -86,9 +90,9 @@ class StaffDashboard extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.08),
+                      color: Colors.green.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.green.withValues(alpha: 0.2)),
+                      border: Border.all(color: Colors.green.withOpacity(0.2)),
                     ),
                     child: const Row(
                       children: [
@@ -119,7 +123,7 @@ class StaffDashboard extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Expanded(child: Container(height: 1, color: AppTheme.goldMetallic.withValues(alpha: 0.2))),
+                Expanded(child: Container(height: 1, color: AppTheme.goldMetallic.withOpacity(0.2))),
               ],
             ),
             const SizedBox(height: 16),
@@ -136,25 +140,45 @@ class StaffDashboard extends ConsumerWidget {
                     title: 'New Estimate',
                     icon: Icons.calculate_outlined,
                     description: 'Run weight and purity price calculation quotes.',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const NewEstimateScreen()),
+                      );
+                    },
                   ),
                   _buildActionCard(
                     title: 'Scan Barcode',
                     icon: Icons.qr_code_scanner_outlined,
                     description: 'Audit shelf items using the device camera.',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScanBarcodeScreen()),
+                      );
+                    },
                   ),
                   _buildActionCard(
                     title: 'EMI Repayments',
                     icon: Icons.payment_outlined,
                     description: 'Collect monthly dues from customer accounts.',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const EmiRepaymentsScreen()),
+                      );
+                    },
                   ),
                   _buildActionCard(
                     title: 'KYC Scanner',
                     icon: Icons.document_scanner_outlined,
                     description: 'Upload customer Aadhar/PAN cards for compliance.',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const KycScannerScreen()),
+                      );
+                    },
                   ),
                 ],
               ),

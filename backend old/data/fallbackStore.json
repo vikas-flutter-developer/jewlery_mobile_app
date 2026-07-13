@@ -1,0 +1,1237 @@
+{
+  "users": [
+    {
+      "_id": "user-1779518126045-54gx4",
+      "name": "System Manufacturer",
+      "email": "manufacturer@aurajewel.com",
+      "password": "manufacturer",
+      "role": "ADMIN",
+      "branchId": null,
+      "phone": "7558556969",
+      "createdAt": "2026-05-23T06:35:26.045Z",
+      "updatedAt": "2026-05-23T09:39:10.216Z",
+      "lastLogin": "2026-05-23T06:35:26.045Z",
+      "tenantId": "shop-1779518126045-txlhr",
+      "shiftHistory": [
+        {
+          "type": "clock-in",
+          "timestamp": "2026-05-23T09:39:10.214Z"
+        }
+      ]
+    },
+    {
+      "_id": "retailer-fallback",
+      "email": "retailer@aurajewel.com",
+      "name": "System Retailer",
+      "role": "RETAILER",
+      "branchId": null,
+      "phone": null,
+      "password": "retailer",
+      "tenantId": "default-shop",
+      "lastLogin": "2026-07-06T12:14:29.806Z"
+    },
+    {
+      "_id": "user-mq2ph15i-f7qjl6",
+      "name": "nn",
+      "email": "bnm@gmail.com",
+      "phone": "7558556969",
+      "password": "$2a$10$vuIzw7SIW1v.1NzNjiMP9uVi0DF1f4OFPV4TiZa.T0AYM1mNlENhC",
+      "role": "RETAILER",
+      "tenantId": "store-mq2ph0vb-2k45fo",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-06T18:47:47.878Z",
+      "updatedAt": "2026-06-06T18:47:47.878Z"
+    },
+    {
+      "_id": "user-1781269441646",
+      "name": "bnm",
+      "email": "mahalebhavesh247@gmail.com",
+      "phone": "07558556969",
+      "password": "$2a$10$VxKwKzrDKNn0pajlmz3Tt.LGX7kyeVUvftoVl8D0Xw9U1SX9u0iam",
+      "role": "ADMIN",
+      "tenantId": "store-mqayxa6u-dbwead",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-12T13:04:01.646Z",
+      "updatedAt": "2026-06-12T13:40:52.220Z"
+    },
+    {
+      "_id": "user-mqayxnl1-a29jec",
+      "name": "bnn",
+      "email": "mahalebhaves247@gmail.com",
+      "phone": "07558556969",
+      "password": "$2a$10$0E.J3kxzuWLf9RIL7cQZKevkEO7oPv1Maf1Bs9xH046kuqtgRgnuG",
+      "role": "ADMIN",
+      "tenantId": "store-mqayxnds-parl74",
+      "status": "ACTIVE",
+      "createdAt": "2026-06-12T13:34:49.504Z",
+      "updatedAt": "2026-06-12T13:34:49.504Z"
+    }
+  ],
+  "customers": [
+    {
+      "_id": "customer-1779530377727-bhcvpr",
+      "name": "Rajesh Sharma",
+      "phone": "9876543299",
+      "email": "rajesh@gmail.com",
+      "pan": "ABCDE1234F",
+      "aadhar": "1234-5678-9012",
+      "kycStatus": "PENDING",
+      "kycDocuments": [
+        {
+          "type": "PAN",
+          "documentPath": "C:\\Users\\mahal\\Downloads\\aurajewel-erp (1)\\backend\\uploads\\customers\\customer-1779530377727-bhcvpr\\1779530448561-utv29q.txt",
+          "uploadedAt": "2026-05-23T10:00:48.569Z"
+        },
+        {
+          "type": "AADHAR",
+          "documentPath": "C:\\Users\\mahal\\Downloads\\aurajewel-erp (1)\\backend\\uploads\\customers\\customer-1779530377727-bhcvpr\\1779530448563-twby6f.txt",
+          "uploadedAt": "2026-05-23T10:00:48.569Z"
+        }
+      ],
+      "creditLimit": 0,
+      "loyaltyPoints": 250,
+      "totalPurchases": 0,
+      "customerSince": "2026-05-23T09:59:37.727Z",
+      "ledgerAccountId": "ledger-customer-1779530377727-bhcvpr",
+      "loyaltyWalletId": "wallet-customer-1779530377727-bhcvpr",
+      "status": "ACTIVE",
+      "createdAt": "2026-05-23T09:59:37.727Z",
+      "updatedAt": "2026-05-26T20:53:35.932Z",
+      "id": "customer-1779530377727-bhcvpr",
+      "dob": "",
+      "birthday": "",
+      "anniversary": "",
+      "referredBy": "",
+      "tags": [
+        "REGULAR"
+      ],
+      "address": "",
+      "loyaltyTier": "Gold"
+    }
+  ],
+  "vendors": [
+    {
+      "_id": "vendor-1779531202675-kfnvon",
+      "name": "Live Vendor",
+      "type": "SERVICE_PROVIDER",
+      "gstin": "27AABCU9603R1ZX",
+      "gst": "27AABCU9603R1ZX",
+      "pan": "AABCU9603R",
+      "email": "vendor@example.com",
+      "phone": "9990001111",
+      "bank": "HDFC",
+      "bankAccount": "HDFC",
+      "contactPerson": "Ravi",
+      "notes": "Created during verification",
+      "metalAccount": {
+        "goldBalance": 0,
+        "silverBalance": 0,
+        "platinumBalance": 0
+      },
+      "ledgerAccountId": "ledger-vendor-1779531202675-kfnvon",
+      "status": "ACTIVE",
+      "createdAt": "2026-05-23T10:13:22.675Z",
+      "updatedAt": "2026-06-04T10:59:38.675Z",
+      "minOrderQty": 3,
+      "minOrderValue": 1000
+    }
+  ],
+  "shops": [
+    {
+      "id": "shop-1779518126045-txlhr",
+      "shopName": "bnm",
+      "gstNumber": "555555555555",
+      "panNumber": "77546565656",
+      "address": "xyz",
+      "phone": "7558556969",
+      "subscriptionStatus": "ACTIVE",
+      "subscriptionExpiry": "2027-05-23T06:35:26.045Z",
+      "planName": "1YEAR"
+    },
+    {
+      "id": "default-shop",
+      "shopName": "Retailer Shop",
+      "gstNumber": "27RETAIL1234Z1",
+      "panNumber": "RETAIL1234P",
+      "address": "Retailer Address",
+      "phone": "7558556969",
+      "subscriptionStatus": "ACTIVE",
+      "subscriptionExpiry": "2027-05-19T15:36:48.775Z",
+      "planName": "1YEAR"
+    }
+  ],
+  "gemstoneParcels": [
+    {
+      "_id": "parcel-1779551671925-0p9hna",
+      "parcelNumber": "PARCEL-1779551671838",
+      "gemstoneType": "Ruby",
+      "weight": 15.5,
+      "quantity": 10,
+      "availableWeight": 12.4,
+      "availableQuantity": 8,
+      "rate": 500,
+      "totalValue": 7750,
+      "clarity": "VVS1",
+      "color": "Deep Red",
+      "shape": "Oval",
+      "size": "6x4mm",
+      "status": "Partially Issued",
+      "description": "Beautiful deep red rubies",
+      "history": [
+        {
+          "issuedTo": "Karikar Rajesh",
+          "orderId": "ORD-98765",
+          "quantity": 2,
+          "weight": 3.1,
+          "notes": "Issuing 2 rubies for model ring structure",
+          "issuedAt": "2026-05-23T15:54:31.953Z"
+        }
+      ],
+      "createdAt": "2026-05-23T15:54:31.928Z",
+      "updatedAt": "2026-05-23T15:54:31.953Z"
+    }
+  ],
+  "schemeDefinitions": [
+    {
+      "_id": "scheme_1779825761025",
+      "name": "Aura Gold 11+1 Scheme",
+      "type": "GOLD_SAVING",
+      "monthlyAmount": 5000,
+      "totalInstallments": 11,
+      "bonusAmount": 5000,
+      "goldWeightBased": true,
+      "description": "A standard 11-month gold savings scheme with 1-month bonus discount.",
+      "status": "ACTIVE",
+      "createdAt": "2026-05-26T20:02:41.025Z"
+    }
+  ],
+  "schemeEnrollments": [
+    {
+      "_id": "enr_1779825783469",
+      "enrollmentId": "ENR-MPN2BFSC-37FTSH",
+      "customerId": "Raj Kumar",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "schemeId": "scheme_1779825761025",
+      "schemeName": "Aura Gold 11+1 Scheme",
+      "schemeType": "GOLD_SAVING",
+      "monthlyAmount": 5000,
+      "totalInstallments": 11,
+      "completedInstallments": 4,
+      "paidAmount": 20000,
+      "goldAccumulated": 3.224,
+      "status": "ACTIVE",
+      "installments": [
+        {
+          "installmentId": "INST-1-6AZP",
+          "amount": 5000,
+          "dueDate": "2026-06-26T20:03:03.467Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-2-J6UP",
+          "amount": 5000,
+          "dueDate": "2026-07-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-3-UE2P",
+          "amount": 5000,
+          "dueDate": "2026-08-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-4-NAUJ",
+          "amount": 5000,
+          "dueDate": "2026-09-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-5-2VME",
+          "amount": 5000,
+          "dueDate": "2026-10-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-6-55RH",
+          "amount": 5000,
+          "dueDate": "2026-11-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-7-W5R1",
+          "amount": 5000,
+          "dueDate": "2026-12-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-8-ETA2",
+          "amount": 5000,
+          "dueDate": "2027-01-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-9-DXHB",
+          "amount": 5000,
+          "dueDate": "2027-02-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-10-T0L7",
+          "amount": 5000,
+          "dueDate": "2027-03-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-11-WM2M",
+          "amount": 5000,
+          "dueDate": "2027-04-26T20:03:03.468Z",
+          "status": "PENDING"
+        },
+        {
+          "installmentId": "INST-1",
+          "amount": 5000,
+          "dueDate": "2026-06-26T20:03:03.467Z",
+          "paidAt": "2026-05-30T08:47:54.398Z",
+          "status": "PAID",
+          "paymentMethod": "Razorpay UPI",
+          "transactionId": "TXN-450735",
+          "goldGramsAccumulated": 0.806,
+          "notes": "Online installment payment processed successfully."
+        },
+        {
+          "installmentId": "INST-2",
+          "amount": 5000,
+          "dueDate": "2026-06-29T08:47:54.398Z",
+          "paidAt": "2026-05-30T08:49:41.047Z",
+          "status": "PAID",
+          "paymentMethod": "Razorpay UPI",
+          "transactionId": "TXN-561361",
+          "goldGramsAccumulated": 0.806,
+          "notes": "Online installment payment processed successfully."
+        },
+        {
+          "installmentId": "INST-3",
+          "amount": 5000,
+          "dueDate": "2026-06-29T08:49:41.048Z",
+          "paidAt": "2026-06-02T15:03:39.783Z",
+          "status": "PAID",
+          "paymentMethod": "Razorpay UPI",
+          "transactionId": "TXN-322324",
+          "goldGramsAccumulated": 0.806,
+          "notes": "Online installment payment processed successfully."
+        },
+        {
+          "installmentId": "INST-4",
+          "amount": 5000,
+          "dueDate": "2026-07-02T15:03:39.784Z",
+          "paidAt": "2026-06-02T15:04:25.551Z",
+          "status": "PAID",
+          "paymentMethod": "Razorpay UPI",
+          "transactionId": "TXN-757508",
+          "goldGramsAccumulated": 0.806,
+          "notes": "Online installment payment processed successfully."
+        }
+      ],
+      "nextDueDate": "2026-07-02T15:04:25.552Z",
+      "createdAt": "2026-05-26T20:03:03.469Z",
+      "updatedAt": "2026-05-26T20:03:03.469Z"
+    }
+  ],
+  "tasks": [],
+  "repairJobs": [],
+  "tickets": [
+    {
+      "_id": "ticket_1",
+      "title": "GSTR-1 report sync slow",
+      "description": "Taking more than 30 seconds to download compliance GSTR-1 sheet",
+      "status": "OPEN",
+      "customerName": "Rajesh Sharma",
+      "createdAt": "2026-06-04T15:30:00.000Z",
+      "updatedAt": "2026-06-04T15:30:00.000Z"
+    }
+  ],
+  "denominations": [],
+  "schedules": [
+    {
+      "userId": "retailer-fallback",
+      "userName": "Staff",
+      "days": [],
+      "timeStart": "09:00",
+      "timeEnd": "18:00",
+      "shiftName": "General Shift",
+      "updatedAt": "2026-06-03T06:41:10.806Z",
+      "_id": "SCH-1780468870813"
+    }
+  ],
+  "consignmentStock": [
+    {
+      "consignmentCode": "CON-839A",
+      "vendorId": "vendor-1779531202675-kfnvon",
+      "vendorName": "Live Vendor",
+      "itemName": "Gold Studded Necklace",
+      "weight": 52.5,
+      "purity": "22K",
+      "consignmentRate": 5500,
+      "totalValue": 288750,
+      "status": "ON_DISPLAY",
+      "receivedAt": "2026-06-03T11:00:00.000Z"
+    }
+  ],
+  "cheques": [
+    {
+      "_id": "cheque_1",
+      "chequeNumber": "CHQ-009821",
+      "bankName": "HDFC Bank Ltd",
+      "amount": 75000,
+      "payeeName": "Aura Jewellery",
+      "status": "PENDING",
+      "depositDate": "2026-06-10T00:00:00.000Z",
+      "notes": "Post-dated cheque for custom bridal design partial payment",
+      "createdAt": "2026-06-04T10:00:00.000Z",
+      "updatedAt": "2026-06-04T10:00:00.000Z"
+    }
+  ],
+  "retailerOrders": [
+    {
+      "retailerId": "retailer-fallback",
+      "retailerEmail": "retailer@aurajewel.com",
+      "itemType": "Ring",
+      "purity": "22K",
+      "weight": 10,
+      "quantity": 3,
+      "notes": "",
+      "status": "In Production",
+      "createdAt": "2026-06-02T15:46:32.531Z",
+      "updatedAt": "2026-06-02T16:47:04.337Z",
+      "_id": "RO-1780415192531",
+      "karikarId": "mock_karikar_1780415236507_6u1r4x",
+      "karikarName": "bnm"
+    },
+    {
+      "retailerId": "retailer-fallback",
+      "retailerEmail": "retailer@aurajewel.com",
+      "itemType": "Ring",
+      "purity": "22K",
+      "weight": 10,
+      "quantity": 1,
+      "notes": "",
+      "status": "In Production",
+      "createdAt": "2026-06-02T16:48:29.851Z",
+      "updatedAt": "2026-06-02T16:56:34.839Z",
+      "_id": "RO-1780418909851",
+      "karikarId": "mock_karikar_1780415236507_6u1r4x",
+      "karikarName": "bnm"
+    },
+    {
+      "retailerId": "retailer-fallback",
+      "retailerEmail": "retailer@aurajewel.com",
+      "itemType": "Ring",
+      "purity": "22K",
+      "weight": 5,
+      "quantity": 1,
+      "notes": "",
+      "status": "Pending",
+      "createdAt": "2026-06-03T06:20:16.436Z",
+      "updatedAt": "2026-06-03T06:20:16.436Z",
+      "_id": "RO-1780467616436"
+    },
+    {
+      "retailerId": "retailer-fallback",
+      "retailerEmail": "retailer@aurajewel.com",
+      "itemType": "Ring",
+      "purity": "22K",
+      "weight": 10,
+      "quantity": 1,
+      "notes": "",
+      "status": "In Production",
+      "createdAt": "2026-06-03T06:37:32.914Z",
+      "updatedAt": "2026-06-03T06:38:55.318Z",
+      "_id": "RO-1780468652915",
+      "karikarId": "mock_karikar_1780468712176_pw4v7b",
+      "karikarName": "bnm"
+    }
+  ],
+  "mockRates": [
+    {
+      "metal": "GOLD_24K",
+      "rate": 6200
+    },
+    {
+      "metal": "GOLD_22K",
+      "rate": 5600
+    },
+    {
+      "metal": "SILVER",
+      "rate": 75
+    }
+  ],
+  "mockInventory": [
+    {
+      "_id": "mock1",
+      "barcode": "MOCK1",
+      "name": "Gold Necklace",
+      "weight": 120,
+      "purity": "22K",
+      "type": "Necklace",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 672000,
+      "designCode": "DSGN-101",
+      "showcase": "Showcase A",
+      "tray": "Tray 1",
+      "inwardDate": "2026-05-29T18:10:42.911Z",
+      "sku": "SKU-N-001"
+    },
+    {
+      "_id": "mock2",
+      "barcode": "MOCK2",
+      "name": "Silver Coin",
+      "weight": 50,
+      "purity": "Fine",
+      "type": "Coin",
+      "stock": 10,
+      "status": "In Stock",
+      "price": 3750,
+      "designCode": "DSGN-102",
+      "showcase": "Showcase B",
+      "tray": "Tray 3",
+      "inwardDate": "2026-02-08T18:10:42.915Z",
+      "sku": "SKU-C-002"
+    },
+    {
+      "_id": "mock_bar_001",
+      "barcode": "BAR001",
+      "name": "Gold Item",
+      "weight": 10,
+      "purity": "80%",
+      "type": "Ring",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 52000,
+      "designCode": "DSGN-103",
+      "showcase": "Showcase A",
+      "tray": "Tray 2",
+      "inwardDate": "2026-04-24T18:10:42.915Z",
+      "sku": "SKU-R-003"
+    },
+    {
+      "_id": "mock_huid_001",
+      "barcode": "HUID1",
+      "sku": "HUID-TEST-001",
+      "huid": "HUID-TEST-001",
+      "branchId": "MAIN",
+      "status": "In Stock",
+      "name": "Gold Pendant",
+      "weight": 5,
+      "purity": "22K",
+      "type": "Necklace",
+      "stock": 1,
+      "price": 40000,
+      "designCode": "DSGN-101",
+      "showcase": "Showcase C",
+      "tray": "Tray 1",
+      "inwardDate": "2026-06-03T18:10:42.915Z"
+    },
+    {
+      "_id": "mock_diamond_001",
+      "barcode": "BAR_DIA_001",
+      "name": "Loose Round Solitaire",
+      "weight": 0.25,
+      "purity": "VVS1",
+      "type": "DIAMOND",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 45000,
+      "designCode": "DSGN-DIA-001",
+      "showcase": "HQ Vault",
+      "tray": "Diamond Tray 1",
+      "inwardDate": "2026-06-05T18:10:42.915Z",
+      "sku": "SKU-DIA-001",
+      "branchId": "MAIN",
+      "grossWeight": 0.25,
+      "netWeight": 0.25,
+      "fineWeight": 0.25,
+      "diamondWeight": 0.25,
+      "huid": "HUID-DIA-001",
+      "diamondCarat": 1.25,
+      "diamondCut": "Excellent",
+      "diamondColor": "F",
+      "diamondClarity": "VVS1",
+      "diamondType": "Natural"
+    },
+    {
+      "_id": "mock_diamond_002",
+      "barcode": "BAR_DIA_002",
+      "name": "Loose Cushion Cut Diamond",
+      "weight": 0.4,
+      "purity": "VS2",
+      "type": "DIAMOND",
+      "stock": 1,
+      "status": "In Stock",
+      "price": 85000,
+      "designCode": "DSGN-DIA-002",
+      "showcase": "HQ Vault",
+      "tray": "Diamond Tray 2",
+      "inwardDate": "2026-06-07T18:10:42.915Z",
+      "sku": "SKU-DIA-002",
+      "branchId": "MAIN",
+      "grossWeight": 0.4,
+      "netWeight": 0.4,
+      "fineWeight": 0.4,
+      "diamondWeight": 0.4,
+      "huid": "HUID-DIA-002",
+      "diamondCarat": 2,
+      "diamondCut": "Very Good",
+      "diamondColor": "G",
+      "diamondClarity": "VS2",
+      "diamondType": "Lab-Grown"
+    }
+  ],
+  "mockKhata": [
+    {
+      "_id": "k1",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "balance": 5000,
+      "transactions": []
+    }
+  ],
+  "mockOrders": [
+    {
+      "_id": "mock_order_1",
+      "customer": "Rajesh Sharma",
+      "customerName": "Rajesh Sharma",
+      "customerPhone": "9876543299",
+      "customerEmail": "rajesh@gmail.com",
+      "metalType": "GOLD",
+      "carat": "22K",
+      "priority": "High",
+      "status": "PROCESSING",
+      "items": [
+        {
+          "category": "Necklace",
+          "weight": 45,
+          "description": "Bridal choker gold necklace"
+        }
+      ],
+      "billingSummary": {
+        "issuedGrams": 45,
+        "sellingPrice": 250000,
+        "totalPrice": 257500,
+        "gstRate": 3,
+        "gstAmount": 7500
+      },
+      "deadline": "2026-06-18T18:10:42.930Z",
+      "createdAt": "2026-06-05T18:10:42.930Z"
+    },
+    {
+      "_id": "mock_order_2",
+      "customer": "Raj Kumar",
+      "customerName": "Raj Kumar",
+      "customerPhone": "9999999999",
+      "metalType": "GOLD",
+      "carat": "22K",
+      "priority": "Normal",
+      "status": "PENDING",
+      "items": [
+        {
+          "category": "Ring",
+          "weight": 6,
+          "description": "Men's polished gold band"
+        }
+      ],
+      "billingSummary": {
+        "issuedGrams": 6,
+        "sellingPrice": 34000,
+        "totalPrice": 35020,
+        "gstRate": 3,
+        "gstAmount": 1020
+      },
+      "deadline": "2026-06-23T18:10:42.930Z",
+      "createdAt": "2026-06-07T18:10:42.931Z"
+    }
+  ],
+  "mockSales": [
+    {
+      "_id": "sale_1",
+      "orderId": "INV-2026-001",
+      "estimateId": "EST-901",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "customerEmail": "anil@example.com",
+      "items": [
+        {
+          "barcode": "MOCK1",
+          "name": "Gold Temple Necklace",
+          "weight": 50,
+          "purity": "22K",
+          "price": 280000,
+          "total": 280000,
+          "makingCharge": 12000
+        }
+      ],
+      "subtotal": 280000,
+      "discount": 10000,
+      "tax": 8100,
+      "total": 278100,
+      "exchangeDiscount": 0,
+      "payable": 278100,
+      "paymentMethod": "Bank Transfer",
+      "payments": [
+        {
+          "method": "Bank Transfer",
+          "amount": 278100
+        }
+      ],
+      "status": "completed",
+      "branchCode": "MAIN",
+      "createdAt": "2026-05-24T18:10:42.937Z"
+    },
+    {
+      "_id": "sale_2",
+      "orderId": "INV-2026-002",
+      "estimateId": "EST-902",
+      "customerId": "cust_2",
+      "customerName": "Priyanka Sen",
+      "customerPhone": "9811223344",
+      "items": [
+        {
+          "barcode": "MOCK2",
+          "name": "Victorian Silver Coins",
+          "weight": 80,
+          "purity": "Fine",
+          "price": 60000,
+          "total": 60000,
+          "makingCharge": 2000
+        }
+      ],
+      "subtotal": 60000,
+      "discount": 2000,
+      "tax": 1740,
+      "total": 59740,
+      "exchangeDiscount": 0,
+      "payable": 59740,
+      "paymentMethod": "UPI",
+      "payments": [
+        {
+          "method": "UPI",
+          "amount": 59740
+        }
+      ],
+      "status": "completed",
+      "branchCode": "DELHI",
+      "createdAt": "2026-05-29T18:10:42.938Z"
+    },
+    {
+      "_id": "sale_3",
+      "orderId": "INV-2026-003",
+      "estimateId": "EST-903",
+      "customerId": "cust_3",
+      "customerName": "Rahul Hegde",
+      "customerPhone": "9845098450",
+      "items": [
+        {
+          "barcode": "BAR001",
+          "name": "Solitaire Diamond Ring",
+          "weight": 8,
+          "purity": "18K",
+          "price": 150000,
+          "total": 150000,
+          "makingCharge": 8000
+        }
+      ],
+      "subtotal": 150000,
+      "discount": 5000,
+      "tax": 4350,
+      "total": 149350,
+      "exchangeDiscount": 0,
+      "payable": 149350,
+      "paymentMethod": "Credit Card",
+      "payments": [
+        {
+          "method": "Credit Card",
+          "amount": 149350
+        }
+      ],
+      "status": "completed",
+      "branchCode": "BLR",
+      "createdAt": "2026-06-01T18:10:42.938Z"
+    },
+    {
+      "_id": "sale_4",
+      "orderId": "INV-2026-004",
+      "estimateId": "EST-904",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "items": [
+        {
+          "barcode": "HUID1",
+          "name": "Gold Kada Bangles",
+          "weight": 30,
+          "purity": "22K",
+          "price": 168000,
+          "total": 168000,
+          "makingCharge": 6000
+        }
+      ],
+      "subtotal": 168000,
+      "discount": 8000,
+      "tax": 4800,
+      "total": 164800,
+      "exchangeDiscount": 15000,
+      "payable": 149800,
+      "paymentMethod": "Mixed",
+      "payments": [
+        {
+          "method": "Cash",
+          "amount": 49800
+        },
+        {
+          "method": "UPI",
+          "amount": 100000
+        }
+      ],
+      "status": "completed",
+      "branchCode": "MAIN",
+      "createdAt": "2026-06-05T18:10:42.938Z"
+    },
+    {
+      "_id": "sale_5",
+      "orderId": "INV-2026-005",
+      "estimateId": "EST-905",
+      "customerId": "cust_4",
+      "customerName": "Sonia Sharma",
+      "customerPhone": "9988776655",
+      "items": [
+        {
+          "barcode": "BAR002",
+          "name": "Gold Floral Choker",
+          "weight": 15,
+          "purity": "22K",
+          "price": 84000,
+          "total": 84000,
+          "makingCharge": 4000
+        }
+      ],
+      "subtotal": 84000,
+      "discount": 0,
+      "tax": 2520,
+      "total": 86520,
+      "exchangeDiscount": 0,
+      "payable": 86520,
+      "paymentMethod": "UPI",
+      "payments": [
+        {
+          "method": "UPI",
+          "amount": 86520
+        }
+      ],
+      "status": "completed",
+      "branchCode": "DELHI",
+      "createdAt": "2026-06-07T18:10:42.938Z"
+    }
+  ],
+  "mockKarikars": [
+    {
+      "_id": "mock_karikar_1",
+      "name": "Bhavesh Goldsmith",
+      "email": "bhaveshkarikar@gmail.com",
+      "password": "karikar_pass",
+      "aadhar": "1111-2222-3333",
+      "goldStock": 25.5,
+      "ledgerBalance": 4500,
+      "jobCards": [
+        {
+          "_id": "JC-101",
+          "orderId": "mock_order_1",
+          "issuedGrossWeight": 45,
+          "issuedAlloy": 1.5,
+          "issuedGoldWeight": 43.5,
+          "issuedPurity": "22K",
+          "issuedStones": [],
+          "dueDate": "2026-06-13T18:10:42.944Z",
+          "status": "OPEN",
+          "issuedAt": "2026-06-06T18:10:42.944Z"
+        }
+      ],
+      "settlements": [
+        {
+          "_id": "settle_1",
+          "amount": 2000,
+          "type": "DEBIT",
+          "paymentMethod": "CASH",
+          "note": "Weekly wage advance",
+          "createdAt": "2026-06-02T18:10:42.944Z"
+        }
+      ],
+      "metalReturns": [],
+      "assignedWork": "mock_order_1",
+      "workDescription": "Gold bridal necklace polishing",
+      "status": "ACTIVE",
+      "createdAt": "2026-03-10T18:10:42.944Z"
+    }
+  ],
+  "mockOldGoldPurchases": [
+    {
+      "purchaseId": "OGP-9081",
+      "customerName": "Sonia Sharma",
+      "customerPhone": "9988776655",
+      "metalType": "GOLD",
+      "weight": 18.5,
+      "purity": "20K",
+      "ratePerGram": 5400,
+      "totalPaid": 83160,
+      "paymentMethod": "Bank Transfer",
+      "createdAt": "2026-06-03T18:10:42.953Z"
+    },
+    {
+      "purchaseId": "OGP-2026-002",
+      "customerName": "Ramesh Patel",
+      "customerPhone": "9822334455",
+      "metalType": "GOLD",
+      "weight": 24.0,
+      "purity": "22K",
+      "ratePerGram": 6200,
+      "totalPaid": 148800,
+      "paymentMethod": "Cash",
+      "createdAt": "2026-06-15T10:20:00.000Z"
+    },
+    {
+      "purchaseId": "OGP-2026-003",
+      "customerName": "Kiran Desai",
+      "customerPhone": "9744556677",
+      "metalType": "GOLD",
+      "weight": 10.5,
+      "purity": "18K",
+      "ratePerGram": 4800,
+      "totalPaid": 50400,
+      "paymentMethod": "UPI",
+      "createdAt": "2026-06-22T09:00:00.000Z"
+    },
+    {
+      "purchaseId": "OGP-2026-004",
+      "customerName": "Anjali Singh",
+      "customerPhone": "9654321087",
+      "metalType": "SILVER",
+      "weight": 150.0,
+      "purity": "925",
+      "ratePerGram": 90,
+      "totalPaid": 13500,
+      "paymentMethod": "UPI",
+      "createdAt": "2026-07-01T11:30:00.000Z"
+    },
+    {
+      "purchaseId": "OGP-2026-005",
+      "customerName": "Vikram Mehta",
+      "customerPhone": "9123456780",
+      "metalType": "GOLD",
+      "weight": 35.0,
+      "purity": "22K",
+      "ratePerGram": 6350,
+      "totalPaid": 222250,
+      "paymentMethod": "Bank Transfer",
+      "createdAt": "2026-07-08T14:00:00.000Z"
+    }
+  ],
+  "mockOldGoldStock": [
+    {
+      "_id": "ogs_1",
+      "itemType": "Bangles",
+      "grossWeight": 18.5,
+      "purity": "20K",
+      "status": "In Vault",
+      "inwardDate": "2026-06-03T18:10:42.960Z"
+    },
+    {
+      "stockId": "OG-MQAPSKMF-Q0HR",
+      "purchaseId": "OGP-MQAPSKM5-PCY2",
+      "availableWeight": 11,
+      "purity": "22K",
+      "status": "available",
+      "createdAt": "2026-06-12T09:18:56.103Z"
+    }
+  ],
+  "mockOldGoldDeductions": [],
+  "mockOldGoldIssuances": [],
+  "mockOldGoldMeltingLogs": [
+    {
+      "lotNumber": "ML-2026-001",
+      "rawWeight": 35.0,
+      "fineWeight": 34.6,
+      "lossWeight": 0.4,
+      "createdAt": "2026-05-24T18:10:42.979Z"
+    },
+    {
+      "lotNumber": "ML-2026-002",
+      "rawWeight": 52.0,
+      "fineWeight": 51.2,
+      "lossWeight": 0.8,
+      "createdAt": "2026-06-10T09:00:00.000Z"
+    },
+    {
+      "lotNumber": "ML-2026-003",
+      "rawWeight": 28.5,
+      "fineWeight": 28.1,
+      "lossWeight": 0.4,
+      "createdAt": "2026-06-20T11:30:00.000Z"
+    },
+    {
+      "lotNumber": "ML-2026-004",
+      "rawWeight": 75.0,
+      "fineWeight": 73.8,
+      "lossWeight": 1.2,
+      "createdAt": "2026-07-01T10:00:00.000Z"
+    },
+    {
+      "lotNumber": "ML-2026-005",
+      "rawWeight": 18.0,
+      "fineWeight": 17.7,
+      "lossWeight": 0.3,
+      "createdAt": "2026-07-08T15:00:00.000Z"
+    }
+  ],
+  "mockDesigns": [
+    {
+      "_id": "design_1",
+      "designCode": "DSGN-101",
+      "name": "Bridal Temple Necklace",
+      "category": "Necklace",
+      "metalType": "GOLD",
+      "standardPurity": "22K",
+      "minStockThreshold": 3,
+      "description": "Elegant traditional wedding temple necklace",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-06-08T18:10:42.991Z"
+    },
+    {
+      "_id": "design_2",
+      "designCode": "DSGN-102",
+      "name": "Victoria Silver Coin",
+      "category": "Coin",
+      "metalType": "SILVER",
+      "standardPurity": "Fine",
+      "minStockThreshold": 5,
+      "description": "999 Fine Silver Coin with Victorian engraving",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-06-08T18:10:42.992Z"
+    },
+    {
+      "_id": "design_3",
+      "designCode": "DSGN-103",
+      "name": "Solitaire Diamond Ring",
+      "category": "Ring",
+      "metalType": "GOLD",
+      "standardPurity": "18K",
+      "minStockThreshold": 2,
+      "description": "Classic 1-carat diamond solitaire gold ring",
+      "image": "",
+      "units": 0,
+      "createdAt": "2026-06-08T18:10:42.992Z"
+    }
+  ],
+  "mockWishlists": [
+    {
+      "_id": "wish_1",
+      "customerId": "cust_1",
+      "customerName": "Anil Mehta",
+      "designCode": "DSGN-101",
+      "designName": "Bridal Temple Necklace",
+      "addedAt": "2026-06-08T18:10:43.008Z"
+    }
+  ],
+  "mockBranches": [
+    {
+      "_id": "branch_main",
+      "name": "Main HQ - Mumbai",
+      "code": "MAIN",
+      "address": "101 Gold Plaza, Zaveri Bazaar",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400002",
+      "phone": "9876543210",
+      "email": "hq@aurajewel.com",
+      "managerName": "Aditya Mehta",
+      "isMainBranch": true,
+      "status": "ACTIVE"
+    },
+    {
+      "_id": "branch_delhi",
+      "name": "Delhi - Connaught Place",
+      "code": "DELHI",
+      "address": "G-12 Regal Building, CP",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "pincode": "110001",
+      "phone": "9876543211",
+      "email": "delhi@aurajewel.com",
+      "managerName": "Rajesh Sharma",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    },
+    {
+      "_id": "branch_blr",
+      "name": "Bangalore - Indiranagar",
+      "code": "BLR",
+      "address": "404 100ft Road, Indiranagar",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pincode": "560038",
+      "phone": "9876543212",
+      "email": "blr@aurajewel.com",
+      "managerName": "Karan Hegde",
+      "isMainBranch": false,
+      "status": "ACTIVE"
+    }
+  ],
+  "mockTransfers": [
+    {
+      "transferId": "TRF-A183K",
+      "fromBranchCode": "MAIN",
+      "toBranchCode": "DELHI",
+      "status": "PENDING_APPROVAL",
+      "items": [
+        {
+          "sku": "SKU-N-001",
+          "name": "Gold Temple Necklace",
+          "quantity": 2,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-06-06T18:10:43.021Z",
+      "notes": "Restocking requested due to upcoming wedding season showcase."
+    },
+    {
+      "transferId": "TRF-B928J",
+      "fromBranchCode": "MAIN",
+      "toBranchCode": "BLR",
+      "status": "APPROVED",
+      "items": [
+        {
+          "sku": "SKU-C-002",
+          "name": "Victorian Silver Coins",
+          "quantity": 15,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-06-04T18:10:43.022Z",
+      "notes": "Approved bulk silver inventory dispatch."
+    },
+    {
+      "transferId": "TRF-C837D",
+      "fromBranchCode": "DELHI",
+      "toBranchCode": "MAIN",
+      "status": "RECEIVED",
+      "items": [
+        {
+          "sku": "SKU-R-003",
+          "name": "Solitaire Diamond Ring",
+          "quantity": 1,
+          "unit": "units"
+        }
+      ],
+      "createdAt": "2026-05-31T18:10:43.022Z",
+      "receivedAt": "2026-06-02T18:10:43.022Z",
+      "receivedBy": "Aditya Mehta",
+      "notes": "Surplus stock return transfer."
+    }
+  ],
+  "mockAmlLogs": [
+    {
+      "logId": "AML-2026-001",
+      "customerName": "Anil Mehta",
+      "customerPhone": "9876543210",
+      "amount": 278100,
+      "paymentMethod": "Bank Transfer",
+      "panNumber": "ABCDE1234F",
+      "flaggedReason": "High-value sale transaction exceeding ₹2 Lakhs limit",
+      "createdAt": "2026-05-24T18:10:43.031Z"
+    }
+  ],
+  "mockGoldLoans": [
+    {
+      "loanId": "L-2026-001",
+      "customerName": "Suresh Kumar",
+      "customerPhone": "9988776655",
+      "weightGrams": 45,
+      "purity": "22K",
+      "evaluatedValue": 240000,
+      "loanAmount": 180000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-05-09T18:10:43.042Z",
+      "dueDate": "2026-11-05T18:10:43.043Z"
+    },
+    {
+      "loanId": "L-2026-002",
+      "customerName": "Ramesh Patel",
+      "customerPhone": "9822334455",
+      "weightGrams": 30,
+      "purity": "22K",
+      "evaluatedValue": 180000,
+      "loanAmount": 135000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-06-15T10:20:27.839Z",
+      "dueDate": "2026-12-12T10:20:27.839Z"
+    },
+    {
+      "loanId": "L-2026-003",
+      "customerName": "Priya Nair",
+      "customerPhone": "9744556677",
+      "weightGrams": 60,
+      "purity": "22K",
+      "evaluatedValue": 360000,
+      "loanAmount": 250000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-06-20T10:20:27.839Z",
+      "dueDate": "2026-12-17T10:20:27.839Z"
+    },
+    {
+      "loanId": "L-2026-004",
+      "customerName": "Amit Shah",
+      "customerPhone": "9122334455",
+      "weightGrams": 100,
+      "purity": "24K",
+      "evaluatedValue": 650000,
+      "loanAmount": 480000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-06-25T10:20:27.839Z",
+      "dueDate": "2026-12-22T10:20:27.839Z"
+    },
+    {
+      "loanId": "L-2026-005",
+      "customerName": "Vikram Malhotra",
+      "customerPhone": "9899112233",
+      "weightGrams": 15,
+      "purity": "22K",
+      "evaluatedValue": 90000,
+      "loanAmount": 65000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-06-30T10:20:27.839Z",
+      "dueDate": "2026-12-27T10:20:27.839Z"
+    },
+    {
+      "loanId": "L-2026-006",
+      "customerName": "Deepa Rao",
+      "customerPhone": "9344551122",
+      "weightGrams": 40,
+      "purity": "18K",
+      "evaluatedValue": 200000,
+      "loanAmount": 140000,
+      "interestRate": 9.5,
+      "status": "ACTIVE",
+      "createdAt": "2026-07-05T10:20:27.839Z",
+      "dueDate": "2027-01-01T10:20:27.839Z"
+    }
+  ],
+  "mockManufacturerBarcodes": [],
+  "mockRetailerBarcodes": []
+}
