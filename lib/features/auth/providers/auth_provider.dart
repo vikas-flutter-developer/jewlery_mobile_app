@@ -208,6 +208,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await LocalDb.clearAll();
     state = AuthState(isAuthenticated: false, isLoading: false, isInitializing: false);
   }
+
+  Future<void> updateLocalProfile(Map<String, dynamic> updatedProfile) async {
+    await LocalDb.saveProfile(updatedProfile);
+    state = state.copyWith(user: updatedProfile);
+  }
 }
 
 // Global Auth State Provider

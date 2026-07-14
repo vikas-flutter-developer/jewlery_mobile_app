@@ -12,6 +12,7 @@ import '../../../core/models/transaction.dart';
 import '../providers/app_providers.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/customer_provider.dart';
+import '../../../core/network/api_client.dart';
 import 'scheme_list_screen.dart';
 import 'scheme_passbook_screen.dart';
 import 'custom_order_form_screen.dart';
@@ -25,6 +26,7 @@ import 'support_screen.dart';
 import 'search_page.dart';
 import 'care_guide_page.dart';
 import 'saved_addresses_page.dart';
+import 'customer_referral_screen.dart';
 
 class CustomerDashboard extends ConsumerStatefulWidget {
   const CustomerDashboard({super.key});
@@ -134,7 +136,7 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> with Tick
   Widget _buildBody(String phone, Map<String, dynamic>? user) {
     switch (_currentIndex) {
       case 0:
-        return _buildCatalogTab();
+        return _buildCatalogTab(user);
       case 1:
         return _buildSchemesTab();
       case 2:
@@ -146,7 +148,11 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> with Tick
   }
 
   // ── Tab 0: Integrated Shop Catalog ─────────────────────────────────────
-  Widget _buildCatalogTab() {
+  Widget _buildCatalogTab(Map<String, dynamic>? user) {
+    final String displayName = user != null && user['name'] != null && user['name'].toString().isNotEmpty && user['name'] != 'Portal Customer' && user['name'] != 'Portal Guest Customer'
+        ? user['name']
+        : 'Guest Customer';
+
     final products = ref.watch(filteredProductsProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final sortOption = ref.watch(sortOptionProvider);
@@ -171,38 +177,48 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> with Tick
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppTheme.goldMetallic, width: 1.5),
-                          image: const DecorationImage(
-                            image: NetworkImage('https://ui-avatars.com/api/?name=Mehta+Jewellers&background=E5C158&color=ffffff&bold=true'),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      GestureDetector(
+                        onTap: () {
+                          _showEditProfileDialog(context, ref, user);
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              'Good afternoon,',
-                              style: TextStyle(color: Colors.black38, fontSize: 11, fontWeight: FontWeight.w500),
-                            ),
-                            Text(
-                              'Mehta Jewellers',
-                              style: TextStyle(
-                                color: Color(0xFF4A3E1B),
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'serif',
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppTheme.goldMetallic, width: 1.5),
+                                image: DecorationImage(
+                                  image: NetworkImage('https://ui-avatars.com/api/?name=${Uri.encodeComponent(displayName)}&background=E5C158&color=ffffff&bold=true'),
+                                ),
                               ),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Good afternoon,',
+                                  style: TextStyle(color: Colors.black38, fontSize: 11, fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  displayName,
+                                  style: const TextStyle(
+                                    color: Color(0xFF4A3E1B),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'serif',
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
+                      const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.favorite_border_rounded, color: AppTheme.goldDark, size: 22),
                         onPressed: () {
@@ -899,6 +915,29 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> with Tick
           const SizedBox(height: 16),
 
           _buildProfileMenuItem(
+            icon: Icons.person_outline_rounded,
+            title: 'Edit Profile Details',
+            subtitle: 'Update your name, email, address, and PAN card details',
+            onTap: () {
+              _showEditProfileDialog(context, ref, user);
+            },
+          ),
+          const SizedBox(height: 12),
+
+          _buildProfileMenuItem(
+            icon: Icons.share_outlined,
+            title: 'Refer & Earn',
+            subtitle: 'Invite friends and earn premium discount vouchers',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CustomerReferralScreen()),
+              );
+            },
+          ),
+          const SizedBox(height: 12),
+
+          _buildProfileMenuItem(
             icon: Icons.local_shipping_outlined,
             title: 'My Orders',
             subtitle: 'Track and view previous purchases',
@@ -1026,6 +1065,119 @@ class _CustomerDashboardState extends ConsumerState<CustomerDashboard> with Tick
           ],
         ),
       ),
+    );
+  }
+
+  void _showEditProfileDialog(BuildContext context, WidgetRef ref, Map<String, dynamic>? user) {
+    final nameController = TextEditingController(
+      text: user?['name'] == 'Portal Customer' || user?['name'] == 'Portal Guest Customer' ? '' : user?['name'] ?? ''
+    );
+    final emailController = TextEditingController(text: user?['email']?.contains('@customer.com') == true ? '' : user?['email'] ?? '');
+    final panController = TextEditingController(text: user?['panNumber'] ?? '');
+    final addressController = TextEditingController(text: user?['address'] ?? '');
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Text(
+            'Edit Profile Details',
+            style: TextStyle(fontFamily: 'serif', fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B)),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Full Name', hintText: 'Enter your full name'),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Email Address', hintText: 'e.g. john@example.com'),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: panController,
+                  decoration: const InputDecoration(labelText: 'PAN Card Number', hintText: 'e.g. ABCDE1234F'),
+                  textCapitalization: TextCapitalization.characters,
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: addressController,
+                  decoration: const InputDecoration(labelText: 'Residential Address', hintText: 'Enter billing/shipping address'),
+                  maxLines: 2,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark, foregroundColor: Colors.white),
+              onPressed: () async {
+                final name = nameController.text.trim();
+                final email = emailController.text.trim();
+                final pan = panController.text.trim().toUpperCase();
+                final address = addressController.text.trim();
+
+                if (name.isEmpty || email.isEmpty || pan.isEmpty || address.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please fill all profile fields to save.'), backgroundColor: Colors.red),
+                  );
+                  return;
+                }
+
+                try {
+                  final res = await api.put('/portal/profile', data: {
+                    'name': name,
+                    'email': email,
+                    'panNumber': pan,
+                    'address': address,
+                  });
+
+                  if (res.data != null && res.data['success'] == true) {
+                    final updatedUser = {
+                      ...user ?? {},
+                      'name': name,
+                      'email': email,
+                      'panNumber': pan,
+                      'address': address,
+                    };
+                    await ref.read(authProvider.notifier).updateLocalProfile(updatedUser);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Profile details updated successfully!'), backgroundColor: Colors.green),
+                      );
+                    }
+                  } else {
+                    final err = res.data?['error'] ?? 'Failed to update profile details';
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $err'), backgroundColor: Colors.red),
+                      );
+                    }
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error saving: ${e.toString()}'), backgroundColor: Colors.red),
+                    );
+                  }
+                }
+              },
+              child: const Text('Save Profile'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

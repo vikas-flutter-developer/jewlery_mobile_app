@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
+import jwt from "jsonwebtoken";
 import { Customer, SchemeEnrollment, Order, PortalCheckout, CustomerAccount, LedgerHistory, CustomerLoyaltyPoints, SchemeDefinition, Installment } from "../../models/index.js";
 import { isDbConnected } from "../../../lib/serverState.js";
 import { 
@@ -98,133 +99,14 @@ export const mockSchemeDefinitions: any[] = [
     goldWeightBased: false,
     description: "Flat cash discount benefit scheme. Pay 10 installments, get 1 installment free on maturity purchase.",
     status: "ACTIVE"
-  },
-  {
-    _id: "def_platinum_elite",
-    name: "Aura Platinum Elite Club Plan",
-    type: "GOLD_SAVING",
-    monthlyAmount: 15000,
-    totalInstallments: 12,
-    bonusAmount: 15000,
-    goldWeightBased: false,
-    description: "Elite platinum accumulation plan with free making charges on maturity.",
-    status: "ACTIVE"
-  },
-  {
-    _id: "def_diamond_sparkle",
-    name: "Aura Diamond Sparkle Chit",
-    type: "CHIT_FUND",
-    monthlyAmount: 20000,
-    totalInstallments: 10,
-    bonusAmount: 20000,
-    goldWeightBased: false,
-    description: "Flat diamond chit scheme. Get 1 installment free and 10% extra bonus points on diamonds.",
-    status: "ACTIVE"
-  },
-  {
-    _id: "def_mini_suvarna",
-    name: "Aura Mini Suvarna Savings",
-    type: "GOLD_SAVING",
-    monthlyAmount: 2000,
-    totalInstallments: 11,
-    bonusAmount: 2000,
-    goldWeightBased: true,
-    description: "Affordable weight-based gold savings for every budget. Pay 11 months, get 1 month free.",
-    status: "ACTIVE"
   }
 ];
-
-export const enrollInScheme = async (req: Request, res: Response) => {
-  try {
-    const { phone, schemeId } = req.body;
-    if (!phone || !schemeId) {
-      return res.status(400).json({ success: false, error: "phone and schemeId are required." });
-    }
-    
-    let schemeDef: any;
-    if (isDbConnected()) {
-      schemeDef = await SchemeDefinition.findById(schemeId);
-    } else {
-      schemeDef = mockSchemeDefinitions.find(d => d._id === schemeId);
-    }
-
-    if (!schemeDef) {
-      return res.status(404).json({ success: false, error: "Scheme plan definition not found." });
-    }
-
-    let enrollment: any;
-    if (isDbConnected()) {
-      enrollment = await SchemeEnrollment.create({
-        enrollmentId: `SCH-ENR-${Math.floor(1000 + Math.random() * 9000)}`,
-        customerId: phone,
-        customerName: "Portal Customer",
-        customerPhone: phone,
-        schemeId: schemeDef._id,
-        schemeName: schemeDef.name,
-        schemeType: schemeDef.type,
-        monthlyAmount: schemeDef.monthlyAmount,
-        totalInstallments: schemeDef.totalInstallments,
-        completedInstallments: 0,
-        paidAmount: 0,
-        goldAccumulated: 0,
-        status: "ACTIVE",
-        nextDueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        installments: []
-      });
-    } else {
-      enrollment = {
-        enrollmentId: `SCH-ENR-E${Math.floor(1000 + Math.random() * 9000)}`,
-        customerId: `cust_${phone}`,
-        customerName: "Portal Customer",
-        customerPhone: phone,
-        schemeName: schemeDef.name,
-        schemeType: schemeDef.type,
-        monthlyAmount: schemeDef.monthlyAmount,
-        totalInstallments: schemeDef.totalInstallments,
-        completedInstallments: 0,
-        paidAmount: 0,
-        goldAccumulated: 0,
-        status: "ACTIVE",
-        nextDueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        installments: []
-      };
-      await addFallbackEnrollment(enrollment);
-    }
-
-    return res.status(201).json({
-      success: true,
-      message: "Successfully enrolled in scheme plan!",
-      data: enrollment
-    });
-  } catch (error: any) {
-    console.error("Failed to enroll in scheme", error);
-    return res.status(500).json({ success: false, error: error.message || "Failed to enroll in scheme." });
-  }
-};
 
 export const getAvailableSchemes = async (req: Request, res: Response) => {
   try {
     let schemes: any[];
     if (isDbConnected()) {
       schemes = await SchemeDefinition.find({ status: "ACTIVE" }).lean();
-      if (schemes.length < 5) {
-        for (const def of mockSchemeDefinitions) {
-          const exists = await SchemeDefinition.findOne({ name: def.name });
-          if (!exists) {
-            await SchemeDefinition.create({
-              name: def.name,
-              type: def.type,
-              monthlyAmount: def.monthlyAmount,
-              totalInstallments: def.totalInstallments,
-              bonusAmount: def.bonusAmount,
-              goldWeightBased: def.goldWeightBased,
-              description: def.description,
-              status: "ACTIVE"
-            });
-          }
-        }
-        schemes = await SchemeDefinition.find({ status: "ACTIVE" }).lean();
-      }
     } else {
       schemes = mockSchemeDefinitions;
     }
@@ -264,13 +146,23 @@ export const requestOtp = async (req: Request, res: Response) => {
     if (isDbConnected()) {
       customer = await Customer.findOne({ phone: cleanPhone });
       if (!customer) {
+        // Generate random PAN to satisfy unique index constraint on customer collection
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const nums = "0123456789";
+        let randPan = "";
+        for (let i = 0; i < 5; i++) randPan += chars[Math.floor(Math.random() * chars.length)];
+        for (let i = 0; i < 4; i++) randPan += nums[Math.floor(Math.random() * nums.length)];
+        randPan += chars[Math.floor(Math.random() * chars.length)];
+
         // Auto-register customer for frictionless self-service portal access
         customer = await Customer.create({
           name: "Portal Customer",
           phone: cleanPhone,
           loyaltyPoints: 100,
           kycStatus: "PENDING",
-          tags: ["PORTAL_USER"]
+          tags: ["PORTAL_USER"],
+          panNumber: randPan,
+          tenantId: "shop-1779518126045-txlhr"
         });
       }
     } else {
@@ -305,13 +197,12 @@ export const requestOtp = async (req: Request, res: Response) => {
 
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
-    const { phone, code, otp } = req.body;
-    const verificationCode = code || otp;
-    if (!phone || !verificationCode) {
+    const { phone, code } = req.body;
+    if (!phone || !code) {
       return res.status(400).json({ success: false, error: "Phone and verification OTP code are required." });
     }
 
-    if (verificationCode !== "123456") {
+    if (code !== "123456") {
       return res.status(400).json({ success: false, error: "Invalid verification code entered." });
     }
 
@@ -362,11 +253,23 @@ export const verifyOtp = async (req: Request, res: Response) => {
       }
     }
 
+    const JWT_SECRET = process.env.JWT_SECRET || "aurajewel_secret_key_2026";
+    const token = jwt.sign(
+      {
+        id: customer._id?.toString() || cleanPhone,
+        email: customer.email || `${cleanPhone}@customer.com`,
+        role: "CUSTOMER",
+        tenantId: customer.tenantId || "shop-1779518126045-txlhr",
+      },
+      JWT_SECRET,
+      { expiresIn: "30d" }
+    );
+
     return res.status(200).json({
       success: true,
       message: "Customer verified and authenticated successfully!",
       data: {
-        token: `portal_jwt_${Date.now()}`,
+        token,
         customer
       }
     });
@@ -387,64 +290,6 @@ export const getCustomerSchemes = async (req: Request, res: Response) => {
     if (isDbConnected()) {
       const filter = cleanPhone ? { customerPhone: cleanPhone } : {};
       enrollments = await SchemeEnrollment.find(filter).populate('schemeId').lean();
-
-      if (cleanPhone && enrollments.length === 0) {
-        let schemeDef = await SchemeDefinition.findOne({ status: "ACTIVE" });
-        if (!schemeDef) {
-          schemeDef = await SchemeDefinition.create({
-            name: "Aura Suvarna Vriddhi Savings Scheme",
-            type: "GOLD_SAVING",
-            monthlyAmount: 5000,
-            totalInstallments: 11,
-            bonusAmount: 5000,
-            goldWeightBased: true,
-            description: "Pay 11 installments, get 1 installment as bonus. Accumulate gold weight monthly at live rates.",
-            status: "ACTIVE"
-          });
-        }
-        
-        const seeded = [
-          {
-            enrollmentId: `SCH-ENR-${Math.floor(1000 + Math.random() * 9000)}`,
-            customerId: cleanPhone,
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            schemeId: schemeDef._id,
-            schemeName: schemeDef.name,
-            schemeType: schemeDef.type,
-            monthlyAmount: schemeDef.monthlyAmount,
-            totalInstallments: schemeDef.totalInstallments,
-            completedInstallments: 5,
-            paidAmount: 25000,
-            goldAccumulated: 4.120,
-            status: "ACTIVE",
-            nextDueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-            installments: []
-          },
-          {
-            enrollmentId: `SCH-ENR-${Math.floor(1000 + Math.random() * 9000)}`,
-            customerId: cleanPhone,
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            schemeId: schemeDef._id,
-            schemeName: "Aura Dhanavarsha Gold Chit Plan",
-            schemeType: "CHIT_FUND",
-            monthlyAmount: 10000,
-            totalInstallments: 10,
-            completedInstallments: 8,
-            paidAmount: 80000,
-            goldAccumulated: 0.0,
-            status: "ACTIVE",
-            nextDueDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000),
-            installments: []
-          }
-        ];
-        
-        for (const item of seeded) {
-          await SchemeEnrollment.create(item);
-        }
-        enrollments = await SchemeEnrollment.find(filter).populate('schemeId').lean();
-      }
     } else {
       const allEnrollments = await getAllFallbackEnrollments();
       let matched = allEnrollments;
@@ -452,42 +297,9 @@ export const getCustomerSchemes = async (req: Request, res: Response) => {
         matched = allEnrollments.filter(e => e.customerPhone === cleanPhone);
       }
 
-      if (cleanPhone && matched.length === 0) {
-        const seededSchemes = [
-          {
-            enrollmentId: `SCH-ENR-A${Math.floor(1000 + Math.random() * 9000)}`,
-            customerId: `cust_${cleanPhone}`,
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            schemeName: "Aura Suvarna Vriddhi Savings Scheme",
-            schemeType: "GOLD_SAVING",
-            monthlyAmount: 5000,
-            totalInstallments: 11,
-            completedInstallments: 5,
-            paidAmount: 25000,
-            goldAccumulated: 4.12,
-            status: "ACTIVE",
-            nextDueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-            installments: []
-          },
-          {
-            enrollmentId: `SCH-ENR-B${Math.floor(1000 + Math.random() * 9000)}`,
-            customerId: `cust_${cleanPhone}`,
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            schemeName: "Aura Dhanavarsha Gold Chit Plan",
-            schemeType: "CHIT_FUND",
-            monthlyAmount: 10000,
-            totalInstallments: 10,
-            completedInstallments: 8,
-            paidAmount: 80000,
-            goldAccumulated: 0.0,
-            status: "ACTIVE",
-            nextDueDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000).toISOString(),
-            installments: []
-          }
-        ];
-        for (const scheme of seededSchemes) {
+      // If we don't have any enrollments for this phone number and it's the mock phone, seed it to fallbackStore
+      if (cleanPhone === "9999999999" && matched.length === 0) {
+        for (const scheme of mockPortalSchemes) {
           if (!allEnrollments.some(e => e.enrollmentId === scheme.enrollmentId)) {
             await addFallbackEnrollment(scheme);
           }
@@ -675,165 +487,9 @@ export const getCustomOrders = async (req: Request, res: Response) => {
     if (isDbConnected()) {
       const filter = hasPhone ? { customerPhone: cleanPhone, isCustom: true } : { isCustom: true };
       orders = await Order.find(filter).sort({ createdAt: -1 }).lean();
-
-      if (hasPhone && orders.length < 5) {
-        const seededOrders = [
-          {
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            customerContact: cleanPhone,
-            isCustom: true,
-            status: "In Production",
-            metalType: "GOLD",
-            carat: "22K",
-            customDescription: "Traditional Kerala Style Jhumka Earrings with ruby details.",
-            designApproval: "APPROVED",
-            createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
-          },
-          {
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            customerContact: cleanPhone,
-            isCustom: true,
-            status: "CAD Design Shared",
-            metalType: "PLATINUM",
-            carat: "18K",
-            customDescription: "Sleek Solitaire Engagement Ring, White Gold with 1.2ct central VVS diamond.",
-            designApproval: "PENDING",
-            createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
-          },
-          {
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            customerContact: cleanPhone,
-            isCustom: true,
-            status: "Received",
-            metalType: "GOLD",
-            carat: "22K",
-            customDescription: "Antique Floral Choker Set with premium green emerald drops.",
-            designApproval: "PENDING",
-            createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
-          },
-          {
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            customerContact: cleanPhone,
-            isCustom: true,
-            status: "Completed",
-            metalType: "GOLD",
-            carat: "22K",
-            customDescription: "Temple Design Kada Gold Bangle with intricate Nakshi workmanship.",
-            designApproval: "APPROVED",
-            createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-          },
-          {
-            customerName: "Portal Customer",
-            customerPhone: cleanPhone,
-            customerContact: cleanPhone,
-            isCustom: true,
-            status: "Revised CAD Shared",
-            metalType: "PLATINUM",
-            carat: "950",
-            customDescription: "Geometric Platinum Stud Earrings with rose gold accents.",
-            designApproval: "PENDING",
-            createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000)
-          }
-        ];
-        
-        for (const item of seededOrders) {
-          const exists = await Order.findOne({ customerPhone: cleanPhone, customDescription: item.customDescription, isCustom: true });
-          if (!exists) {
-            await Order.create(item);
-          }
-        }
-        orders = await Order.find(filter).sort({ createdAt: -1 }).lean();
-      }
     } else {
       if (hasPhone) {
         orders = mockCustomOrders.filter(o => o.customerContact === cleanPhone || o.customerPhone === cleanPhone);
-
-        if (orders.length < 5) {
-          const seededOrders = [
-            {
-              _id: `bespoke_${Date.now()}_1`,
-              orderId: "Bespoke-101",
-              customerName: "Portal Customer",
-              customerPhone: cleanPhone,
-              customerContact: cleanPhone,
-              isCustom: true,
-              status: "In Production",
-              metalType: "GOLD",
-              carat: "22K",
-              customDescription: "Traditional Kerala Style Jhumka Earrings with ruby details.",
-              designApproval: "APPROVED",
-              createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
-            },
-            {
-              _id: `bespoke_${Date.now()}_2`,
-              orderId: "Bespoke-102",
-              customerName: "Portal Customer",
-              customerPhone: cleanPhone,
-              customerContact: cleanPhone,
-              isCustom: true,
-              status: "CAD Design Shared",
-              metalType: "PLATINUM",
-              carat: "18K",
-              customDescription: "Sleek Solitaire Engagement Ring, White Gold with 1.2ct central VVS diamond.",
-              designApproval: "PENDING",
-              createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
-            },
-            {
-              _id: `bespoke_${Date.now()}_3`,
-              orderId: "Bespoke-103",
-              customerName: "Portal Customer",
-              customerPhone: cleanPhone,
-              customerContact: cleanPhone,
-              isCustom: true,
-              status: "Received",
-              metalType: "GOLD",
-              carat: "22K",
-              customDescription: "Antique Floral Choker Set with premium green emerald drops.",
-              designApproval: "PENDING",
-              createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-            },
-            {
-              _id: `bespoke_${Date.now()}_4`,
-              orderId: "Bespoke-104",
-              customerName: "Portal Customer",
-              customerPhone: cleanPhone,
-              customerContact: cleanPhone,
-              isCustom: true,
-              status: "Completed",
-              metalType: "GOLD",
-              carat: "22K",
-              customDescription: "Temple Design Kada Gold Bangle with intricate Nakshi workmanship.",
-              designApproval: "APPROVED",
-              createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-            },
-            {
-              _id: `bespoke_${Date.now()}_5`,
-              orderId: "Bespoke-105",
-              customerName: "Portal Customer",
-              customerPhone: cleanPhone,
-              customerContact: cleanPhone,
-              isCustom: true,
-              status: "Revised CAD Shared",
-              metalType: "PLATINUM",
-              carat: "950",
-              customDescription: "Geometric Platinum Stud Earrings with rose gold accents.",
-              designApproval: "PENDING",
-              createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
-            }
-          ];
-          for (const item of seededOrders) {
-            const exists = mockCustomOrders.some(o => (o.customerContact === cleanPhone || o.customerPhone === cleanPhone) && o.customDescription === item.customDescription);
-            if (!exists) {
-              mockCustomOrders.push(item);
-            }
-          }
-          writeJsonFile(customOrdersPath, mockCustomOrders);
-          orders = mockCustomOrders.filter(o => o.customerContact === cleanPhone || o.customerPhone === cleanPhone);
-        }
       } else {
         orders = mockCustomOrders;
       }
@@ -1118,6 +774,33 @@ export const approvePortalCheckoutPayment = async (req: Request, res: Response) 
   } catch (error: any) {
     console.error("Portal approve checkout payment failed", error);
     return res.status(500).json({ success: false, error: error.message || "Failed to approve payment." });
+  }
+};
+
+export const updateProfile = async (req: any, res: Response) => {
+  try {
+    const user = req.user!;
+    const { name, email, panNumber, address } = req.body;
+    
+    // 1. Update in customer DB
+    const { Customer: PortalCustomer } = await import("../../models/index.js");
+    const pCust = await PortalCustomer.findByIdAndUpdate(
+      user.id,
+      { name, email, panNumber, address, updatedAt: new Date() },
+      { new: true }
+    );
+    
+    // 2. Update in retailer DB if present
+    const { Customer: RetailCustomer } = await import("../../../retailer/models/index.js");
+    await RetailCustomer.findByIdAndUpdate(
+      user.id,
+      { name, email, panNumber, address, updatedAt: new Date() }
+    );
+    
+    return res.json({ success: true, data: pCust });
+  } catch (err: any) {
+    console.error("Failed to update profile", err);
+    return res.status(500).json({ success: false, error: err.message });
   }
 };
 

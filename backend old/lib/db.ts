@@ -4,7 +4,7 @@ import { AsyncLocalStorage } from "async_hooks";
 // Store the tenant ID in AsyncLocalStorage
 export const tenantLocalStorage = new AsyncLocalStorage<{ tenantId?: string }>();
 
-const EXCLUDED_MODELS = ["User", "Subscription", "RetailerOrder"];
+const EXCLUDED_MODELS = ["User", "Subscription", "RetailerOrder", "TenantDomain"];
 const SYSTEM_MFR_ID = "shop-1779518126045-txlhr";
 
 // Helper to create a dynamic model proxy
@@ -96,3 +96,6 @@ export const superAdminDb = getDbConnection("super_admin");
 export const manufacturerDb = createConnectionProxy("manufacturer");
 export const retailerDb = createConnectionProxy("retailer");
 export const customerDb = getDbConnection("customer");
+
+export const isDbConnected = () => mongoose.connection.readyState === 1;
+

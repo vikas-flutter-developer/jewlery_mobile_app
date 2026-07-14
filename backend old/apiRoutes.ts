@@ -15,6 +15,14 @@ import settingsRoutes from "./shared/routes/settingsRoutes.js";
 import auditRoutes from "./shared/routes/auditRoutes.js";
 import tasksRoutes from "./shared/routes/tasksRoutes.js";
 import securityRoutes from "./shared/routes/securityRoutes.js";
+import tcsRoutes from "./shared/routes/tcsRoutes.js";
+import panRoutes from "./shared/routes/panRoutes.js";
+import bisLicenceRoutes from "./shared/routes/bisLicenceRoutes.js";
+import complianceRoutes from "./shared/routes/complianceRoutes.js";
+import revenueAnalyticsRoutes from "./shared/routes/revenueAnalyticsRoutes.js";
+
+
+
 import karikarRoutes from "./shared/routes/karikarRoutes.js";
 import dedicatedKarikarRoutes from "./karikar/routes/karikarRoutes.js";
 
@@ -28,7 +36,6 @@ import manufacturerRoutes from "./manufacturer/routes/index.js";
 import retailerRoutes from "./retailer/routes/index.js";
 // Explicitly import retailer barcode routes for the /retailer/* alias mount
 import retailerBarcodesRoutes from "./retailer/routes/barcodesRoutes.js";
-import ownerConsoleRoutes from "./routes/ownerConsoleRoutes.js";
 
 // ── Customer role routes ────────────────────────────────────────────────────
 import customerRoutes from "./customer/routes/index.js";
@@ -76,11 +83,21 @@ router.use((req, res, next) => {
           "/webhooks",
           "/customers",
           "/retailer",
-          "/karikar",
-          "/karikars"
+          "/karikars",
+          "/jobs",
+          "/compliance",
+          "/tcs",
+          "/pan",
+          "/referrals",
+          "/referral-partners",
+          "/referral-commissions",
+          "/referral-payouts",
+          "/vendor-contracts",
+          "/vendor-contract-rules",
+          "/vendors"
         ];
-        
-        const hasExemptPrefix = exemptPrefixes.some(prefix => req.path === prefix || req.path.startsWith(prefix + "/"));
+
+        const hasExemptPrefix = exemptPrefixes.some(prefix => req.path.startsWith(prefix));
         if (!hasExemptPrefix) {
           console.log(`[Path Rewrite] Rewriting Manufacturer request ${req.method} ${req.url} -> /manufacturer${req.url}`);
           req.url = `/manufacturer${req.url}`;
@@ -106,6 +123,14 @@ router.use("/upload", uploadRoutes);
 router.use("/settings", settingsRoutes);
 router.use("/audit-logs", auditRoutes);
 router.use("/security", securityRoutes);
+router.use("/tcs", tcsRoutes);
+router.use("/pan", panRoutes);
+router.use("/settings/bis-licence", bisLicenceRoutes);
+router.use("/compliance", complianceRoutes);
+router.use("/revenue-analytics", revenueAnalyticsRoutes);
+
+
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // SHARED KARIKAR routes (for both KARIKAR role and ADMIN users)
@@ -143,8 +168,5 @@ router.delete("/rates/:metal", deleteRate);
 router.use(customerRoutes);
 // Job Card APIs
 router.use('/jobs', jobsRoutes);
-
-// Owner Console Utilities API
-router.use('/owner-console', ownerConsoleRoutes);
 
 export default router;

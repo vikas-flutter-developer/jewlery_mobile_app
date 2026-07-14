@@ -44,6 +44,7 @@ const saleSchema = new mongoose.Schema({
   bisLicence: { type: String, default: "CM/L-8700148415" },
   staffId: String,
   staffName: String,
+  taxProfileId: String,
   createdAt: { type: Date, default: Date.now },
 });
 

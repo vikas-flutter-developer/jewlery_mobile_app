@@ -129,6 +129,7 @@ const invoiceSchema = new mongoose.Schema(
     branchCode: { type: String, default: "MAIN" },
     tenantId: { type: String, index: true },
     financialYear: { type: String },
+    taxProfileId: { type: String },
   },
   { timestamps: true }
 );

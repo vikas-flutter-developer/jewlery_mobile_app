@@ -131,12 +131,27 @@ export const getCustomers = async (req: Request, res: Response) => {
 
 export const createCustomer = async (req: Request, res: Response) => {
   try {
-    const { name, email, mobile, phone, pan, aadhar, gstin, address, city, state, pincode, creditLimit } = req.body;
+    const { name, email, mobile, phone, pan, panNumber, aadhar, gstin, address, city, state, pincode, creditLimit } = req.body;
 
     const normalizedPhone = mobile || phone;
 
     if (!name || !normalizedPhone) {
       return res.status(400).json({ error: "Name and phone are required" });
+    }
+
+    const panVal = panNumber || pan;
+    const tenantId = (req as any).user?.tenantId || "default-shop";
+
+    if (panVal) {
+      const cleanPan = String(panVal).trim().toUpperCase();
+      const PAN_PATTERN = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+      if (!PAN_PATTERN.test(cleanPan)) {
+        return res.status(400).json({ error: "Invalid PAN format. Must match standard Indian PAN pattern (e.g. ABCDE1234F)." });
+      }
+      const existingPan = await Customer.findOne({ tenantId, panNumber: cleanPan });
+      if (existingPan) {
+        return res.status(409).json({ error: "Customer with this PAN number already exists" });
+      }
     }
 
     const dbReady = mongoose.connection.readyState === 1;
@@ -151,7 +166,10 @@ export const createCustomer = async (req: Request, res: Response) => {
         name,
         email,
         phone: normalizedPhone,
-        pan,
+        pan: panVal ? String(panVal).trim().toUpperCase() : undefined,
+        panNumber: panVal ? String(panVal).trim().toUpperCase() : undefined,
+        panStatus: "PENDING",
+        tenantId,
         aadhar,
         gstin,
         address,
@@ -264,6 +282,29 @@ export const updateCustomer = async (req: Request, res: Response) => {
     const { id } = req.params;
     const updates = req.body;
     const dbReady = mongoose.connection.readyState === 1;
+
+    const panVal = updates.panNumber || updates.pan;
+    const tenantId = (req as any).user?.tenantId || "default-shop";
+
+    if (panVal) {
+      const cleanPan = String(panVal).trim().toUpperCase();
+      const PAN_PATTERN = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+      if (!PAN_PATTERN.test(cleanPan)) {
+        return res.status(400).json({ error: "Invalid PAN format. Must match standard Indian PAN pattern (e.g. ABCDE1234F)." });
+      }
+      if (dbReady) {
+        const existingPan = await Customer.findOne({
+          tenantId,
+          panNumber: cleanPan,
+          _id: { $ne: id },
+        });
+        if (existingPan) {
+          return res.status(409).json({ error: "Customer with this PAN number already exists" });
+        }
+      }
+      updates.pan = cleanPan;
+      updates.panNumber = cleanPan;
+    }
 
     if (!dbReady) {
       const existing = await findFallbackCustomerById(id);

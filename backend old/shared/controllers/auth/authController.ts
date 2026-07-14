@@ -243,6 +243,15 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    if (user.status === "BLOCKED") {
+      await logSecurityEvent(user.email || email, "login-blocked", user._id?.toString() || email, `Blocked user attempted login`);
+      return res.status(403).json({ error: "Your account has been blocked. Please contact administration." });
+    }
+    if (user.status === "INACTIVE") {
+      await logSecurityEvent(user.email || email, "login-inactive", user._id?.toString() || email, `Inactive user attempted login`);
+      return res.status(403).json({ error: "Your account is inactive. Please contact administration." });
+    }
+
     if (user.tenantId) {
       try {
         const platform = await readPlatformStore();
@@ -320,7 +329,8 @@ export const login = async (req: Request, res: Response) => {
         storeType,
         token: session.token,
         jti: session.jti,
-        expiresAt: session.expiresAt
+        expiresAt: session.expiresAt,
+        passwordResetRequired: user.passwordResetRequired || false
       }
     });
   } catch (error: any) {
@@ -600,6 +610,13 @@ export const verifyOtp = async (req: Request, res: Response) => {
     }
 
     const isDummyAdminUser = email === dummyAdminEmail && user && !user.save;
+    if (user.status === "BLOCKED") {
+      return res.status(403).json({ error: "Your account has been blocked. Please contact administration." });
+    }
+    if (user.status === "INACTIVE") {
+      return res.status(403).json({ error: "Your account is inactive. Please contact administration." });
+    }
+    
     user.lastLogin = new Date().toISOString();
     if (typeof user.save === 'function') {
       await user.save();
@@ -612,7 +629,7 @@ export const verifyOtp = async (req: Request, res: Response) => {
     const device = req.headers['user-agent'] ? String(req.headers['user-agent']).substr(0, 200) : '';
     const session = await createSessionToken(user._id.toString(), user.email, user.role, user.branchId?.toString(), user.tenantId, reqIp, device, storeType);
 
-    res.json({ success: true, message: 'OTP verified', data: { token: session.token, jti: session.jti, expiresAt: session.expiresAt, userId: user._id, email: user.email, name: user.name, role: user.role, tenantId: user.tenantId || null, storeType } });
+    res.json({ success: true, message: 'OTP verified', data: { token: session.token, jti: session.jti, expiresAt: session.expiresAt, userId: user._id, email: user.email, name: user.name, role: user.role, tenantId: user.tenantId || null, storeType, passwordResetRequired: user.passwordResetRequired || false } });
   } catch (err: any) {
     res.status(500).json({ error: err.message || 'OTP verification failed' });
   }
@@ -872,6 +889,74 @@ export const oauthCallback = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message || "OAuth authentication failed" });
+  }
+};
+
+export const changePassword = async (req: AuthRequest, res: Response) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!newPassword) {
+      return res.status(400).json({ error: "New password is required" });
+    }
+    if (!req.user?.id) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+    
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      user = await findAnyUserById(req.user.id);
+    } else {
+      user = await findFallbackUserById(req.user.id);
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (user.password) {
+      if (!currentPassword) {
+        return res.status(400).json({ error: "Current password is required" });
+      }
+      const isMatch = (user.password.startsWith("$2a$") || user.password.startsWith("$2b$"))
+        ? await bcrypt.compare(currentPassword, user.password)
+        : currentPassword === user.password;
+      if (!isMatch) {
+        return res.status(400).json({ error: "Incorrect current password" });
+      }
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    user.password = hashed;
+    user.passwordResetRequired = false;
+    
+    if (typeof user.save === 'function') {
+      await user.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    user.sessions = user.sessions || [];
+    const authHeader = (req.headers.authorization || '').toString();
+    const token = authHeader.substring(7);
+    let currentJti = '';
+    try {
+      const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+      currentJti = payload.jti;
+    } catch (e) {}
+    
+    if (currentJti) {
+      user.sessions = user.sessions.filter((s: any) => s.jti === currentJti);
+      if (typeof user.save === 'function') {
+        await user.save();
+      }
+    }
+
+    await logSecurityEvent(user.email, "password-changed", user._id?.toString() || user.id, `Password changed successfully`);
+
+    return res.json({ success: true, message: "Password updated successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to change password" });
   }
 };
 

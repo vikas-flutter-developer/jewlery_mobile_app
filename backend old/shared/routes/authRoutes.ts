@@ -1,5 +1,5 @@
 import express from "express";
-import { login, getProfile, oauthCallback, verifyOtp, getApiKey, logout, requestPasswordReset, resetPassword, listSessions, revokeSessionEndpoint } from "../controllers/auth/authController.js";
+import { login, getProfile, oauthCallback, verifyOtp, getApiKey, logout, requestPasswordReset, resetPassword, listSessions, revokeSessionEndpoint, changePassword } from "../controllers/auth/authController.js";
 import { authMiddleware, AuthRequest } from "../../lib/authUtils.js";
 import { Response } from "express";
 
@@ -13,6 +13,7 @@ router.get("/api-key", authMiddleware, getApiKey);
 router.post("/verify-otp", verifyOtp);
 router.post("/request-password-reset", requestPasswordReset);
 router.post("/reset-password", resetPassword);
+router.post("/change-password", authMiddleware, changePassword);
 router.get("/sessions", authMiddleware, listSessions);
 router.post("/sessions/revoke", authMiddleware, revokeSessionEndpoint);
 

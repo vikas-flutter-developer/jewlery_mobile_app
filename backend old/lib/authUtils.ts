@@ -216,6 +216,15 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
     try {
       const u = await User.findOne({ _id: decoded.id } as any);
       if (u) {
+        if (u.status === "BLOCKED") {
+          return res.status(403).json({ error: "Your account has been blocked. Please contact administration." });
+        }
+        if (u.status === "INACTIVE") {
+          return res.status(403).json({ error: "Your account is inactive. Please contact administration." });
+        }
+        if (u.passwordResetRequired && !req.originalUrl.includes("/change-password") && !req.originalUrl.includes("/logout")) {
+          return res.status(403).json({ error: "Password reset required", passwordResetRequired: true });
+        }
         const jti = decoded.jti;
         const sessions = u.sessions || [];
         const session = sessions.find((s: any) => s.jti === jti);

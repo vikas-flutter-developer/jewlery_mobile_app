@@ -2,7 +2,7 @@ import { Response } from "express";
 import { randomUUID } from "crypto";
 import { AuthRequest } from "../../../lib/authUtils.js";
 import { isDbConnected } from "../../../lib/serverState.js";
-import { CostEstimate, CostEstimateAuditLog, Notification, Order } from "../../models/index.js";
+import { CostEstimate, CostEstimateAuditLog, Notification, Order, TaxProfile } from "../../models/index.js";
 import { getClientIp } from "../../../lib/authUtils.js";
 import { generateCostEstimatePdf } from "../../services/orders/costEstimatePdfService.js";
 import { resolveMakingCharge } from "../../../lib/chargeEngine.js";
@@ -149,7 +149,23 @@ export const createCostEstimate = async (req: AuthRequest, res: Response) => {
     const metalCostNum = Number(metalCost || 0);
     const stoneCostNum = Number(stoneCost || 0);
     const makingChargesNum = Number(finalMakingCharge || 0);
-    const gstPercentNum = Number(gstPercent || 3);
+    
+    let gstPercentNum = Number(gstPercent || 3);
+    if (isDbConnected()) {
+      const tenantId = user.tenantId || "default-shop";
+      const targetProfileId = req.body.taxProfileId;
+      let taxProfile = null;
+      if (targetProfileId) {
+        taxProfile = await TaxProfile.findOne({ tenantId, _id: targetProfileId }).lean();
+      }
+      if (!taxProfile) {
+        taxProfile = await TaxProfile.findOne({ tenantId, isDefault: true, isActive: true }).lean();
+      }
+      if (taxProfile) {
+        gstPercentNum = taxProfile.igst || (taxProfile.cgst + taxProfile.sgst) || gstPercentNum;
+      }
+    }
+
     const tax = computeTax(metalCostNum, stoneCostNum, makingChargesNum, gstPercentNum);
     const total = metalCostNum + stoneCostNum + makingChargesNum + tax;
 

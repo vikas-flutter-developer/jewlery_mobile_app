@@ -37,6 +37,13 @@ import OrderTracking from "./OrderTracking.js";
 import CustomerReferral from "./CustomerReferral.js";
 import MakingChargeRule from "./MakingChargeRule.js";
 import FinancialYear from "./FinancialYear.js";
+import TaxProfile from "./TaxProfile.js";
+import MessagingConfiguration from "./MessagingConfiguration.js";
+import PaymentGatewayConfiguration from "./PaymentGatewayConfiguration.js";
+import PrinterConfiguration from "./PrinterConfiguration.js";
+import TCSTransaction from "./TCSTransaction.js";
+import BISLicence from "./BISLicence.js";
+import UserActionLog from "./UserActionLog.js";
 
 const Notification = mongoose.models.Notification || mongoose.model("Notification", NotificationSchema, "notifications");
 
@@ -79,7 +86,14 @@ export {
   OrderTracking,
   CustomerReferral,
   MakingChargeRule,
-  FinancialYear
+  FinancialYear,
+  TaxProfile,
+  MessagingConfiguration,
+  PaymentGatewayConfiguration,
+  PrinterConfiguration,
+  TCSTransaction,
+  BISLicence,
+  UserActionLog
 };
 
 

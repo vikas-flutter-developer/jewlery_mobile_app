@@ -21,6 +21,7 @@ import DesignMoodboardModel from "../../models/DesignMoodboard.js";
 import DesignMoodboardAuditLogModel from "../../models/DesignMoodboardAuditLog.js";
 import DesignApprovalModel from "../../models/DesignApproval.js";
 import DesignApprovalAuditLogModel from "../../models/DesignApprovalAuditLog.js";
+import MessagingConfigurationModel from "../../models/MessagingConfiguration.js";
 
 export const Wishlist = customerDb.models.Wishlist || customerDb.model("Wishlist", WishlistSchema.schema);
 export const Design = customerDb.models.Design || customerDb.model("Design", DesignSchema.schema);
@@ -37,6 +38,7 @@ export const SchemeDefinition = customerDb.models.SchemeDefinition || customerDb
 export const SchemeEnrollment = customerDb.models.SchemeEnrollment || customerDb.model("SchemeEnrollment", SchemeEnrollmentSchema.schema);
 export const Notification = (customerDb.models.Notification || customerDb.model("Notification", NotificationSchema, "notifications")) as import("mongoose").Model<any>;
 export const NotificationPreference = (customerDb.models.NotificationPreference || customerDb.model("NotificationPreference", NotificationPreferenceSchema, "notificationpreferences")) as import("mongoose").Model<any>;
+export const MessagingConfiguration = (customerDb.models.MessagingConfiguration || customerDb.model("MessagingConfiguration", MessagingConfigurationModel.schema, "messagingconfigurations")) as import("mongoose").Model<any>;
 
 // ─── Customer Portal Specific Collections ───────────────────────────────────
 export const CustomerAccount = customerDb.models.CustomerAccount || customerDb.model("CustomerAccount", CustomerAccountModel.schema);

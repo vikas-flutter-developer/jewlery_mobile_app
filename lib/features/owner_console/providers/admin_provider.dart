@@ -15,6 +15,19 @@ class AdminState {
   final List<dynamic> gemstones;
   final Map<String, dynamic>? selectedKarikarDetails;
 
+  // New settings & compliance cache properties
+  final List<dynamic> printers;
+  final List<dynamic> paymentGateways;
+  final Map<String, dynamic>? tenantBranding;
+  final List<dynamic> taxProfiles;
+  final List<dynamic> messagingConfigs;
+  final List<dynamic> userActionLogs;
+  final Map<String, dynamic>? gstDashboard;
+  final Map<String, dynamic>? tcsSummary;
+  final List<dynamic> tcsTransactions;
+  final List<dynamic> huidExceptions;
+  final List<dynamic> bisLicences;
+
   AdminState({
     this.isLoading = false,
     this.error,
@@ -28,6 +41,17 @@ class AdminState {
     this.inventory = const [],
     this.gemstones = const [],
     this.selectedKarikarDetails,
+    this.printers = const [],
+    this.paymentGateways = const [],
+    this.tenantBranding,
+    this.taxProfiles = const [],
+    this.messagingConfigs = const [],
+    this.userActionLogs = const [],
+    this.gstDashboard,
+    this.tcsSummary,
+    this.tcsTransactions = const [],
+    this.huidExceptions = const [],
+    this.bisLicences = const [],
   });
 
   AdminState copyWith({
@@ -43,6 +67,17 @@ class AdminState {
     List<dynamic>? inventory,
     List<dynamic>? gemstones,
     Map<String, dynamic>? selectedKarikarDetails,
+    List<dynamic>? printers,
+    List<dynamic>? paymentGateways,
+    Map<String, dynamic>? tenantBranding,
+    List<dynamic>? taxProfiles,
+    List<dynamic>? messagingConfigs,
+    List<dynamic>? userActionLogs,
+    Map<String, dynamic>? gstDashboard,
+    Map<String, dynamic>? tcsSummary,
+    List<dynamic>? tcsTransactions,
+    List<dynamic>? huidExceptions,
+    List<dynamic>? bisLicences,
   }) {
     return AdminState(
       isLoading: isLoading ?? this.isLoading,
@@ -57,6 +92,17 @@ class AdminState {
       inventory: inventory ?? this.inventory,
       gemstones: gemstones ?? this.gemstones,
       selectedKarikarDetails: selectedKarikarDetails ?? this.selectedKarikarDetails,
+      printers: printers ?? this.printers,
+      paymentGateways: paymentGateways ?? this.paymentGateways,
+      tenantBranding: tenantBranding ?? this.tenantBranding,
+      taxProfiles: taxProfiles ?? this.taxProfiles,
+      messagingConfigs: messagingConfigs ?? this.messagingConfigs,
+      userActionLogs: userActionLogs ?? this.userActionLogs,
+      gstDashboard: gstDashboard ?? this.gstDashboard,
+      tcsSummary: tcsSummary ?? this.tcsSummary,
+      tcsTransactions: tcsTransactions ?? this.tcsTransactions,
+      huidExceptions: huidExceptions ?? this.huidExceptions,
+      bisLicences: bisLicences ?? this.bisLicences,
     );
   }
 }
@@ -624,6 +670,528 @@ class AdminNotifier extends StateNotifier<AdminState> {
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  // --- Dynamic Configuration Settings ---
+  // Printers
+  Future<void> fetchPrinters() async {
+    try {
+      final res = await api.get('/settings/printers');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(printers: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch printers error: $e');
+    }
+  }
+
+  Future<bool> savePrinter(Map<String, dynamic> data, {String? id}) async {
+    try {
+      final res = id != null
+          ? await api.put('/settings/printers/$id', data: data)
+          : await api.post('/settings/printers', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchPrinters();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Save printer error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deletePrinter(String id) async {
+    try {
+      final res = await api.delete('/settings/printers/$id');
+      if (res.statusCode == 200) {
+        await fetchPrinters();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Delete printer error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> testPrinter(Map<String, dynamic> data) async {
+    try {
+      final res = await api.post('/settings/printers/test', data: data);
+      return res.statusCode == 200;
+    } catch (e) {
+      print('[Admin Provider] Test printer error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> setDefaultPrinter(String id) async {
+    try {
+      final res = await api.post('/settings/printers/set-default', data: {'printerId': id});
+      if (res.statusCode == 200) {
+        await fetchPrinters();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Set default printer error: $e');
+      return false;
+    }
+  }
+
+  // Payment Gateways
+  Future<void> fetchPaymentGateways() async {
+    try {
+      final res = await api.get('/settings/payment-gateways');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(paymentGateways: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch payment gateways error: $e');
+    }
+  }
+
+  Future<bool> savePaymentGateway(Map<String, dynamic> data, {String? id}) async {
+    try {
+      final res = id != null
+          ? await api.put('/settings/payment-gateways/$id', data: data)
+          : await api.post('/settings/payment-gateways', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchPaymentGateways();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Save payment gateway error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deletePaymentGateway(String id) async {
+    try {
+      final res = await api.delete('/settings/payment-gateways/$id');
+      if (res.statusCode == 200) {
+        await fetchPaymentGateways();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Delete payment gateway error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> testPaymentGateway(Map<String, dynamic> data) async {
+    try {
+      final res = await api.post('/settings/payment-gateways/test', data: data);
+      return res.statusCode == 200;
+    } catch (e) {
+      print('[Admin Provider] Test payment gateway error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> setDefaultPaymentGateway(String id) async {
+    try {
+      final res = await api.patch('/settings/payment-gateways/$id/set-default');
+      if (res.statusCode == 200) {
+        await fetchPaymentGateways();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Set default payment gateway error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> togglePaymentGatewayStatus(String id) async {
+    try {
+      final res = await api.patch('/settings/payment-gateways/$id/toggle-status');
+      if (res.statusCode == 200) {
+        await fetchPaymentGateways();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Toggle payment gateway error: $e');
+      return false;
+    }
+  }
+
+  // Messaging Configuration
+  Future<void> fetchMessagingConfigs() async {
+    try {
+      final res = await api.get('/settings/messaging');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(messagingConfigs: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch messaging configs error: $e');
+    }
+  }
+
+  Future<bool> saveMessagingConfig(Map<String, dynamic> data, {String? id}) async {
+    try {
+      final res = id != null
+          ? await api.put('/settings/messaging/$id', data: data)
+          : await api.post('/settings/messaging', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchMessagingConfigs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Save messaging config error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deleteMessagingConfig(String id) async {
+    try {
+      final res = await api.delete('/settings/messaging/$id');
+      if (res.statusCode == 200) {
+        await fetchMessagingConfigs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Delete messaging config error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> testMessagingConfig(Map<String, dynamic> data) async {
+    try {
+      final res = await api.post('/settings/messaging/test', data: data);
+      return res.statusCode == 200;
+    } catch (e) {
+      print('[Admin Provider] Test messaging config error: $e');
+      return false;
+    }
+  }
+
+  // Tax Profiles
+  Future<void> fetchTaxProfiles() async {
+    try {
+      final res = await api.get('/settings/tax-profiles');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(taxProfiles: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch tax profiles error: $e');
+    }
+  }
+
+  Future<bool> saveTaxProfile(Map<String, dynamic> data, {String? id}) async {
+    try {
+      final res = id != null
+          ? await api.put('/settings/tax-profiles/$id', data: data)
+          : await api.post('/settings/tax-profiles', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchTaxProfiles();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Save tax profile error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deleteTaxProfile(String id) async {
+    try {
+      final res = await api.delete('/settings/tax-profiles/$id');
+      if (res.statusCode == 200) {
+        await fetchTaxProfiles();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Delete tax profile error: $e');
+      return false;
+    }
+  }
+
+  // Tenant Branding
+  Future<void> fetchBranding() async {
+    try {
+      final res = await api.get('/settings/tenant-branding');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(tenantBranding: res.data['data'] as Map<String, dynamic>? ?? res.data as Map<String, dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch branding error: $e');
+    }
+  }
+
+  Future<bool> updateBranding(Map<String, dynamic> data) async {
+    try {
+      final res = await api.put('/settings/tenant-branding', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchBranding();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Update branding error: $e');
+      return false;
+    }
+  }
+
+  // --- Compliance & Regulatory Verification ---
+  // BIS License
+  Future<void> fetchBisLicences() async {
+    try {
+      final res = await api.get('/settings/bis-licence');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(bisLicences: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch BIS licences error: $e');
+    }
+  }
+
+  Future<bool> saveBisLicence(Map<String, dynamic> data, {String? id}) async {
+    try {
+      final res = id != null
+          ? await api.put('/settings/bis-licence/$id', data: data)
+          : await api.post('/settings/bis-licence', data: data);
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        await fetchBisLicences();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Save BIS licence error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> activateBisLicence(String id) async {
+    try {
+      final res = await api.put('/settings/bis-licence/$id/activate');
+      if (res.statusCode == 200) {
+        await fetchBisLicences();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Activate BIS licence error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> suspendBisLicence(String id) async {
+    try {
+      final res = await api.put('/settings/bis-licence/$id/suspend');
+      if (res.statusCode == 200) {
+        await fetchBisLicences();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Suspend BIS licence error: $e');
+      return false;
+    }
+  }
+
+  // PAN Authentication
+  Future<Map<String, dynamic>> validatePanNumber(String pan, {String? customerId}) async {
+    try {
+      final res = await api.post('/pan/validate', data: {
+        'panNumber': pan,
+        if (customerId != null) 'customerId': customerId,
+      });
+      if (res.statusCode == 200 && res.data != null) {
+        return res.data as Map<String, dynamic>;
+      }
+      return {'success': false, 'error': 'Validation request failed.'};
+    } catch (e) {
+      print('[Admin Provider] Validate PAN error: $e');
+      return {'success': false, 'error': e.toString()};
+    }
+  }
+
+  Future<Map<String, dynamic>?> verifyPanNumber(String customerId, String pan, String status) async {
+    try {
+      final res = await api.post('/pan/verify', data: {
+        'customerId': customerId,
+        'panNumber': pan,
+        'status': status,
+      });
+      if (res.statusCode == 200 && res.data != null && res.data['success'] == true) {
+        return res.data['data'] as Map<String, dynamic>?;
+      }
+      return null;
+    } catch (e) {
+      print('[Admin Provider] Verify PAN error: $e');
+      return null;
+    }
+  }
+
+  // TCS Tax collected at source
+  Future<void> fetchTcsSummary() async {
+    try {
+      final res = await api.get('/tcs/summary');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(tcsSummary: res.data as Map<String, dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch TCS summary error: $e');
+    }
+  }
+
+  Future<void> fetchTcsTransactions() async {
+    try {
+      final res = await api.get('/tcs/transactions');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(tcsTransactions: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch TCS transactions error: $e');
+    }
+  }
+
+  Future<bool> updateTcsStatus(String id, String status, String remarks) async {
+    try {
+      final res = await api.put('/tcs/transactions/$id', data: {
+        'status': status,
+        'remarks': remarks,
+      });
+      if (res.statusCode == 200) {
+        await fetchTcsTransactions();
+        await fetchTcsSummary();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Update TCS status error: $e');
+      return false;
+    }
+  }
+
+  // GST & HUID compliance
+  Future<void> fetchGstDashboard() async {
+    try {
+      final res = await api.get('/compliance/gst/dashboard');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(gstDashboard: res.data['data'] as Map<String, dynamic>? ?? res.data as Map<String, dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch GST Dashboard error: $e');
+    }
+  }
+
+  Future<void> fetchHuidExceptions() async {
+    try {
+      final res = await api.get('/compliance/huid/exceptions');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(huidExceptions: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch HUID exceptions error: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> validateHuid(String uidCode) async {
+    try {
+      final res = await api.post('/compliance/huid/validate', data: {'uidCode': uidCode});
+      if (res.statusCode == 200 && res.data != null) {
+        return res.data as Map<String, dynamic>;
+      }
+      return {'success': false, 'error': 'Validation request failed.'};
+    } catch (e) {
+      print('[Admin Provider] Validate HUID error: $e');
+      return {'success': false, 'error': e.toString()};
+    }
+  }
+
+  // --- Administrative User Action Controls ---
+  Future<bool> blockUser(String userId, String reason) async {
+    try {
+      final res = await api.put('/users/$userId/block', data: {'reason': reason});
+      if (res.statusCode == 200) {
+        await fetchStaffRoster();
+        await fetchUserActionLogs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Block user error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> activateUser(String userId) async {
+    try {
+      final res = await api.put('/users/$userId/activate');
+      if (res.statusCode == 200) {
+        await fetchStaffRoster();
+        await fetchUserActionLogs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Activate user error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deactivateUser(String userId) async {
+    try {
+      final res = await api.put('/users/$userId/deactivate');
+      if (res.statusCode == 200) {
+        await fetchStaffRoster();
+        await fetchUserActionLogs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Deactivate user error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> forcePasswordReset(String userId) async {
+    try {
+      final res = await api.put('/users/$userId/force-password-reset');
+      if (res.statusCode == 200) {
+        await fetchStaffRoster();
+        await fetchUserActionLogs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Force password reset error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> logoutAllSessions(String userId) async {
+    try {
+      final res = await api.put('/users/$userId/logout-all-sessions');
+      if (res.statusCode == 200) {
+        await fetchStaffRoster();
+        await fetchUserActionLogs();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('[Admin Provider] Logout all sessions error: $e');
+      return false;
+    }
+  }
+
+  Future<void> fetchUserActionLogs() async {
+    try {
+      final res = await api.get('/users/actions-history');
+      if (res.statusCode == 200 && res.data != null) {
+        state = state.copyWith(userActionLogs: res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>);
+      }
+    } catch (e) {
+      print('[Admin Provider] Fetch action history error: $e');
     }
   }
 }

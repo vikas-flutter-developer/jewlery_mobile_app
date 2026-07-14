@@ -203,6 +203,110 @@ class _StaffRosterScreenState extends ConsumerState<StaffRosterScreen> {
     );
   }
 
+  void _showSecurityActionsSheet(Map<String, dynamic> staffMember) {
+    final name = staffMember['name'] ?? 'Employee';
+    final userId = (staffMember['_id'] ?? staffMember['id']).toString();
+    final isActive = staffMember['isActive'] ?? true;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFFF9F6F0),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'SECURITY CONTROLS: $name',
+                style: const TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.0),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Icon(isActive ? Icons.block : Icons.check_circle_outline, color: isActive ? Colors.redAccent : Colors.green),
+                title: Text(isActive ? 'Block Staff Member' : 'Activate Staff Member'),
+                subtitle: Text(isActive ? 'Suspend store & POS dashboard logins' : 'Re-enable store login access'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  if (isActive) {
+                    _showBlockReasonDialog(userId);
+                  } else {
+                    ref.read(adminProvider.notifier).activateUser(userId).then((ok) {
+                      if (ok) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✓ Staff user activated!'), backgroundColor: Colors.green));
+                      }
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.password, color: Colors.amber),
+                title: const Text('Force Password Reset'),
+                subtitle: const Text('Invalidate credentials and require password change'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  final ok = await ref.read(adminProvider.notifier).forcePasswordReset(userId);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(ok ? '✓ Password reset forced successfully!' : '✗ Failed to force reset.'),
+                    backgroundColor: ok ? Colors.green : Colors.redAccent,
+                  ));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.blueAccent),
+                title: const Text('Terminate Sessions'),
+                subtitle: const Text('Log out from all linked devices and terminals'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  final ok = await ref.read(adminProvider.notifier).logoutAllSessions(userId);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(ok ? '✓ Dispatched terminate command. Sessions cleared!' : '✗ Failed to clear sessions.'),
+                    backgroundColor: ok ? Colors.green : Colors.redAccent,
+                  ));
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showBlockReasonDialog(String userId) {
+    final reasonCtrl = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFFF9F6F0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          title: const Text('BLOCK USER ACCESS', style: TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontSize: 14, fontWeight: FontWeight.bold)),
+          content: TextField(
+            controller: reasonCtrl,
+            decoration: const InputDecoration(labelText: 'Specify Reason for Suspension'),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCEL')),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+              onPressed: () async {
+                if (reasonCtrl.text.trim().isEmpty) return;
+                final ok = await ref.read(adminProvider.notifier).blockUser(userId, reasonCtrl.text.trim());
+                if (ok) {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✓ User account suspended.'), backgroundColor: Colors.orange));
+                }
+              },
+              child: const Text('BLOCK USER', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final adminState = ref.watch(adminProvider);
@@ -351,6 +455,11 @@ class _StaffRosterScreenState extends ConsumerState<StaffRosterScreen> {
                           icon: const Icon(Icons.edit_calendar_outlined, color: AppTheme.goldDark),
                           tooltip: 'Edit Schedule',
                           onPressed: () => _showEditShiftDialog(s),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.security_outlined, color: Colors.redAccent),
+                          tooltip: 'Security Actions',
+                          onPressed: () => _showSecurityActionsSheet(s),
                         ),
                       ],
                     ),

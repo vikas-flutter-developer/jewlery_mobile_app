@@ -26,6 +26,11 @@ import complianceRoutes from './complianceRoutes.js';
 import subscriptionRoutes from './subscriptionRoutes.js';
 import repairRoutes from './repairRoutes.js';
 import referralsRoutes from './referralsRoutes.js';
+import referralPartnersRoutes from './referralPartnersRoutes.js';
+import referralCommissionsRoutes from './referralCommissionsRoutes.js';
+import referralPayoutsRoutes from './referralPayoutsRoutes.js';
+import vendorContractsRoutes from './vendorContractsRoutes.js';
+import vendorRateRulesRoutes from './vendorRateRulesRoutes.js';
 import { getMySupportTickets, createSupportTicket } from '../../shared/controllers/support/supportController.js';
 
 const router = express.Router();
@@ -61,6 +66,12 @@ router.use('/huid', huidRoutes);
 router.use('/compliance', complianceRoutes);
 router.use('/subscriptions', subscriptionRoutes);
 router.use('/referrals', referralsRoutes);
+router.use('/referral-partners', referralPartnersRoutes);
+router.use('/referral-commissions', referralCommissionsRoutes);
+router.use('/referral-payouts', referralPayoutsRoutes);
+router.use('/vendor-contracts', vendorContractsRoutes);
+router.use('/vendor-contract-rules', vendorRateRulesRoutes);
+
 
 export default router;
 

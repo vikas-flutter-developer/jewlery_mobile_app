@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import '../../../core/theme/app_colors.dart';
 import '../providers/app_providers.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../../core/mock_data.dart';
 import '../../../core/models/transaction.dart';
 
@@ -322,6 +323,39 @@ class CartScreen extends ConsumerWidget {
   }
 
   void _placeOrder(BuildContext context, WidgetRef ref) {
+    final authState = ref.read(authProvider);
+    final user = authState.user;
+    
+    final name = user?['name'] ?? '';
+    final email = user?['email'] ?? '';
+    final pan = user?['panNumber'] ?? '';
+    final address = user?['address'] ?? '';
+    
+    final isGuest = name == 'Portal Customer' || name == 'Portal Guest Customer' || name.isEmpty;
+    final isEmailPlaceholder = email.contains('@customer.com') == true || email.isEmpty;
+    
+    if (isGuest || isEmailPlaceholder || pan.isEmpty || address.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: const Text('Complete Profile Required', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.error)),
+            content: const Text(
+              'Please complete all your details (Full Name, Email, Address, and PAN Number) in the Profile tab settings before you can place orders.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK', style: TextStyle(color: AppColors.gold, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     context.push('/checkout');
   }
 

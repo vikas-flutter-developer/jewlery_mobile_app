@@ -9,6 +9,16 @@ const CustomerSchema = new mongoose.Schema({
   state: { type: String },
   pincode: { type: String },
   pan: { type: String, uppercase: true },
+  panNumber: { type: String, uppercase: true, trim: true, index: true },
+  panStatus: {
+    type: String,
+    enum: ["PENDING", "VERIFIED", "INVALID"],
+    default: "PENDING",
+    index: true,
+  },
+  panVerifiedAt: { type: Date },
+  panVerifiedBy: { type: String },
+  tenantId: { type: String, default: "default-shop", index: true },
   aadhar: { type: String },
   gstin: { type: String },
   kycStatus: { type: String, enum: ["PENDING", "VERIFIED", "REJECTED"], default: "PENDING" },
@@ -45,6 +55,7 @@ const CustomerSchema = new mongoose.Schema({
 CustomerSchema.index({ phone: 1 });
 CustomerSchema.index({ email: 1 });
 CustomerSchema.index({ pan: 1 });
+CustomerSchema.index({ tenantId: 1, panNumber: 1 }, { unique: true, sparse: true });
 
 const Customer = (mongoose.models.Customer || mongoose.model("Customer", CustomerSchema)) as mongoose.Model<any>;
 export default Customer;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Invoice, InvoiceProfile, Sale } from "../../models/index.js";
+import { Invoice, InvoiceProfile, Sale, TaxProfile } from "../../models/index.js";
 import { getNextInvoiceNumber, getCurrentFinancialYear } from "./invoiceNumberService.js";
 import { generateA4GstPdf, generateThermalPdf, PdfInvoiceDoc, PdfInvoiceItem } from "./pdfService.js";
 import { storeBuffer } from "./gridfsService.js";
@@ -51,35 +51,42 @@ export interface CreateAdvanceReceiptOptions {
 
 function computeGstBreakup(
   items: PdfInvoiceItem[],
-  isInterState: boolean
+  isInterState: boolean,
+  taxProfile?: any
 ) {
   let taxableValue = 0;
   let cgstTotal = 0;
   let sgstTotal = 0;
   let igstTotal = 0;
 
+  const cgstRate = taxProfile ? taxProfile.cgst : 1.5;
+  const sgstRate = taxProfile ? taxProfile.sgst : 1.5;
+  const igstRate = taxProfile ? taxProfile.igst : 3.0;
+  const hsnCode = taxProfile ? taxProfile.hsnCode : "7113";
+
   const enriched = items.map((item) => {
     const taxable = item.taxableValue ?? item.price;
-    const rate = item.gstRate ?? 3;
     taxableValue += taxable;
 
     let cgst = 0, sgst = 0, igst = 0;
     if (isInterState) {
-      igst = parseFloat(((taxable * rate) / 100).toFixed(2));
+      igst = parseFloat(((taxable * igstRate) / 100).toFixed(2));
       igstTotal += igst;
     } else {
-      cgst = parseFloat(((taxable * rate) / 2 / 100).toFixed(2));
-      sgst = cgst;
+      cgst = parseFloat(((taxable * cgstRate) / 100).toFixed(2));
+      sgst = parseFloat(((taxable * sgstRate) / 100).toFixed(2));
       cgstTotal += cgst;
       sgstTotal += sgst;
     }
 
     return {
       ...item,
+      hsnCode: item.hsnCode || hsnCode,
       taxableValue: taxable,
       cgstAmount: cgst,
       sgstAmount: sgst,
       igstAmount: igst,
+      gstRate: isInterState ? igstRate : (cgstRate + sgstRate),
       itemTotal: taxable + cgst + sgst + igst,
     };
   });
@@ -89,9 +96,9 @@ function computeGstBreakup(
   return {
     enrichedItems: enriched,
     gstBreakup: {
-      cgstRate: isInterState ? 0 : 1.5,
-      sgstRate: isInterState ? 0 : 1.5,
-      igstRate: isInterState ? 3 : 0,
+      cgstRate: isInterState ? 0 : cgstRate,
+      sgstRate: isInterState ? 0 : sgstRate,
+      igstRate: isInterState ? igstRate : 0,
       cgstAmount: cgstTotal,
       sgstAmount: sgstTotal,
       igstAmount: igstTotal,
@@ -170,6 +177,20 @@ export async function createInvoiceFromSale(
 
   // 2. Fetch shop profile
   const profile = await getProfile(tenantId);
+  if (profile) {
+    try {
+      const TenantBrandingModel = mongoose.model("TenantBranding");
+      const branding = await TenantBrandingModel.findOne({ tenantId }).lean() as any;
+      if (branding) {
+        if (branding.businessName) profile.shopName = branding.businessName;
+        if (branding.gstNumber) profile.gstin = branding.gstNumber;
+        if (branding.logoUrl) profile.logo = branding.logoUrl;
+        if (branding.invoicePrefix) profile.prefix = branding.invoicePrefix;
+      }
+    } catch (e) {
+      console.error("Failed to apply tenant branding in invoiceService:", e);
+    }
+  }
   const isInterState = profile?.isInterState ?? false;
 
   // 3. Map sale items → invoice items
@@ -177,8 +198,21 @@ export async function createInvoiceFromSale(
     saleItemToInvoiceItem
   );
 
-  // 4. Compute GST
-  const { enrichedItems, gstBreakup } = computeGstBreakup(rawItems, isInterState);
+  // 4. Fetch dynamic Tax Profile
+  let taxProfile = null;
+  if (isDbConnected()) {
+    // If a tax profile is explicitly provided/selected, use it; otherwise use the default one
+    const targetProfileId = (overrides as any)?.taxProfileId || (sale as any)?.taxProfileId;
+    if (targetProfileId) {
+      taxProfile = await TaxProfile.findOne({ tenantId, _id: targetProfileId }).lean();
+    }
+    if (!taxProfile) {
+      taxProfile = await TaxProfile.findOne({ tenantId, isDefault: true, isActive: true }).lean();
+    }
+  }
+
+  // 5. Compute GST
+  const { enrichedItems, gstBreakup } = computeGstBreakup(rawItems, isInterState, taxProfile);
 
   // 5. Compute totals
   const subtotal = Number(sale.subtotal ?? 0);
@@ -205,6 +239,7 @@ export async function createInvoiceFromSale(
     type: overrides.type || "GST",
     financialYear: fy,
     tenantId,
+    taxProfileId: taxProfile?._id ? String(taxProfile._id) : undefined,
     storeProfile: {
       shopName: profile?.shopName,
       address: profile?.address,
@@ -273,6 +308,33 @@ export async function createInvoiceFromSale(
   let savedInvoice: any = invoiceData;
   if (isDbConnected()) {
     savedInvoice = await Invoice.create(invoiceData);
+    if (tcs > 0) {
+      try {
+        const TCSTransactionModel = mongoose.model("TCSTransaction");
+        await TCSTransactionModel.create({
+          invoiceId: savedInvoice.invoiceNumber,
+          customerId: String(sale.customerId || "walk-in"),
+          financialYearId: fy,
+          taxableAmount: taxableAmountForTcs,
+          tcsRate: 0.01,
+          tcsAmount: tcs,
+          transactionDate: savedInvoice.createdAt || new Date(),
+          status: "PENDING",
+          remarks: `Auto-recorded from Invoice ${savedInvoice.invoiceNumber}`,
+          tenantId,
+        });
+
+        const { financeAuditService } = await import("../financial/financeAuditService.js");
+        await financeAuditService.log({
+          actionType: "TCS_CALCULATED" as any,
+          entityType: "TCS_TRANSACTION" as any,
+          entityId: savedInvoice.invoiceNumber,
+          newData: { invoiceId: savedInvoice.invoiceNumber, tcsAmount: tcs }
+        });
+      } catch (err) {
+        console.error("Failed to automatically record TCSTransaction:", err);
+      }
+    }
   }
 
   return {

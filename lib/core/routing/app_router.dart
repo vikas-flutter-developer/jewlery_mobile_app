@@ -18,6 +18,10 @@ import '../../features/customer_portal/presentation/checkout_page.dart';
 import '../../features/staff_pos/presentation/staff_dashboard.dart';
 import '../../features/karikar_portal/presentation/karikar_dashboard.dart';
 import '../../features/owner_console/presentation/owner_dashboard.dart';
+import '../../features/customer_portal/presentation/customer_referral_screen.dart';
+import '../../features/owner_console/presentation/partner_referrals_screen.dart';
+import '../../features/owner_console/presentation/commission_payouts_screen.dart';
+import '../../features/owner_console/presentation/vendor_contracts_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -47,6 +51,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/owner/dashboard',
         builder: (context, state) => const OwnerDashboard(),
+      ),
+      GoRoute(
+        path: '/customer/referral',
+        builder: (context, state) => const CustomerReferralScreen(),
+      ),
+      GoRoute(
+        path: '/owner/partner-referrals',
+        builder: (context, state) => const PartnerReferralsScreen(),
+      ),
+      GoRoute(
+        path: '/owner/referral-commissions',
+        builder: (context, state) => const CommissionPayoutsScreen(),
+      ),
+      GoRoute(
+        path: '/owner/vendor-contracts',
+        builder: (context, state) => const VendorContractsScreen(),
       ),
       GoRoute(
         path: '/catalog',

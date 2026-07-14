@@ -79,8 +79,33 @@ app.use((req, res, next) => {
 });
 
 // Tenant context middleware
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   let tenantId = "default-shop";
+
+  // Custom Domain Mapping Lookup
+  const host = req.headers["x-forwarded-host"] || req.headers.host;
+  if (host) {
+    const domainName = (host as string).split(":")[0].toLowerCase();
+    const exemptDomains = ["localhost", "127.0.0.1", "aurajewel.com", "admin.aurajewel.com"];
+    if (!exemptDomains.includes(domainName)) {
+      try {
+        const { TenantDomain } = await import("./retailer/models/index.js");
+        const mapping = await TenantDomain.findOne({ domain: domainName, status: "VERIFIED" }).lean();
+        if (mapping && mapping.tenantId) {
+          tenantId = mapping.tenantId;
+        }
+      } catch (err: any) {
+        console.error("Failed to lookup tenant by custom domain:", err.message || err);
+      }
+    }
+  }
+
+  if (req.headers["x-tenant-id"]) {
+    tenantId = req.headers["x-tenant-id"] as string;
+  } else if (req.query.tenantId) {
+    tenantId = req.query.tenantId as string;
+  }
+
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.substring(7);
@@ -90,7 +115,7 @@ app.use((req, res, next) => {
       if (decoded && decoded.tenantId) {
         tenantId = decoded.tenantId;
       }
-    } catch (e) {
+    } catch (e: any) {
       // If token verification fails (expired or invalid), do not fall back to unverified decoding.
       console.warn("Tenant context middleware: Token verification failed.", e.message || e);
     }
@@ -99,6 +124,7 @@ app.use((req, res, next) => {
     next();
   });
 });
+
 
 // API Routes
 app.use("/uploads", express.static(path.resolve(backendRoot, "uploads")));

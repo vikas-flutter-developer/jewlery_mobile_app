@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { default as DefaultUser } from "../../../models/User.js";
-import { Sale as DefaultSale, ShiftSchedule as DefaultShiftSchedule } from "../../../models/index.js";
+import { Sale as DefaultSale, ShiftSchedule as DefaultShiftSchedule, Notification, UserActionLog } from "../../../models/index.js";
 import { User as RetailerUser, Sale as RetailerSale, ShiftSchedule as RetailerShiftSchedule } from "../../../retailer/models/index.js";
 import { ManufacturerUser, ManufacturerSale } from "../../../manufacturer/models/index.js";
 import { isDbConnected } from "../../../lib/serverState.js";
@@ -75,6 +75,11 @@ const normalizeUser = (user: any) => ({
   shiftSchedule: user.shiftSchedule || { days: [], timeStart: "", timeEnd: "", shiftName: "General Shift" },
   salesTarget: user.salesTarget ?? 100000,
   commissionRate: user.commissionRate ?? 1.0,
+  passwordResetRequired: user.passwordResetRequired ?? false,
+  blockedAt: user.blockedAt || null,
+  blockedBy: user.blockedBy || null,
+  blockReason: user.blockReason || null,
+  sessions: Array.isArray(user.sessions) ? user.sessions : [],
 });
 
 const buildBranchFilter = (branchId?: string) => {
@@ -679,6 +684,345 @@ export const updateUserSchedule = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error("Failed to update shift schedule", error);
     return res.status(500).json({ success: false, error: error.message || "Failed to update shift schedule" });
+  }
+};
+
+// Administrative User Actions
+export const blockUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    if (req.user?.id === id) {
+      return res.status(400).json({ error: "You cannot block yourself." });
+    }
+
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      const UserModel = getUserModel(req);
+      user = await UserModel.findById(id);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      if (user.role === "SUPER_ADMIN" && user.status === "ACTIVE") {
+        const saCount = await UserModel.countDocuments({ role: "SUPER_ADMIN", status: "ACTIVE" });
+        if (saCount <= 1) {
+          return res.status(400).json({ error: "Cannot block the last active Super Admin." });
+        }
+      }
+    } else {
+      user = await findFallbackUserById(id);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      const all = await getAllFallbackUsers();
+      const saCount = all.filter((u: any) => u.role === "SUPER_ADMIN" && (u.status === "ACTIVE" || !u.status)).length;
+      if (user.role === "SUPER_ADMIN" && saCount <= 1 && user.status !== "BLOCKED") {
+        return res.status(400).json({ error: "Cannot block the last active Super Admin." });
+      }
+    }
+
+    if (user.status === "BLOCKED") {
+      return res.status(400).json({ error: "User is already blocked." });
+    }
+
+    user.status = "BLOCKED";
+    user.blockedAt = new Date();
+    user.blockedBy = req.user?.email || "Admin";
+    user.blockReason = reason || "Administrative action";
+    user.sessions = []; // Terminate all sessions
+
+    if (dbReady) {
+      await user.save();
+      
+      // Log Action
+      const log = new UserActionLog({
+        targetUserId: user._id.toString(),
+        targetUserEmail: user.email,
+        adminId: req.user?.id || "System",
+        adminEmail: req.user?.email || "system@aurajewel.com",
+        action: "BLOCK",
+        reason: reason || "Administrative action"
+      });
+      await log.save();
+
+      // Create Notification
+      const notif = new Notification({
+        notificationId: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        type: "USER_BLOCKED",
+        title: "User Blocked",
+        message: `User ${user.email} has been blocked by ${req.user?.email || "Admin"}.`,
+        severity: "WARNING",
+        category: "Security",
+        status: "SENT",
+        recipientEmails: [user.email],
+        metadata: { targetUserId: user._id.toString(), adminId: req.user?.id }
+      });
+      await notif.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    return res.json({ success: true, message: "User blocked successfully", data: normalizeUser(user) });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to block user" });
+  }
+};
+
+export const activateUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      const UserModel = getUserModel(req);
+      user = await UserModel.findById(id);
+    } else {
+      user = await findFallbackUserById(id);
+    }
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (user.status === "ACTIVE") {
+      return res.status(400).json({ error: "User is already active." });
+    }
+
+    user.status = "ACTIVE";
+    user.blockedAt = undefined;
+    user.blockedBy = undefined;
+    user.blockReason = undefined;
+
+    if (dbReady) {
+      await user.save();
+
+      // Log Action
+      const log = new UserActionLog({
+        targetUserId: user._id.toString(),
+        targetUserEmail: user.email,
+        adminId: req.user?.id || "System",
+        adminEmail: req.user?.email || "system@aurajewel.com",
+        action: "ACTIVATE",
+        reason: "User activated by Administrator"
+      });
+      await log.save();
+
+      // Create Notification
+      const notif = new Notification({
+        notificationId: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        type: "USER_ACTIVATED",
+        title: "User Activated",
+        message: `User ${user.email} has been activated by ${req.user?.email || "Admin"}.`,
+        severity: "INFO",
+        category: "Security",
+        status: "SENT",
+        recipientEmails: [user.email],
+        metadata: { targetUserId: user._id.toString(), adminId: req.user?.id }
+      });
+      await notif.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    return res.json({ success: true, message: "User activated successfully", data: normalizeUser(user) });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to activate user" });
+  }
+};
+
+export const deactivateUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    if (req.user?.id === id) {
+      return res.status(400).json({ error: "You cannot deactivate yourself." });
+    }
+
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      const UserModel = getUserModel(req);
+      user = await UserModel.findById(id);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      if (user.role === "SUPER_ADMIN" && user.status === "ACTIVE") {
+        const saCount = await UserModel.countDocuments({ role: "SUPER_ADMIN", status: "ACTIVE" });
+        if (saCount <= 1) {
+          return res.status(400).json({ error: "Cannot deactivate the last active Super Admin." });
+        }
+      }
+    } else {
+      user = await findFallbackUserById(id);
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      const all = await getAllFallbackUsers();
+      const saCount = all.filter((u: any) => u.role === "SUPER_ADMIN" && (u.status === "ACTIVE" || !u.status)).length;
+      if (user.role === "SUPER_ADMIN" && saCount <= 1 && user.status !== "INACTIVE") {
+        return res.status(400).json({ error: "Cannot deactivate the last active Super Admin." });
+      }
+    }
+
+    if (user.status === "INACTIVE") {
+      return res.status(400).json({ error: "User is already inactive." });
+    }
+
+    user.status = "INACTIVE";
+    user.sessions = []; // Terminate all sessions
+
+    if (dbReady) {
+      await user.save();
+
+      // Log Action
+      const log = new UserActionLog({
+        targetUserId: user._id.toString(),
+        targetUserEmail: user.email,
+        adminId: req.user?.id || "System",
+        adminEmail: req.user?.email || "system@aurajewel.com",
+        action: "DEACTIVATE",
+        reason: reason || "Deactivated by Administrator"
+      });
+      await log.save();
+
+      // Create Notification
+      const notif = new Notification({
+        notificationId: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        type: "USER_DEACTIVATED",
+        title: "User Deactivated",
+        message: `User ${user.email} has been deactivated by ${req.user?.email || "Admin"}.`,
+        severity: "INFO",
+        category: "Security",
+        status: "SENT",
+        recipientEmails: [user.email],
+        metadata: { targetUserId: user._id.toString(), adminId: req.user?.id }
+      });
+      await notif.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    return res.json({ success: true, message: "User deactivated successfully", data: normalizeUser(user) });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to deactivate user" });
+  }
+};
+
+export const forcePasswordReset = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (req.user?.id === id) {
+      return res.status(400).json({ error: "You cannot force password reset on yourself." });
+    }
+
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      const UserModel = getUserModel(req);
+      user = await UserModel.findById(id);
+    } else {
+      user = await findFallbackUserById(id);
+    }
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (user.passwordResetRequired) {
+      return res.status(400).json({ error: "Password reset is already forced for this user." });
+    }
+
+    user.passwordResetRequired = true;
+    user.sessions = []; // Terminate all sessions
+
+    if (dbReady) {
+      await user.save();
+
+      // Log Action
+      const log = new UserActionLog({
+        targetUserId: user._id.toString(),
+        targetUserEmail: user.email,
+        adminId: req.user?.id || "System",
+        adminEmail: req.user?.email || "system@aurajewel.com",
+        action: "FORCE_PASSWORD_RESET",
+        reason: "Forced password reset by Administrator"
+      });
+      await log.save();
+
+      // Create Notification
+      const notif = new Notification({
+        notificationId: `notif-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        type: "PASSWORD_RESET_FORCED",
+        title: "Password Reset Forced",
+        message: `A password reset has been forced on your account by ${req.user?.email || "Admin"}. Please change your password on next login.`,
+        severity: "WARNING",
+        category: "Security",
+        status: "SENT",
+        recipientEmails: [user.email],
+        metadata: { targetUserId: user._id.toString(), adminId: req.user?.id }
+      });
+      await notif.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    return res.json({ success: true, message: "Password reset forced successfully", data: normalizeUser(user) });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to force password reset" });
+  }
+};
+
+export const logoutAllSessions = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const dbReady = mongoose.connection.readyState === 1;
+    let user: any = null;
+    if (dbReady) {
+      const UserModel = getUserModel(req);
+      user = await UserModel.findById(id);
+    } else {
+      user = await findFallbackUserById(id);
+    }
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (!user.sessions || user.sessions.length === 0) {
+      return res.status(400).json({ error: "User has no active sessions." });
+    }
+
+    user.sessions = [];
+
+    if (dbReady) {
+      await user.save();
+
+      // Log Action
+      const log = new UserActionLog({
+        targetUserId: user._id.toString(),
+        targetUserEmail: user.email,
+        adminId: req.user?.id || "System",
+        adminEmail: req.user?.email || "system@aurajewel.com",
+        action: "LOGOUT_ALL_SESSIONS",
+        reason: "All sessions logged out by Administrator"
+      });
+      await log.save();
+    } else {
+      await updateFallbackUser(user);
+    }
+
+    return res.json({ success: true, message: "All user sessions terminated successfully", data: normalizeUser(user) });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to logout all sessions" });
+  }
+};
+
+export const getUserActionsHistory = async (req: AuthRequest, res: Response) => {
+  try {
+    const dbReady = mongoose.connection.readyState === 1;
+    if (dbReady) {
+      const logs = await UserActionLog.find().sort({ timestamp: -1 }).limit(100).lean();
+      return res.json({ success: true, data: logs });
+    }
+    return res.json({ success: true, data: [] });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message || "Failed to fetch user actions history" });
   }
 };
 

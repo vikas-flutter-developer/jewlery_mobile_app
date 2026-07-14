@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/network/api_client.dart';
+import '../providers/admin_provider.dart';
 
-class SecurityLogsScreen extends StatefulWidget {
+class SecurityLogsScreen extends ConsumerStatefulWidget {
   const SecurityLogsScreen({super.key});
 
   @override
-  State<SecurityLogsScreen> createState() => _SecurityLogsScreenState();
+  ConsumerState<SecurityLogsScreen> createState() => _SecurityLogsScreenState();
 }
 
-class _SecurityLogsScreenState extends State<SecurityLogsScreen> {
-  final _apiClient = ApiClient();
-  List<dynamic> _logs = [];
+class _SecurityLogsScreenState extends ConsumerState<SecurityLogsScreen> {
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -28,12 +27,7 @@ class _SecurityLogsScreenState extends State<SecurityLogsScreen> {
     });
 
     try {
-      final res = await _apiClient.get('/audit-logs');
-      if (res.statusCode == 200 && res.data != null) {
-        setState(() {
-          _logs = res.data['data'] as List<dynamic>? ?? res.data as List<dynamic>;
-        });
-      }
+      await ref.read(adminProvider.notifier).fetchUserActionLogs();
     } catch (e) {
       setState(() {
         _errorMessage = 'Failed to load audit logs: $e';
@@ -47,6 +41,8 @@ class _SecurityLogsScreenState extends State<SecurityLogsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final logs = ref.watch(adminProvider).userActionLogs;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9F6F0),
       appBar: AppBar(
@@ -80,7 +76,7 @@ class _SecurityLogsScreenState extends State<SecurityLogsScreen> {
               const Expanded(child: Center(child: CircularProgressIndicator(color: AppTheme.goldDark)))
             else if (_errorMessage != null)
               Text(_errorMessage!, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold))
-            else if (_logs.isEmpty)
+            else if (logs.isEmpty)
               const Expanded(
                 child: Center(
                   child: Text('No system activity logs found.', style: TextStyle(color: Colors.black38)),
@@ -89,9 +85,9 @@ class _SecurityLogsScreenState extends State<SecurityLogsScreen> {
             else
               Expanded(
                 child: ListView.builder(
-                  itemCount: _logs.length,
+                  itemCount: logs.length,
                   itemBuilder: (context, index) {
-                    final log = _logs[index];
+                    final log = logs[index];
                     final action = log['actionType'] ?? log['action'] ?? 'MUTATION';
                     final actor = log['performedBy'] ?? log['actor'] ?? 'System';
                     final status = log['status'] ?? 'SUCCESS';

@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
-import { Notification, NotificationPreference } from "../../models/index.js";
+import { Notification, NotificationPreference, MessagingConfiguration } from "../../models/index.js";
 import { customerDb, tenantLocalStorage } from "../../../lib/db.js";
 import { isDbConnected } from "../../../lib/serverState.js";
 import { readPlatformStore } from "../../../lib/platformStore.js";
 import { Customer, Design, Inventory, Order, Karikar, Rate, SchemeEnrollment } from "../../models/index.js";
+import { wrapWithEmailTemplate } from "../../../lib/emailTemplateHelper.js";
+import { checkAndAlertExpiring } from "../../../retailer/services/vendors/contractExpiryService.js";
 
 const normalizeRecipients = (input: unknown): string[] => {
   if (typeof input === "string") {
@@ -34,7 +36,35 @@ const getStoreId = () => {
   return store?.tenantId || "default-shop";
 };
 
-const getTransporter = async () => {
+const getTransporter = async (tenantId: string) => {
+  if (isDbConnected()) {
+    try {
+      const dbConfig = await MessagingConfiguration.findOne({
+        tenantId,
+        channelType: "EMAIL",
+        isActive: true,
+        isDefault: true,
+      });
+      if (dbConfig && dbConfig.configuration) {
+        const { host, port, secure, auth } = dbConfig.configuration;
+        if (host && port && auth?.user && auth?.pass) {
+          return {
+            transporter: nodemailer.createTransport({
+              host,
+              port: Number(port),
+              secure: secure === true || port === 465,
+              auth: { user: auth.user, pass: auth.pass },
+            }),
+            from: dbConfig.configuration.from || auth.user,
+            provider: dbConfig.provider
+          };
+        }
+      }
+    } catch (err) {
+      console.warn("[Notification] Failed to load email config from DB, falling back:", err);
+    }
+  }
+
   const host = process.env.SMTP_HOST;
   const port = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
   const user = process.env.SMTP_USER;
@@ -42,17 +72,25 @@ const getTransporter = async () => {
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
 
   if (host && port && user && pass) {
-    return nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
+    return {
+      transporter: nodemailer.createTransport({ host, port, secure, auth: { user, pass } }),
+      from: process.env.FROM_EMAIL || user,
+      provider: "smtp"
+    };
   }
 
   try {
     const testAccount = await nodemailer.createTestAccount();
-    return nodemailer.createTransport({
-      host: testAccount.smtp.host,
-      port: testAccount.smtp.port,
-      secure: testAccount.smtp.secure,
-      auth: { user: testAccount.user, pass: testAccount.pass },
-    });
+    return {
+      transporter: nodemailer.createTransport({
+        host: testAccount.smtp.host,
+        port: testAccount.smtp.port,
+        secure: testAccount.smtp.secure,
+        auth: { user: testAccount.user, pass: testAccount.pass },
+      }),
+      from: "no-reply@aurajewel.com",
+      provider: "smtp-ethereal"
+    };
   } catch (error) {
     console.warn("[Notification] Failed to create fallback transporter", error);
     return null;
@@ -60,40 +98,70 @@ const getTransporter = async () => {
 };
 
 const sendEmail = async (emails: string[], subject: string, body: string) => {
-  const transporter = await getTransporter();
-  const from = process.env.FROM_EMAIL || process.env.SMTP_USER || "no-reply@aurajewel.com";
+  const tenantId = getStoreId();
+  const result = await getTransporter(tenantId);
 
-  if (!transporter) {
+  if (!result || !result.transporter) {
+    const from = "no-reply@aurajewel.com";
     console.log("[Notification] Email stub: ", { from, to: emails, subject, body });
     return { provider: "local-email-stub", simulated: true };
   }
 
+  const { transporter, from, provider } = result;
+
   try {
-    const info = await transporter.sendMail({ from, to: emails.join(", "), subject, text: body, html: `<p>${body}</p>` });
+    const templateType = subject.toLowerCase().includes("invoice") ? "INVOICE" : "NOTIFICATION";
+    const { html, senderName } = await wrapWithEmailTemplate(tenantId, templateType, `<p>${body}</p>`, "AuraJewel");
+    const info = await transporter.sendMail({
+      from: `"${senderName}" <${from}>`,
+      to: emails.join(", "),
+      subject,
+      text: body,
+      html
+    });
     const preview = nodemailer.getTestMessageUrl(info);
     if (preview) {
       console.log(`[Notification] Email preview available: ${preview}`);
     }
-    return { provider: "smtp", simulated: false };
+    return { provider, simulated: false };
   } catch (error) {
     console.error("[Notification] Email transport failed", error);
-    return { provider: "smtp", simulated: false, error };
+    return { provider, simulated: false, error };
   }
 };
 
 const sendWhatsapp = async (phones: string[], message: string) => {
-  const provider = process.env.WHATSAPP_BUSINESS_PROVIDER || "WhatsApp Business";
-  const apiKey = process.env.WHATSAPP_BUSINESS_API_KEY;
+  const tenantId = getStoreId();
+  let provider = process.env.WHATSAPP_BUSINESS_PROVIDER || "WhatsApp Business";
+  let apiKey = process.env.WHATSAPP_BUSINESS_API_KEY;
+
+  if (isDbConnected()) {
+    try {
+      const dbConfig = await MessagingConfiguration.findOne({
+        tenantId,
+        channelType: "WHATSAPP",
+        isActive: true,
+        isDefault: true,
+      });
+      if (dbConfig && dbConfig.configuration) {
+        provider = dbConfig.provider;
+        apiKey = dbConfig.configuration.apiKey || dbConfig.configuration.authToken;
+      }
+    } catch (err) {
+      console.warn("[Notification] Failed to load whatsapp config from DB:", err);
+    }
+  }
 
   if (!apiKey) {
-    console.log("[Notification] WhatsApp stub: ", { provider: "local-whatsapp-stub", phones, message });
-    return { provider: "local-whatsapp-stub", simulated: true };
+    console.log("[Notification] WhatsApp stub: ", { provider: `local-${provider.toLowerCase()}-stub`, phones, message });
+    return { provider: `local-${provider.toLowerCase()}-stub`, simulated: true };
   }
 
   // Placeholder for real WhatsApp provider integration.
   console.log("[Notification] WhatsApp queued", { provider, phones, message });
   return { provider, simulated: false };
 };
+
 
 export const notificationService = {
   async enqueueNotification(payload: {
@@ -413,6 +481,17 @@ export const notificationService = {
           });
         }
       });
+    }
+
+    // ── Contract Expiry Alerts ────────────────────────────
+    try {
+      const contractTenantId = getStoreId();
+      const expiryResult = await checkAndAlertExpiring(contractTenantId);
+      if (expiryResult.alertsGenerated > 0) {
+        results.push(`contract_expiry_alerts:${expiryResult.alertsGenerated}`);
+      }
+    } catch (expiryErr) {
+      console.error("[NotificationScheduler] Contract expiry check failed:", expiryErr);
     }
 
     return results;

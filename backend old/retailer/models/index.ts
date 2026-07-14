@@ -53,6 +53,24 @@ import OrderTrackingSchema from "../../models/OrderTracking.js";
 import CustomerReferralSchema from "../../models/CustomerReferral.js";
 import MakingChargeRuleSchema from "../../models/MakingChargeRule.js";
 import FinancialYearSchema from "../../models/FinancialYear.js";
+import TaxProfileSchema from "../../models/TaxProfile.js";
+import MessagingConfigurationSchema from "../../models/MessagingConfiguration.js";
+import PaymentGatewayConfigurationSchema from "../../models/PaymentGatewayConfiguration.js";
+import PrinterConfigurationSchema from "../../models/PrinterConfiguration.js";
+import TCSTransactionSchema from "../../models/TCSTransaction.js";
+import BISLicenceSchema from "../../models/BISLicence.js";
+import TenantBrandingSchema from "../../models/TenantBranding.js";
+import TenantThemeSchema from "../../models/TenantTheme.js";
+import TenantDomainSchema from "../../models/TenantDomain.js";
+import TenantEmailTemplateSchema from "../../models/TenantEmailTemplate.js";
+import TenantAppSettingsSchema from "../../models/TenantAppSettings.js";
+import ReferralPartnerSchema from "../../models/ReferralPartner.js";
+import ReferralLeadSchema from "../../models/ReferralLead.js";
+import ReferralCommissionSchema from "../../models/ReferralCommission.js";
+import ReferralPayoutLedgerSchema from "../../models/ReferralPayoutLedger.js";
+import VendorRateContractSchema from "../../models/VendorRateContract.js";
+import VendorRateRuleSchema from "../../models/VendorRateRule.js";
+import PriceResolutionLogModelDefault, { PriceResolutionLogSchema } from "../../models/PriceResolutionLog.js";
 
 export const Inventory = retailerDb.models.Inventory || retailerDb.model("Inventory", InventorySchema.schema, "inventory");
 export const Branch = retailerDb.models.Branch || retailerDb.model("Branch", BranchSchema.schema, "branches");
@@ -110,3 +128,24 @@ export const OrderTracking = retailerDb.models.OrderTracking || retailerDb.model
 export const CustomerReferral = retailerDb.models.CustomerReferral || retailerDb.model("CustomerReferral", CustomerReferralSchema.schema, "customerreferrals");
 export const MakingChargeRule = retailerDb.models.MakingChargeRule || retailerDb.model("MakingChargeRule", MakingChargeRuleSchema.schema, "makingchargerules");
 export const FinancialYear = retailerDb.models.FinancialYear || retailerDb.model("FinancialYear", FinancialYearSchema.schema, "financialyears");
+export const TaxProfile = retailerDb.models.TaxProfile || retailerDb.model("TaxProfile", TaxProfileSchema.schema, "taxprofiles");
+export const MessagingConfiguration = retailerDb.models.MessagingConfiguration || retailerDb.model("MessagingConfiguration", MessagingConfigurationSchema.schema, "messagingconfigurations");
+export const PaymentGatewayConfiguration = retailerDb.models.PaymentGatewayConfiguration || retailerDb.model("PaymentGatewayConfiguration", PaymentGatewayConfigurationSchema.schema, "paymentgatewayconfigurations");
+export const PrinterConfiguration = retailerDb.models.PrinterConfiguration || retailerDb.model("PrinterConfiguration", PrinterConfigurationSchema.schema, "printerconfigurations");
+export const TCSTransaction = retailerDb.models.TCSTransaction || retailerDb.model("TCSTransaction", TCSTransactionSchema.schema, "tcstransactions");
+export const BISLicence = retailerDb.models.BISLicence || retailerDb.model("BISLicence", BISLicenceSchema.schema, "bislicences");
+export const TenantBranding = retailerDb.models.TenantBranding || retailerDb.model("TenantBranding", TenantBrandingSchema.schema, "tenantbrandings");
+export const TenantTheme = retailerDb.models.TenantTheme || retailerDb.model("TenantTheme", TenantThemeSchema.schema, "tenantthemes");
+export const TenantDomain = retailerDb.models.TenantDomain || retailerDb.model("TenantDomain", TenantDomainSchema.schema, "tenantdomains");
+export const TenantEmailTemplate = retailerDb.models.TenantEmailTemplate || retailerDb.model("TenantEmailTemplate", TenantEmailTemplateSchema.schema, "tenantemailtemplates");
+export const TenantAppSettings = retailerDb.models.TenantAppSettings || retailerDb.model("TenantAppSettings", TenantAppSettingsSchema.schema, "tenantappsettings");
+export const ReferralPartner = retailerDb.models.ReferralPartner || retailerDb.model("ReferralPartner", ReferralPartnerSchema.schema, "referralpartners");
+export const ReferralLead = retailerDb.models.ReferralLead || retailerDb.model("ReferralLead", ReferralLeadSchema.schema, "referralleads");
+export const ReferralCommission = retailerDb.models.ReferralCommission || retailerDb.model("ReferralCommission", ReferralCommissionSchema.schema, "referralcommissions");
+export const ReferralPayoutLedger = retailerDb.models.ReferralPayoutLedger || retailerDb.model("ReferralPayoutLedger", ReferralPayoutLedgerSchema.schema, "referralpayoutledgers");
+export const VendorRateContract = retailerDb.models.VendorRateContract || retailerDb.model("VendorRateContract", VendorRateContractSchema.schema, "vendorratecontracts");
+export const VendorRateRule = retailerDb.models.VendorRateRule || retailerDb.model("VendorRateRule", VendorRateRuleSchema.schema, "vendorraterules");
+export const PriceResolutionLog = (retailerDb.models.PriceResolutionLog || retailerDb.model("PriceResolutionLog", PriceResolutionLogSchema, "priceresolutionlogs")) as mongoose.Model<any>;
+
+
+

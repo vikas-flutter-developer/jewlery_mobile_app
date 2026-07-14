@@ -54,4 +54,52 @@ class ApiEndpoints {
   static const String complianceForm60 = '/compliance/form60';
   static const String offers = '/offers';
   static const String auditLogs = '/audit-logs';
+
+  // TCS Compliance Endpoints
+  static const String calculateTcs = '/tcs/calculate';
+  static const String tcsTransactions = '/tcs/transactions';
+  static const String tcsSummary = '/tcs/summary';
+  static const String tcsReport = '/tcs/report';
+
+  // PAN Compliance Endpoints
+  static const String validatePan = '/pan/validate';
+  static const String verifyPan = '/pan/verify';
+  static const String getPan = '/pan';
+
+  // HUID & GST Compliance Endpoints
+  static const String complianceHuidDashboard = '/compliance/huid/dashboard';
+  static const String complianceHuidProducts = '/compliance/huid/products';
+  static const String complianceHuidSummary = '/compliance/huid/summary';
+  static const String complianceHuidExceptions = '/compliance/huid/exceptions';
+  static const String complianceHuidValidate = '/compliance/huid/validate';
+
+  static const String complianceGstDashboard = '/compliance/gst/dashboard';
+  static const String complianceGstSummary = '/compliance/gst/summary';
+  static const String complianceGstLiabilities = '/compliance/gst/liabilities';
+  static const String complianceGstExceptions = '/compliance/gst/exceptions';
+  static const String complianceGstFilingStatus = '/compliance/gst/filing-status';
+
+  // BIS Licence Settings Endpoints
+  static const String bisLicence = '/settings/bis-licence';
+
+  // Store Settings (Dynamic Configurations) Endpoints
+  static const String tenantBranding = '/settings/tenant-branding';
+  static const String messagingConfig = '/settings/messaging';
+  static const String paymentGateway = '/settings/payment-gateways';
+  static const String printers = '/settings/printers';
+  static const String taxProfiles = '/settings/tax-profiles';
+
+  // Administrative User Action Endpoints
+  static const String userActionsHistory = '/users/actions-history';
+
+  // Referral & Lead System
+  static const String referrals = '/referrals';
+  static const String referralPartners = '/referral-partners';
+  static const String referralCommissions = '/referral-commissions';
+  static const String referralPayouts = '/referral-payouts';
+
+  // Vendor Contracts & Pricing Rules
+  static const String vendorContracts = '/vendor-contracts';
+  static const String vendorContractRules = '/vendor-contract-rules';
 }
+

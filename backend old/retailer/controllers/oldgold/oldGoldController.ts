@@ -12,12 +12,12 @@ const genId = (prefix = "OG") => `${prefix}-${Date.now().toString(36).toUpperCas
 export const createOldGoldPurchase = async (req: Request, res: Response) => {
   try {
     const body = req.body ?? {};
-    const supplierName = String(body.supplierName || body.customerName || "Unknown Customer").trim();
-    const grossWeight = Number(body.grossWeight || body.weight || 0);
+    const supplierName = String(body.supplierName || "Unknown Supplier").trim();
+    const grossWeight = Number(body.grossWeight || 0);
     const netWeight = Number(body.netWeight || grossWeight);
     const purity = String(body.purity || "22K");
-    const pricePerGram = Number(body.pricePerGram || body.ratePerGram || 0);
-    const total = Number(body.total || body.totalPaid || Math.round(netWeight * pricePerGram));
+    const pricePerGram = Number(body.pricePerGram || 0);
+    const total = Number(body.total || Math.round(netWeight * pricePerGram));
 
     if (netWeight <= 0) {
       return res.status(400).json({ success: false, error: "netWeight must be > 0" });
@@ -28,15 +28,11 @@ export const createOldGoldPurchase = async (req: Request, res: Response) => {
     const purchaseRecord = {
       purchaseId,
       supplierName,
-      customerName: supplierName,
       grossWeight,
-      weight: grossWeight,
       netWeight,
       purity,
       pricePerGram,
-      ratePerGram: pricePerGram,
       total,
-      totalPaid: total,
       notes: String(body.notes || ""),
       createdAt: new Date().toISOString(),
     };
@@ -184,15 +180,7 @@ export const createMeltingLog = async (req: Request, res: Response) => {
 
 export const getOldGoldPurchases = async (_req: Request, res: Response) => {
   try {
-    const mapped = mockOldGoldPurchases.map((p: any) => ({
-      ...p,
-      customerName: p.customerName || p.supplierName || "Unknown Customer",
-      weight: p.weight !== undefined ? p.weight : (p.grossWeight || p.netWeight || 0),
-      purity: p.purity || "22K",
-      ratePerGram: p.ratePerGram !== undefined ? p.ratePerGram : (p.pricePerGram || 0),
-      totalPaid: p.totalPaid !== undefined ? p.totalPaid : (p.total || 0),
-    }));
-    return res.json({ success: true, data: mapped });
+    return res.json({ success: true, data: mockOldGoldPurchases });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, error: "Failed to fetch purchases" });

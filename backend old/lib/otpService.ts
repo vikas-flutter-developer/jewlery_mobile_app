@@ -40,29 +40,57 @@ export const generateOtp = (dest?: string) => {
   return (Math.floor(100000 + Math.random() * 900000)).toString();
 };
 
-let transporter: nodemailer.Transporter | null = null;
-let usingTestAccount = false;
-const setupTransporter = async () => {
-  if (transporter) return transporter;
+import { tenantLocalStorage, isDbConnected } from "./db.js";
+import { MessagingConfiguration } from "../retailer/models/index.js";
+import { wrapWithEmailTemplate } from "./emailTemplateHelper.js";
+
+const getTransporterForTenant = async (tenantId: string) => {
+  if (isDbConnected()) {
+    try {
+      const dbConfig = await MessagingConfiguration.findOne({
+        tenantId,
+        channelType: "EMAIL",
+        isActive: true,
+        isDefault: true,
+      });
+      if (dbConfig && dbConfig.configuration) {
+        const { host, port, secure, auth } = dbConfig.configuration;
+        if (host && port && auth?.user && auth?.pass) {
+          const trans = nodemailer.createTransport({
+            host,
+            port: Number(port),
+            secure: secure === true || port === 465,
+            auth: { user: auth.user, pass: auth.pass },
+          });
+          return { transporter: trans, from: dbConfig.configuration.from || auth.user, usingTestAccount: false };
+        }
+      }
+    } catch (err) {
+      console.warn("[OTP] Failed to load email config from DB, falling back:", err);
+    }
+  }
+
   const host = process.env.SMTP_HOST;
   const port = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const secure = process.env.SMTP_SECURE === 'true' || (port === 465);
+  const secure = process.env.SMTP_SECURE === "true" || port === 465;
+
   if (host && port && user && pass) {
-    transporter = nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
-    usingTestAccount = false;
-    return transporter;
+    const trans = nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
+    return { transporter: trans, from: process.env.FROM_EMAIL || user, usingTestAccount: false };
   }
 
-  // Fallback: create an Ethereal test account so developer can preview emails without external SMTP
   try {
     const testAccount = await nodemailer.createTestAccount();
-    transporter = nodemailer.createTransport({ host: testAccount.smtp.host, port: testAccount.smtp.port, secure: testAccount.smtp.secure, auth: { user: testAccount.user, pass: testAccount.pass } });
-    usingTestAccount = true;
-    console.log(`[OTP] Using Ethereal test account: ${testAccount.user}`);
-    return transporter;
-  } catch (err) {
+    const trans = nodemailer.createTransport({
+      host: testAccount.smtp.host,
+      port: testAccount.smtp.port,
+      secure: testAccount.smtp.secure,
+      auth: { user: testAccount.user, pass: testAccount.pass },
+    });
+    return { transporter: trans, from: "no-reply@aurajewel.com", usingTestAccount: true, testAccount };
+  } catch (error) {
     return null;
   }
 };
@@ -72,24 +100,34 @@ export const sendOtpToEmail = async (email: string) => {
   const expiresAt = Date.now() + OTP_TTL_MS;
   store.set(`email:${email}`, { code, expiresAt, dest: email });
 
-  const tr = await setupTransporter();
-  if (tr) {
+  const tenantId = tenantLocalStorage.getStore()?.tenantId || "default-shop";
+  const result = await getTransporterForTenant(tenantId);
+
+  if (result && result.transporter) {
     try {
-      const from = process.env.FROM_EMAIL || process.env.SMTP_USER || 'no-reply@aurajewel.com';
-      const info = await tr.sendMail({ from, to: email, subject: 'Your AuraJewel OTP', text: `Your verification code is ${code}. It expires in 5 minutes.`, html: `<p>Your verification code is <strong>${code}</strong>. It expires in 5 minutes.</p>` });
-      console.log(`[OTP] Sent OTP to email ${email} via ${usingTestAccount ? 'Ethereal test account' : 'SMTP'}`);
+      const { transporter, from, usingTestAccount, testAccount } = result;
+      const originalHtml = `<p>Your verification code is <strong>${code}</strong>. It expires in 5 minutes.</p>`;
+      const { html, senderName } = await wrapWithEmailTemplate(tenantId, "OTP", originalHtml, "AuraJewel");
+      const info = await transporter.sendMail({
+        from: `"${senderName}" <${from}>`,
+        to: email,
+        subject: `Your ${senderName} OTP`,
+        text: `Your verification code is ${code}. It expires in 5 minutes.`,
+        html,
+      });
+      console.log(`[OTP] Sent OTP to email ${email} via ${usingTestAccount ? "Ethereal test account" : "SMTP"}`);
       if (usingTestAccount) {
         const preview = nodemailer.getTestMessageUrl(info);
         if (preview) console.log(`[OTP] Preview URL: ${preview}`);
       }
       return { ok: true, code };
     } catch (err: any) {
-      console.warn('[OTP] Failed to send via transporter, falling back to console:', err.message || err);
+      console.warn("[OTP] Failed to send via transporter, falling back to console:", err.message || err);
     }
   }
 
   // Console fallback
-  console.log(`[OTP] Sending OTP to email ${email}: ${code} (expires in 5m)`);
+  console.log(`[OTP] Sending OTP to email ${email}: ${code} (expires in 5m) via console fallback`);
   return { ok: true, code };
 };
 
@@ -98,10 +136,32 @@ export const sendOtpToPhone = async (phone: string) => {
   const expiresAt = Date.now() + OTP_TTL_MS;
   store.set(`phone:${phone}`, { code, expiresAt, dest: phone });
 
+  const tenantId = tenantLocalStorage.getStore()?.tenantId || "default-shop";
+  let provider = "console-stub";
+
+  if (isDbConnected()) {
+    try {
+      const dbConfig = await MessagingConfiguration.findOne({
+        tenantId,
+        channelType: "SMS",
+        isActive: true,
+        isDefault: true,
+      });
+      if (dbConfig) {
+        provider = dbConfig.provider;
+        console.log(`[OTP] Sending OTP to phone ${phone}: ${code} via SMS provider ${provider}`);
+        return { ok: true, code, provider };
+      }
+    } catch (err) {
+      console.warn("[OTP] Failed to load SMS config from DB:", err);
+    }
+  }
+
   // In production integrate SMS provider here. For now just console log.
-  console.log(`[OTP] Sending OTP to phone ${phone}: ${code} (expires in 5m)`);
-  return { ok: true, code };
+  console.log(`[OTP] Sending OTP to phone ${phone}: ${code} (expires in 5m) via console fallback`);
+  return { ok: true, code, provider };
 };
+
 
 export const verifyOtpForEmail = (email: string, code: string) => {
   if (isForceDemoOtp() && code === DEMO_OTP) return true;

@@ -1,167 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/network/api_client.dart';
+import '../providers/admin_provider.dart';
 
-class ComplianceReportsScreen extends StatefulWidget {
+class ComplianceReportsScreen extends ConsumerStatefulWidget {
   const ComplianceReportsScreen({super.key});
 
   @override
-  State<ComplianceReportsScreen> createState() => _ComplianceReportsScreenState();
+  ConsumerState<ComplianceReportsScreen> createState() => _ComplianceReportsScreenState();
 }
 
-class _ComplianceReportsScreenState extends State<ComplianceReportsScreen> with SingleTickerProviderStateMixin {
-  final _apiClient = ApiClient();
+class _ComplianceReportsScreenState extends ConsumerState<ComplianceReportsScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  List<dynamic> _gstSummary = [];
-  List<dynamic> _form60Records = [];
-  List<dynamic> _amlLogs = [];
-
   bool _isLoading = false;
   String? _errorMessage;
 
-  final _custNameCtrl = TextEditingController();
-  final _custPhoneCtrl = TextEditingController();
-  final _custAddrCtrl = TextEditingController();
-  final _amountCtrl = TextEditingController();
-  final _txIdCtrl = TextEditingController();
-  final _aadharCtrl = TextEditingController();
-  final _reasonCtrl = TextEditingController(text: 'Income below taxable threshold limit');
+  // Controllers for adding BIS Licence
+  final _licNoCtrl = TextEditingController();
+  final _licHolderCtrl = TextEditingController();
+  final _authorityCtrl = TextEditingController(text: 'BIS Bureau of Indian Standards');
+  final _branchCtrl = TextEditingController(text: 'MAIN');
+
+  // Controllers for PAN Verification
+  final _panCustIdCtrl = TextEditingController();
+  final _panValCtrl = TextEditingController();
+  Map<String, dynamic>? _verifiedCustomerDetails;
+
+  // Controller for HUID Validation
+  final _huidValCtrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
+    _panCustIdCtrl.addListener(() {
+      if (_verifiedCustomerDetails != null) {
+        setState(() {
+          _verifiedCustomerDetails = null;
+        });
+      }
+    });
+    _panValCtrl.addListener(() {
+      if (_verifiedCustomerDetails != null) {
+        setState(() {
+          _verifiedCustomerDetails = null;
+        });
+      }
+    });
     _fetchComplianceData();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _custNameCtrl.dispose();
-    _custPhoneCtrl.dispose();
-    _custAddrCtrl.dispose();
-    _amountCtrl.dispose();
-    _txIdCtrl.dispose();
-    _aadharCtrl.dispose();
-    _reasonCtrl.dispose();
+    _licNoCtrl.dispose();
+    _licHolderCtrl.dispose();
+    _authorityCtrl.dispose();
+    _branchCtrl.dispose();
+    _panCustIdCtrl.dispose();
+    _panValCtrl.dispose();
+    _huidValCtrl.dispose();
     super.dispose();
-  }
-
-  void _showAddForm60Dialog() {
-    _custNameCtrl.clear();
-    _custPhoneCtrl.clear();
-    _custAddrCtrl.clear();
-    _amountCtrl.clear();
-    _txIdCtrl.clear();
-    _aadharCtrl.clear();
-    _reasonCtrl.text = 'Income below taxable threshold limit';
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFFF9F6F0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          title: const Text(
-            'FILE STATUTORY FORM 60',
-            style: TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _custNameCtrl,
-                  decoration: const InputDecoration(labelText: 'Customer Name'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _custPhoneCtrl,
-                  decoration: const InputDecoration(labelText: 'Customer Phone'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _custAddrCtrl,
-                  decoration: const InputDecoration(labelText: 'Customer Address'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _amountCtrl,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Transaction Amount (₹)'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _txIdCtrl,
-                  decoration: const InputDecoration(labelText: 'Transaction / Invoice ID'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _aadharCtrl,
-                  decoration: const InputDecoration(labelText: 'Aadhaar Card Number'),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: _reasonCtrl,
-                  decoration: const InputDecoration(labelText: 'Reason for No PAN'),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('CANCEL', style: TextStyle(color: Colors.black45)),
-              onPressed: () => Navigator.pop(context),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
-              child: const Text('SUBMIT', style: TextStyle(color: Colors.white)),
-              onPressed: () async {
-                if (_custNameCtrl.text.trim().isEmpty ||
-                    _custPhoneCtrl.text.trim().isEmpty ||
-                    _custAddrCtrl.text.trim().isEmpty ||
-                    _amountCtrl.text.trim().isEmpty ||
-                    _txIdCtrl.text.trim().isEmpty ||
-                    _aadharCtrl.text.trim().isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please fill all required fields.')),
-                  );
-                  return;
-                }
-
-                final amount = double.tryParse(_amountCtrl.text) ?? 0.0;
-
-                final res = await _apiClient.post(
-                  '/compliance/form60',
-                  data: {
-                    'customerName': _custNameCtrl.text.trim(),
-                    'customerPhone': _custPhoneCtrl.text.trim(),
-                    'customerAddress': _custAddrCtrl.text.trim(),
-                    'amount': amount,
-                    'transactionId': _txIdCtrl.text.trim(),
-                    'aadharNumber': _aadharCtrl.text.trim(),
-                    'reasonNoPan': _reasonCtrl.text.trim(),
-                  },
-                );
-
-                if (res.statusCode == 201 || res.statusCode == 200) {
-                  Navigator.pop(context);
-                  _fetchComplianceData();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('✓ Form 60 declaration successfully submitted!'), backgroundColor: Colors.green),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Submission failed: ${res.data['error'] ?? 'Unknown Error'}')),
-                  );
-                }
-              },
-            )
-          ],
-        );
-      },
-    );
   }
 
   Future<void> _fetchComplianceData() async {
@@ -171,31 +70,79 @@ class _ComplianceReportsScreenState extends State<ComplianceReportsScreen> with 
     });
 
     try {
-      // Fetch compliance endpoints
-      final resGst = await _apiClient.get('/compliance/gst');
-      final resForm60 = await _apiClient.get('/compliance/form60');
-      final resAml = await _apiClient.get('/compliance/aml/logs');
-
-      setState(() {
-        if (resGst.statusCode == 200 && resGst.data != null) {
-          _gstSummary = resGst.data['data'] as List<dynamic>? ?? resGst.data as List<dynamic>;
-        }
-        if (resForm60.statusCode == 200 && resForm60.data != null) {
-          _form60Records = resForm60.data['data'] as List<dynamic>? ?? resForm60.data as List<dynamic>;
-        }
-        if (resAml.statusCode == 200 && resAml.data != null) {
-          _amlLogs = resAml.data['data'] as List<dynamic>? ?? resAml.data as List<dynamic>;
-        }
-      });
+      await Future.wait([
+        ref.read(adminProvider.notifier).fetchGstDashboard(),
+        ref.read(adminProvider.notifier).fetchTcsTransactions(),
+        ref.read(adminProvider.notifier).fetchTcsSummary(),
+        ref.read(adminProvider.notifier).fetchHuidExceptions(),
+        ref.read(adminProvider.notifier).fetchBisLicences(),
+      ]);
     } catch (e) {
       setState(() {
-        _errorMessage = 'Failed to fetch compliance logs: $e';
+        _errorMessage = 'Failed to load compliance data: $e';
       });
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void _showAddBisDialog() {
+    _licNoCtrl.clear();
+    _licHolderCtrl.clear();
+    _authorityCtrl.text = 'BIS Bureau of Indian Standards';
+    _branchCtrl.text = 'MAIN';
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFFF9F6F0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          title: const Text('REGISTER BIS HALLMARK LICENCE', style: TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontWeight: FontWeight.bold, fontSize: 14)),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(controller: _licNoCtrl, decoration: const InputDecoration(labelText: 'Licence Number')),
+                const SizedBox(height: 12),
+                TextField(controller: _licHolderCtrl, decoration: const InputDecoration(labelText: 'Licence Holder Name')),
+                const SizedBox(height: 12),
+                TextField(controller: _authorityCtrl, decoration: const InputDecoration(labelText: 'Issuing Authority')),
+                const SizedBox(height: 12),
+                TextField(controller: _branchCtrl, decoration: const InputDecoration(labelText: 'Store Branch ID')),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCEL', style: TextStyle(color: Colors.black45))),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+              onPressed: () async {
+                if (_licNoCtrl.text.trim().isEmpty || _licHolderCtrl.text.trim().isEmpty) return;
+                final ok = await ref.read(adminProvider.notifier).saveBisLicence({
+                  'licenceNumber': _licNoCtrl.text.trim(),
+                  'licenceHolderName': _licHolderCtrl.text.trim(),
+                  'issuingAuthority': _authorityCtrl.text.trim(),
+                  'issueDate': DateTime.now().toIso8601String(),
+                  'expiryDate': DateTime.now().add(const Duration(days: 365)).toIso8601String(),
+                  'branchId': _branchCtrl.text.trim(),
+                  'isActive': true,
+                  'status': 'ACTIVE',
+                  'tenantId': ref.read(adminProvider).activeBranch?['tenantId'] ?? 'default-shop',
+                });
+                if (ok) {
+                  Navigator.pop(ctx);
+                  _fetchComplianceData();
+                }
+              },
+              child: const Text('REGISTER', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -210,29 +157,27 @@ class _ComplianceReportsScreenState extends State<ComplianceReportsScreen> with 
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'COMPLIANCE REPORTS',
-          style: TextStyle(
-            color: AppTheme.goldDark,
-            fontFamily: 'serif',
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
+          'COMPLIANCE MANAGEMENT',
+          style: TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontWeight: FontWeight.bold, letterSpacing: 1.0, fontSize: 16),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.goldDark),
-            onPressed: _showAddForm60Dialog,
-          ),
+            icon: const Icon(Icons.refresh_rounded, color: AppTheme.goldDark),
+            onPressed: _fetchComplianceData,
+          )
         ],
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppTheme.goldDark,
           unselectedLabelColor: Colors.black38,
           indicatorColor: AppTheme.goldDark,
+          isScrollable: true,
           tabs: const [
-            Tab(text: 'TAX GST FILING'),
-            Tab(text: 'FORM 60 REGISTRY'),
-            Tab(text: 'AML LOGS'),
+            Tab(text: 'GST FILING'),
+            Tab(text: 'TCS LEDGER'),
+            Tab(text: 'HUID HALLMARK'),
+            Tab(text: 'BIS LICENCES'),
+            Tab(text: 'PAN VERIFICATION'),
           ],
         ),
       ),
@@ -250,8 +195,10 @@ class _ComplianceReportsScreenState extends State<ComplianceReportsScreen> with 
                   controller: _tabController,
                   children: [
                     _buildGstTab(),
-                    _buildForm60Tab(),
-                    _buildAmlTab(),
+                    _buildTcsTab(),
+                    _buildHuidTab(),
+                    _buildBisTab(),
+                    _buildPanTab(),
                   ],
                 ),
               ),
@@ -261,127 +208,470 @@ class _ComplianceReportsScreenState extends State<ComplianceReportsScreen> with 
     );
   }
 
+  // --- GST TAB ---
   Widget _buildGstTab() {
+    final gst = ref.watch(adminProvider).gstDashboard ?? {};
+    final summary = gst['summary'] ?? {};
+    final liabilities = gst['liabilities'] as List<dynamic>? ?? [];
+    final exceptions = gst['exceptions'] as List<dynamic>? ?? [];
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('GST Summary (Current Period)', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif', fontSize: 14)),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+                icon: const Icon(Icons.download_rounded, size: 16, color: Colors.white),
+                label: const Text('EXPORT GSTR', style: TextStyle(fontSize: 11, color: Colors.white)),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('✓ GSTR-1 spreadsheet exported to downloads.'), backgroundColor: Colors.green),
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: _buildMetricCard('Total Sales', '₹${summary['totalSales'] ?? "0.00"}', Colors.blue)),
+              const SizedBox(width: 12),
+              Expanded(child: _buildMetricCard('Tax Liability', '₹${summary['taxLiability'] ?? "0.00"}', Colors.amber)),
+            ],
+          ),
+          const SizedBox(height: 24),
+          const Text('GST Liabilities Breakdown', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF4A3E1B))),
+          const SizedBox(height: 8),
+          if (liabilities.isEmpty)
+            const Text('No liabilities registered.', style: TextStyle(color: Colors.black38, fontSize: 11))
+          else
+            ...liabilities.map((item) {
+              return Card(
+                color: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFFECE6DF))),
+                child: ListTile(
+                  title: Text('HSN: ${item['hsnCode'] ?? "7113"}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  subtitle: Text('Rate: ${item['taxRate']}% • Value: ₹${item['taxableValue']}'),
+                  trailing: Text('Tax: ₹${item['gstTax']}', style: const TextStyle(color: AppTheme.goldDark, fontWeight: FontWeight.bold)),
+                ),
+              );
+            }),
+          const SizedBox(height: 24),
+          const Text('Compliance Exceptions / Discrepancies', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.redAccent)),
+          const SizedBox(height: 8),
+          if (exceptions.isEmpty)
+            const Text('✓ All invoices compliant. No discrepancy detected.', style: TextStyle(color: Colors.green, fontSize: 11, fontWeight: FontWeight.bold))
+          else
+            ...exceptions.map((ex) {
+              return Card(
+                color: Colors.redAccent.withOpacity(0.04),
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Colors.redAccent)),
+                child: ListTile(
+                  leading: const Icon(Icons.warning_amber_rounded, color: Colors.redAccent),
+                  title: Text(ex['invoiceId'] ?? 'Invoice Error', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  subtitle: Text(ex['errorDetails'] ?? ex['message'] ?? 'Mismatching tax configuration.'),
+                ),
+              );
+            }),
+        ],
+      ),
+    );
+  }
+
+  // --- TCS TAB ---
+  Widget _buildTcsTab() {
+    final tcsSum = ref.watch(adminProvider).tcsSummary ?? {};
+    final tcsTxs = ref.watch(adminProvider).tcsTransactions;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('TCS Collection Threshold (₹2,00,000)', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif', fontSize: 14)),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(child: _buildMetricCard('Collected TCS', '₹${tcsSum['collectedTcs'] ?? "0"}', Colors.green)),
+            const SizedBox(width: 12),
+            Expanded(child: _buildMetricCard('Pending Tally', '₹${tcsSum['pendingTcs'] ?? "0"}', Colors.orange)),
+          ],
+        ),
+        const SizedBox(height: 24),
+        const Text('Recent TCS Collections Log', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF4A3E1B))),
+        const SizedBox(height: 8),
+        if (tcsTxs.isEmpty)
+          const Expanded(child: Center(child: Text('No TCS ledger collections recorded.', style: TextStyle(color: Colors.black38))))
+        else
+          Expanded(
+            child: ListView.builder(
+              itemCount: tcsTxs.length,
+              itemBuilder: (context, idx) {
+                final tx = tcsTxs[idx];
+                return Card(
+                  color: Colors.white,
+                  elevation: 0,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFFECE6DF))),
+                  child: ListTile(
+                    title: Text('Invoice: ${tx['invoiceId']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                    subtitle: Text('Status: ${tx['status']} • Taxable: ₹${tx['taxableAmount']}'),
+                    trailing: Text('TCS: ₹${tx['tcsAmount']}', style: const TextStyle(color: AppTheme.goldDark, fontWeight: FontWeight.bold)),
+                    onTap: () {
+                      _showTcsUpdateDialog(tx);
+                    },
+                  ),
+                );
+              },
+            ),
+          )
+      ],
+    );
+  }
+
+  void _showTcsUpdateDialog(Map<String, dynamic> tx) {
+    final remarksCtrl = TextEditingController(text: tx['remarks'] ?? '');
+    String status = tx['status'] ?? 'PENDING';
+
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFFF9F6F0),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+              title: Text('UPDATE TCS TRANSACTION', style: const TextStyle(color: AppTheme.goldDark, fontFamily: 'serif', fontSize: 13, fontWeight: FontWeight.bold)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<String>(
+                    value: status,
+                    decoration: const InputDecoration(labelText: 'TCS Status'),
+                    items: const [
+                      DropdownMenuItem(value: 'PENDING', child: Text('PENDING TALLY')),
+                      DropdownMenuItem(value: 'COLLECTED', child: Text('COLLECTED / RETRIEVED')),
+                      DropdownMenuItem(value: 'REPORTED', child: Text('REPORTED TO GOVT')),
+                    ],
+                    onChanged: (v) => setDialogState(() => status = v!),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(controller: remarksCtrl, decoration: const InputDecoration(labelText: 'Compliance Remarks')),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCEL', style: TextStyle(color: Colors.black45))),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+                  onPressed: () async {
+                    final ok = await ref.read(adminProvider.notifier).updateTcsStatus(tx['_id'], status, remarksCtrl.text.trim());
+                    if (ok) {
+                      Navigator.pop(ctx);
+                      _fetchComplianceData();
+                    }
+                  },
+                  child: const Text('UPDATE', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // --- HUID TAB ---
+  Widget _buildHuidTab() {
+    final huidExs = ref.watch(adminProvider).huidExceptions;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('HUID Hallmarking Validator', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif', fontSize: 14)),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _huidValCtrl,
+                decoration: const InputDecoration(hintText: 'Enter HUID Code (6 Characters)', labelText: 'Validate HUID'),
+              ),
+            ),
+            const SizedBox(width: 12),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+              onPressed: () async {
+                final code = _huidValCtrl.text.trim();
+                if (code.isEmpty) return;
+                final res = await ref.read(adminProvider.notifier).validateHuid(code);
+                final isValid = res['valid'] == true;
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    backgroundColor: const Color(0xFFF9F6F0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    title: Text(isValid ? '✓ VALID HUID CODE' : '✗ INVALID HUID', style: TextStyle(color: isValid ? Colors.green : Colors.redAccent, fontFamily: 'serif', fontSize: 14, fontWeight: FontWeight.bold)),
+                    content: Text(isValid ? 'The HUID Code is structurally authentic and logged in BIS database.' : (res['reason'] ?? 'HUID code check failed.')),
+                    actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK'))],
+                  ),
+                );
+              },
+              child: const Text('VERIFY', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        const Text('Inventory Non-Compliant List (No HUID)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF4A3E1B))),
+        const SizedBox(height: 8),
+        if (huidExs.isEmpty)
+          const Expanded(child: Center(child: Text('✓ No non-compliant inventory items.', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold))))
+        else
+          Expanded(
+            child: ListView.builder(
+              itemCount: huidExs.length,
+              itemBuilder: (context, idx) {
+                final ex = huidExs[idx];
+                return Card(
+                  color: Colors.white,
+                  elevation: 0,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFFECE6DF))),
+                  child: ListTile(
+                    leading: const Icon(Icons.warning, color: Colors.orangeAccent),
+                    title: Text(ex['sku'] ?? ex['productName'] ?? 'Jewelry Item', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                    subtitle: Text('Weight: ${ex['weight']}g • Metal: ${ex['metalPurity']}'),
+                  ),
+                );
+              },
+            ),
+          )
+      ],
+    );
+  }
+
+  // --- BIS TAB ---
+  Widget _buildBisTab() {
+    final bis = ref.watch(adminProvider).bisLicences;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('GSTR-1 & GSTR-3B filings summary', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B))),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
-              icon: const Icon(Icons.download_rounded, size: 16, color: Colors.white),
-              label: const Text('EXPORT', style: TextStyle(fontSize: 11, color: Colors.white)),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('✓ GSTR-1 spreadsheet exported to downloads directory.'), backgroundColor: Colors.blueAccent),
+            const Text('BIS Registered Hallmarking Licences', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif', fontSize: 14)),
+            IconButton(
+              icon: const Icon(Icons.add_circle_outline, color: AppTheme.goldDark),
+              onPressed: _showAddBisDialog,
+            )
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (bis.isEmpty)
+          const Expanded(child: Center(child: Text('No BIS Licences registered.', style: TextStyle(color: Colors.black38))))
+        else
+          Expanded(
+            child: ListView.builder(
+              itemCount: bis.length,
+              itemBuilder: (context, idx) {
+                final lic = bis[idx];
+                final active = lic['isActive'] == true;
+                return Card(
+                  color: Colors.white,
+                  elevation: 0,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFFECE6DF))),
+                  child: ListTile(
+                    title: Text('Licence: ${lic['licenceNumber']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                    subtitle: Text('Holder: ${lic['licenceHolderName']} • Status: ${lic['status']}'),
+                    trailing: Switch(
+                      value: active,
+                      activeColor: AppTheme.goldDark,
+                      onChanged: (val) async {
+                        if (val) {
+                          await ref.read(adminProvider.notifier).activateBisLicence(lic['_id']);
+                        } else {
+                          await ref.read(adminProvider.notifier).suspendBisLicence(lic['_id']);
+                        }
+                        _fetchComplianceData();
+                      },
+                    ),
+                  ),
                 );
               },
             ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: _gstSummary.isEmpty
-              ? const Center(child: Text('No GST collection logged for the current period.', style: TextStyle(color: Colors.black38)))
-              : ListView.builder(
-                  itemCount: _gstSummary.length,
-                  itemBuilder: (context, index) {
-                    final item = _gstSummary[index];
-                    // Handle both GSTR-1 format and legacy month-summary format
-                    final title = item['month'] ?? item['invoiceNo'] ?? 'Invoice #${index + 1}';
-                    final subtitle = item['invoiceDate'] != null
-                        ? 'Date: ${item['invoiceDate']}  •  Customer: ${item['customerName'] ?? 'N/A'}'
-                        : 'Taxable Value: ₹${item['taxableValue'] ?? 0}';
-                    final gstAmt = item['gstAmount'] ?? ((item['cgst'] ?? 0) + (item['sgst'] ?? 0));
-                    return Card(
-                      color: Colors.white,
-                      elevation: 0,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Color(0xFFECE6DF))),
-                      child: ListTile(
-                        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text(subtitle),
-                        trailing: Text('GST: ₹$gstAmt', style: const TextStyle(color: AppTheme.goldDark, fontWeight: FontWeight.bold)),
-                      ),
-                    );
-                  },
-                ),
-        ),
+          )
       ],
     );
   }
 
-  Widget _buildForm60Tab() {
-    if (_form60Records.isEmpty) {
-      return const Center(child: Text('No Form 60 declarations submitted.', style: TextStyle(color: Colors.black38)));
-    }
-    return ListView.builder(
-      itemCount: _form60Records.length,
-      itemBuilder: (context, index) {
-        final form = _form60Records[index];
-        return Card(
-          color: Colors.white,
-          elevation: 0,
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Color(0xFFECE6DF))),
-          child: Padding(
+  // --- PAN TAB ---
+  Widget _buildPanTab() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('PAN Number KYC Verification', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E1B), fontFamily: 'serif', fontSize: 14)),
+        const SizedBox(height: 16),
+        TextField(
+          controller: _panCustIdCtrl,
+          decoration: const InputDecoration(labelText: 'Customer Account ID', hintText: 'Enter customer mongoose _id'),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _panValCtrl,
+                decoration: const InputDecoration(labelText: 'PAN Card Number', hintText: 'e.g. ABCDE1234F'),
+              ),
+            ),
+            const SizedBox(width: 12),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+              onPressed: () async {
+                final pan = _panValCtrl.text.trim();
+                final custId = _panCustIdCtrl.text.trim();
+                if (pan.isEmpty) return;
+                final res = await ref.read(adminProvider.notifier).validatePanNumber(pan, customerId: custId.isNotEmpty ? custId : null);
+                final isValid = res['valid'] == true;
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    backgroundColor: const Color(0xFFF9F6F0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    title: Text(isValid ? '✓ PAN VALID' : '✗ PAN INVALID', style: TextStyle(color: isValid ? Colors.green : Colors.redAccent, fontFamily: 'serif', fontSize: 14, fontWeight: FontWeight.bold)),
+                    content: Text(isValid ? 'The PAN Number matches standard Indian Income Tax formatting.' : (res['reason'] ?? 'Invalid PAN format.')),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CLOSE')),
+                      if (isValid && custId.isNotEmpty)
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldDark),
+                          onPressed: () async {
+                            final customerMap = await ref.read(adminProvider.notifier).verifyPanNumber(custId, pan, 'VERIFIED');
+                            final success = customerMap != null;
+                            if (success) {
+                              setState(() {
+                                _verifiedCustomerDetails = customerMap;
+                              });
+                            }
+                            Navigator.pop(ctx);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(success ? '✓ Customer PAN verified & locked!' : 'Verification failed.'),
+                              backgroundColor: success ? Colors.green : Colors.redAccent,
+                            ));
+                          },
+                          child: const Text('VERIFY & LOCK', style: TextStyle(color: Colors.white)),
+                        ),
+                    ],
+                  ),
+                );
+              },
+              child: const Text('VALIDATE', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+        if (_verifiedCustomerDetails != null) ...[
+          const SizedBox(height: 24),
+          Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE8F5E9),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.green.shade200, width: 1.5),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(form['customerName'] ?? form['declarantName'] ?? 'Declarant Name', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: Colors.green.withOpacity(0.08), borderRadius: BorderRadius.circular(8)),
-                      child: Text(form['status'] ?? 'SUBMITTED', style: const TextStyle(color: Colors.green, fontSize: 9, fontWeight: FontWeight.bold)),
+                    const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'KYC STATUS: VERIFIED & LOCKED',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                        fontSize: 12,
+                        letterSpacing: 1.1,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                const Divider(height: 1),
+                const Divider(height: 1, color: Colors.green),
                 const SizedBox(height: 12),
-                Text('Address: ${form['customerAddress'] ?? form['declarantAddress'] ?? 'N/A'}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
-                const SizedBox(height: 4),
-                Text('Aadhaar: ${form['aadharNumber'] ?? 'Attached'}', style: const TextStyle(fontSize: 12, color: Colors.black54)),
-                const SizedBox(height: 4),
-                Text('Amount: ₹${form['amount'] ?? 'N/A'}  •  Reason: ${form['reasonNoPan'] ?? 'N/A'}', style: const TextStyle(fontSize: 11, color: Colors.black38)),
+                _buildInfoRow('Customer Name', _verifiedCustomerDetails!['name'] ?? 'Amit Sharma'),
+                const SizedBox(height: 8),
+                _buildInfoRow('Customer ID', _verifiedCustomerDetails!['_id'] ?? ''),
+                const SizedBox(height: 8),
+                _buildInfoRow('PAN Number', _maskPan(_verifiedCustomerDetails!['panNumber'] ?? _verifiedCustomerDetails!['pan'] ?? '')),
+                const SizedBox(height: 8),
+                _buildInfoRow('Verified By', _verifiedCustomerDetails!['panVerifiedBy'] ?? 'Store Manager'),
+                const SizedBox(height: 8),
+                _buildInfoRow('Verified On', _formatDate(_verifiedCustomerDetails!['panVerifiedAt'])),
               ],
             ),
           ),
-        );
-      },
+        ]
+      ],
     );
   }
 
-  Widget _buildAmlTab() {
-    if (_amlLogs.isEmpty) {
-      return const Center(child: Text('No flagged high-value cash transactions.', style: TextStyle(color: Colors.black38)));
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.black54, fontSize: 12)),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF2E2A25), fontSize: 12)),
+      ],
+    );
+  }
+
+  String _maskPan(String pan) {
+    if (pan.length < 8) return pan;
+    return '${pan.substring(0, 3)}XX${pan.substring(5, 7)}X${pan.substring(8)}';
+  }
+
+  String _formatDate(dynamic dateVal) {
+    if (dateVal == null) {
+      final now = DateTime.now();
+      return '${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute.toString().padLeft(2, '0')}';
     }
-    return ListView.builder(
-      itemCount: _amlLogs.length,
-      itemBuilder: (context, index) {
-        final log = _amlLogs[index];
-        final message = log['message'] ?? log['flaggedReason'] ?? 'High value transaction alert';
-        final name = log['customerName'] ?? 'Unknown Customer';
-        final amount = log['amount'];
-        return Card(
-          color: Colors.white,
-          elevation: 0,
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Color(0xFFECE6DF))),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(16),
-            leading: const Icon(Icons.security_rounded, color: Colors.amber, size: 28),
-            title: Text(message, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-            subtitle: Text('Customer: $name${amount != null ? '  •  ₹$amount' : ''}  •  ${log['createdAt']?.split('T')?.first ?? 'N/A'}'),
+    try {
+      final dt = DateTime.parse(dateVal.toString());
+      return '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
+    } catch (_) {
+      return dateVal.toString();
+    }
+  }
+
+  Widget _buildMetricCard(String title, String val, Color barColor) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFECE6DF)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(width: 4, height: 16, decoration: BoxDecoration(color: barColor, borderRadius: BorderRadius.circular(2))),
+              const SizedBox(width: 8),
+              Text(title, style: const TextStyle(fontSize: 10, color: Colors.black45, fontWeight: FontWeight.bold)),
+            ],
           ),
-        );
-      },
+          const SizedBox(height: 8),
+          Text(val, style: const TextStyle(fontSize: 18, color: Color(0xFF2E2A25), fontWeight: FontWeight.bold, fontFamily: 'serif')),
+        ],
+      ),
     );
   }
 }

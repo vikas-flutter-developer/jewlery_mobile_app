@@ -54,6 +54,11 @@ const inventorySchema = new mongoose.Schema(
     primaryPhoto: { type: String },
     photoCount: { type: Number, default: 0 },
     lastPhotoUpdatedAt: { type: Date },
+    huidNumber: { type: String, unique: true, sparse: true, index: true },
+    huidStatus: { type: String, enum: ["COMPLIANT", "PENDING", "MISSING_HUID", "INVALID"], default: "PENDING", index: true },
+    hallmarkStatus: { type: String, enum: ["COMPLIANT", "PENDING", "MISSING_HUID", "INVALID"], default: "PENDING", index: true },
+    bisLicenceId: { type: mongoose.Schema.Types.ObjectId, ref: "BISLicence", index: true },
+    complianceDate: { type: Date },
   },
   { timestamps: true }
 );

@@ -10,7 +10,7 @@ import {
   getPortalCheckouts,
   approvePortalCheckoutPayment,
   getAvailableSchemes,
-  enrollInScheme
+  updateProfile
 } from "../controllers/portal/portalController.js";
 import { authMiddleware } from "../../lib/authUtils.js";
 
@@ -20,10 +20,12 @@ const router = express.Router();
 router.post("/auth/otp", requestOtp);
 router.post("/auth/verify", verifyOtp);
 
+// Profile Management
+router.put("/profile", authMiddleware, updateProfile);
+
 // Schemes Passbooks & Catalog Book
 router.get("/schemes", getAvailableSchemes);
 router.get("/customer-schemes", getCustomerSchemes);
-router.post("/customer-schemes/enroll", enrollInScheme);
 router.post("/pay-installment", paySchemeInstallment);
 
 // Bespoke custom designs

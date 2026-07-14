@@ -78,6 +78,26 @@ import { getFinancialYearsReport, getYearClosingReport } from '../controllers/re
 router.get('/financial-years', authMiddleware, getFinancialYearsReport);
 router.get('/year-closing', authMiddleware, getYearClosingReport);
 
+// TCS Tracking Reports [Feature 20]
+import { getTcsReport, getTcsSummary } from '../controllers/compliance/tcsController.js';
+router.get('/tcs', authMiddleware, getTcsReport);
+router.get('/tcs-summary', authMiddleware, getTcsSummary);
+
+// BIS Licence Reports [Feature 22]
+import { getBisLicencesReport } from '../controllers/settings/bisLicenceController.js';
+router.get('/bis-licences', authMiddleware, getBisLicencesReport);
+
+// HUID Compliance Reports [Feature 24]
+import { getHuidComplianceReport, getHuidExceptionsReport } from '../controllers/reports/huidReportsController.js';
+router.get('/huid-compliance', authMiddleware, getHuidComplianceReport);
+router.get('/huid-exceptions', authMiddleware, getHuidExceptionsReport);
+
+// GST Compliance Reports [Feature 25]
+import { getGstComplianceReport, getGstLiabilityReport, getGstExceptionsReport } from '../controllers/reports/gstReportsController.js';
+router.get('/gst-compliance', authMiddleware, getGstComplianceReport);
+router.get('/gst-liability', authMiddleware, getGstLiabilityReport);
+router.get('/gst-exceptions', authMiddleware, getGstExceptionsReport);
+
 // Raw database table backups stream [Feature 133]
 router.get('/backup/:table', downloadDataBackup);
 
